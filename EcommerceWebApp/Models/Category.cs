@@ -6,9 +6,8 @@ namespace EcommerceWebApp.Models
     {
         [Key]
         public int CatId { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Category name is required")]
         public String CatName { get; set; }
 
-        
     }
 }

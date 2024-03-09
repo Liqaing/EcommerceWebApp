@@ -12,5 +12,15 @@ namespace EcommerceWebApp.Data
 
         // Create category table in db
         public DbSet<Category> Category { get; set; }
+
+        // Seeding data on when model created
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().HasData(
+                new Category { CatId = 1, CatName = "Book" },
+                new Category { CatId = 2, CatName = "Clothes" },
+                new Category { CatId = 3, CatName = "Food" }
+            );
+        }
     }
 }

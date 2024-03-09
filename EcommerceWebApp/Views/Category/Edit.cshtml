@@ -1,0 +1,38 @@
+﻿@model Category
+
+<div class="container">
+    <div class="row">
+        <h2>Edit Category</h2>
+    </div>
+
+    <form asp-controller="Category" asp-action="Edit" method="post">
+        
+        <input asp-for="CatId" hidden />
+
+        <div class="form-group">
+            <label asp-for="CatName">Category Name:</label>
+            <input asp-for="CatName" class="form-control" id="categoryName" required>
+            <span asp-validation-for="CatName" class="text-danger"></span>
+        </div>
+
+        <!-- Add more fields as needed -->
+        <!-- Additional Space -->
+        <div class="mb-3"></div>
+
+        <div class="row">
+            <div class="col-4 col-md-2">
+                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+            </div>
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">Save Category</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

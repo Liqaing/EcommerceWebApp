@@ -1,0 +1,36 @@
+﻿@model List<Category>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-6">
+            <h2>Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-primary" data-toggle="modal" data-target="#createCategoryModal">
+                Add
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="2" scope="col">Category Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Category category in Model)
+            {
+                <tr>
+                    <td>@category.CatName</td>
+                    <td>
+                        <div class="text-end">
+                            <a asp-controller="Category" asp-action="Edit" asp-route-catId="@category.CatId" class="btn btn-info btn-md">Edit</a>
+                            <a asp-controller="Category" asp-action="Delete" asp-route-catId="@category.CatId" class="btn btn-danger btn-md">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

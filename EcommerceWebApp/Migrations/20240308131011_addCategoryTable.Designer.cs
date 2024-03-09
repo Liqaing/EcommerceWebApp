@@ -12,7 +12,7 @@ namespace EcommerceWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20240308131011_addCategoryTable")]
-    partial class addCategoryTable
+    partial class AddCategoryTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

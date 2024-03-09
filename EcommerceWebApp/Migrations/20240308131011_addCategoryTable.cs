@@ -5,8 +5,9 @@
 namespace EcommerceWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class addCategoryTable : Migration
+    public partial class AddCategoryTable : Migration
     {
+
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
