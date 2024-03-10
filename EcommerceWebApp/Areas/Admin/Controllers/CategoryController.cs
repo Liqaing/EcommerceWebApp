@@ -1,22 +1,23 @@
-﻿using EcommerceWebApp.Data;
-using EcommerceWebApp.Models;
+﻿using EcommerceWebAppProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using EcommerceWebAppProject.DB.Repository.IRepository;
+using EcommerceWebAppProject.DB.Repository;
 
-namespace EcommerceWebApp.Controllers
+namespace EcommerceWebApp.Areas.Admin.Controllers
 {
-    public class CategoryController : Controller
-    {
-
-        private readonly AppDbContext _dbContext;
-        public CategoryController(AppDbContext db)
+	[Area("Admin")]
+	public class CategoryController : Controller
+    {        
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
             // Get db context from dependency injection to work with db
-            _dbContext = db;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            List<Category> categories = _dbContext.Category.ToList();
+            List<Category> categories = _unitOfWork.Category.GetAll().ToList();
             return View(categories);
         }
 
@@ -32,8 +33,9 @@ namespace EcommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Category.Add(newCat);
-                _dbContext.SaveChanges();
+                _unitOfWork.Category.Add(newCat);
+                _unitOfWork.Save();
+                TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -43,10 +45,11 @@ namespace EcommerceWebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int? catId)
         {
-            if (catId == null || catId == 0) {
+            if (catId == null || catId == 0)
+            {
                 return StatusCode(404, "Category not found");
             }
-            Category? cat = _dbContext.Category.Find(catId);
+            Category? cat = _unitOfWork.Category.Get(cat => cat.CatId == catId);
             if (cat == null)
             {
                 return StatusCode(404, "Category not found");
@@ -61,8 +64,9 @@ namespace EcommerceWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Category.Update(cat);
-                _dbContext.SaveChanges();
+                _unitOfWork.Category.Update(cat);
+                _unitOfWork.Save();
+                TempData["success"] = "Category edited successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -75,7 +79,7 @@ namespace EcommerceWebApp.Controllers
             {
                 return StatusCode(404, "Category not found");
             }
-            Category? cat = _dbContext.Category.Find(catId);
+            Category? cat = _unitOfWork.Category.Get(cat => cat.CatId == catId);
             if (cat == null)
             {
                 return StatusCode(404, "Category not found");
@@ -87,15 +91,16 @@ namespace EcommerceWebApp.Controllers
         // Delete category
         [HttpPost]
         public IActionResult Delete(Category cat)
-        {            
+        {
 
             if (cat == null)
             {
                 return StatusCode(404, "Category not found");
             }
 
-            _dbContext.Category.Remove(cat);
-            _dbContext.SaveChanges();
+            _unitOfWork.Category.Delete(cat);
+            _unitOfWork.Save();
+            TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
     }

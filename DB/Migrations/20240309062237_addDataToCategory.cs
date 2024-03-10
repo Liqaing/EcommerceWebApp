@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace EcommerceWebApp.Migrations
+namespace EcommerceWebAppProject.DB.Migrations
 {
     /// <inheritdoc />
     public partial class AddDataToCategory : Migration
