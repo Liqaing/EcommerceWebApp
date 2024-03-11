@@ -32,6 +32,6 @@ namespace EcommerceWebAppProject.DB.Data
 		}
 
 		
-		
+		 
 	}
 }
