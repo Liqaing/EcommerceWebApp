@@ -14,6 +14,7 @@ namespace EcommerceWebAppProject.DB.Repository
 	public class Repository<T> : IRepository<T> where T : class
 	{
 		private readonly AppDbContext _dbContext;
+
 		// Represent class that this obj create on
 		internal DbSet<T> dbSet;
 
@@ -43,6 +44,7 @@ namespace EcommerceWebAppProject.DB.Repository
 
 		public IEnumerable<T> GetAll()
 		{
+
 			IQueryable<T> query = dbSet;
 			return query.ToList();
 		}

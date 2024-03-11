@@ -1,5 +1,4 @@
-﻿
-
+﻿@model List<Product>
 
 <div class="container mt-4">
     <div class="row">
@@ -7,11 +6,39 @@
             <h2>Product List</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Category" asp-action="Create" class="btn btn-primary" data-toggle="modal" data-target="#createCategoryModal">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-primary" data-toggle="modal" data-target="#createCategoryModal">
                 Add
             </a>
         </div>
     </div>
-    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="1" scope="col">Product Name</th>
+                <th colspan="1" scope="col">Product Price</th>
+                <th colspan="1" scope="col">Product Origin Country</th>
+                <th colspan="1" scope="col">Product Description</th>
+                <th colspan="2">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Product product in Model)
+            {
+                <tr>
+                    <td>@product.ProName</td>
+                    <td>@product.Price</td>
+                    <td>@product.OriginCountry</td>
+                    <td>@product.Description</td>
+                    
+                    <td>
+                        <div class="text-end">
+                            <a asp-controller="Category" asp-action="Edit" asp-route-catId="@product.ProductId" class="btn btn-info btn-md">Edit</a>
+                            <a asp-controller="Category" asp-action="Delete" asp-route-catId="@product.ProductId" class="btn btn-danger btn-md">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>       
 </div>
 
