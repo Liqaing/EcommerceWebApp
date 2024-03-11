@@ -1,6 +1,5 @@
 ﻿using EcommerceWebAppProject.Models;
 using Microsoft.EntityFrameworkCore;
-using Models;
 
 namespace EcommerceWebAppProject.DB.Data
 {
