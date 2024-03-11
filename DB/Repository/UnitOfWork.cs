@@ -12,11 +12,13 @@ namespace EcommerceWebAppProject.DB.Repository
 	{
 		private readonly AppDbContext _dbContext;
 		public ICategoryRepository Category { get; private set; }
+		public IProductRepository Product { get; private set; }
 		public UnitOfWork(AppDbContext db)
 		{
 			// Get db context from dependency injection to work with db
 			_dbContext = db;
 			Category = new CategoryRepository(db);
+			Product = new ProductRepository(db);
 		}
 
 		public void Save()
