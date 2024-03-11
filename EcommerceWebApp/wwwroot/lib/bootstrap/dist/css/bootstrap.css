@@ -361,10 +361,12 @@ sup {
     top: -0.5em;
 }
 
-a {
+
+a, a:visited {
     color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
     text-decoration: underline;
 }
+
 
     a:hover {
         --bs-link-color-rgb: var(--bs-link-hover-color-rgb);
