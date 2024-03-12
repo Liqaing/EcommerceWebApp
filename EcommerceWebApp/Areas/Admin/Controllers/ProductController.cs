@@ -1,6 +1,7 @@
 ﻿using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace EcommerceWebApp.Areas.Admin.Controllers
 {
@@ -39,6 +40,26 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             return View();
             
         }
+
+
+        [HttpGet]
+        public IActionResult Edit(int? proId)
+        {
+            if (proId == null || proId == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
+            }
+
+            Product? product = _unitOfWork.Product.Get(pro=> pro.ProductId == proId);
+            if (product == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
+            }
+
+            return View(product);
+
+        }
+        
 
     }
 }
