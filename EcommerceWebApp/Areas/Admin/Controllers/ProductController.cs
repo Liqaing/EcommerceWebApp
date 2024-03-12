@@ -57,9 +57,52 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             }
 
             return View(product);
-
         }
-        
+
+        [HttpPost]
+        public IActionResult Edit(Product pro)
+        {
+            if(ModelState.IsValid)
+            {
+                _unitOfWork.Product.Update(pro);
+                _unitOfWork.Save();
+                TempData["success"] = "Product edited successfully";
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int? proId)
+        {
+            if (proId == null || proId == 0)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
+            }
+
+            Product? product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
+            if (product == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Product pro)
+        {
+            if (pro == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
+            
+            }
+            _unitOfWork.Product.Delete(pro);
+            _unitOfWork.Save();
+            TempData["success"] = "Product deleted successfully";
+            return RedirectToAction("Index");
+        }
 
     }
 }
