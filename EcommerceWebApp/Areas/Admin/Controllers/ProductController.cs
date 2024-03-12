@@ -20,6 +20,25 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             return View(products);
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Product newPro)
+        {
+            if (ModelState.IsValid)
+            {
+                this._unitOfWork.Product.Add(newPro);
+                this._unitOfWork.Save();
+                TempData["Success"] = "Product created successfully";
+                return RedirectToAction("Index");
+            }
+            return View();
+            
+        }
 
     }
 }
