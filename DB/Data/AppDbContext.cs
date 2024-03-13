@@ -24,9 +24,9 @@ namespace EcommerceWebAppProject.DB.Data
             );
 
 			modelBuilder.Entity<Product>().HasData(
-				new Product { ProductId = 1, ProName = "A", Price = 10.5M, OriginCountry="KH" },
-				new Product { ProductId = 2, ProName = "B", Price = 14.5M, OriginCountry = "US" },
-				new Product { ProductId = 3, ProName = "C", Price = 5.5M, OriginCountry = "KH" }
+				new Product { ProductId = 1, ProName = "A", Price = 10.5M, OriginCountry="KH", catId=1, ImageUrl=""},
+				new Product { ProductId = 2, ProName = "B", Price = 14.5M, OriginCountry = "US" , catId = 1, ImageUrl = ""},
+				new Product { ProductId = 3, ProName = "C", Price = 5.5M, OriginCountry = "KH" , catId = 2, ImageUrl = ""}
 			);
 		}
 

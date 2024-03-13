@@ -3,6 +3,7 @@ using EcommerceWebAppProject.DB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceWebAppProject.DB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240313144454_addRequireToForeignKey")]
+    partial class addRequireToForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,10 +69,6 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OriginCountry")
                         .HasColumnType("nvarchar(max)");
 
@@ -93,7 +92,6 @@ namespace EcommerceWebAppProject.DB.Migrations
                         new
                         {
                             ProductId = 1,
-                            ImageUrl = "",
                             OriginCountry = "KH",
                             Price = 10.5m,
                             ProName = "A",
@@ -102,7 +100,6 @@ namespace EcommerceWebAppProject.DB.Migrations
                         new
                         {
                             ProductId = 2,
-                            ImageUrl = "",
                             OriginCountry = "US",
                             Price = 14.5m,
                             ProName = "B",
@@ -111,7 +108,6 @@ namespace EcommerceWebAppProject.DB.Migrations
                         new
                         {
                             ProductId = 3,
-                            ImageUrl = "",
                             OriginCountry = "KH",
                             Price = 5.5m,
                             ProName = "C",

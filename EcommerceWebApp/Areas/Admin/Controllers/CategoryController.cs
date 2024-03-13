@@ -35,7 +35,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Add(newCat);
                 _unitOfWork.Save();
-                TempData["success"] = "Category created successfully";
+                TempData["success"] = $"Category: {newCat.CatName} created successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -66,7 +66,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Update(cat);
                 _unitOfWork.Save();
-                TempData["success"] = "Category edited successfully";
+                TempData["success"] = $"Category: {cat.CatName} edited successfully";
                 return RedirectToAction("Index");
             }
             return View();
@@ -100,7 +100,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
 
             _unitOfWork.Category.Delete(cat);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted successfully";
+            TempData["success"] = $"Category: {cat.CatName} deleted successfully";
             return RedirectToAction("Index");
         }
     }
