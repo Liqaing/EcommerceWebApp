@@ -20,10 +20,11 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="catId">Category:</label>
-            <select asp-for="catId" asp-items="ViewBag.CategoryList" class="form-select" id="category" required>
+            <label asp-for="category">Category:</label>
+            <select asp-for="category" asp-items="ViewBag.CategoryList" class="form-select" id="category" required>
                 <option disabled selected>--Select Category--</option>
             </select>
+            <span asp-validation-for="category" class="text-danger"></span>
         </div>
 
         <div class="form-group">

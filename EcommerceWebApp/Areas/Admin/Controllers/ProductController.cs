@@ -43,7 +43,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         public IActionResult Create(Product newPro)
         {
             if (ModelState.IsValid)
-            {
+            {                
                 this._unitOfWork.Product.Add(newPro);
                 this._unitOfWork.Save();
                 TempData["Success"] = $"Product: {newPro.ProName} created successfully";
