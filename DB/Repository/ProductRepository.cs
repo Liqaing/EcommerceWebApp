@@ -24,5 +24,6 @@ namespace EcommerceWebAppProject.DB.Repository
         {
             _dbContext.Product.Update(pro);
         }
+        
     }
 }
