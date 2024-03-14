@@ -1,5 +1,6 @@
 ﻿using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.Models;
+using EcommerceWebAppProject.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -27,30 +28,41 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            // Get list of category as list of select item
-            IEnumerable<SelectListItem> categoryList = _unitOfWork.Category.GetAll()
-                .Select(cat => new SelectListItem
-                {
-                    Text = cat.CatName,
-                    Value = cat.CatId.ToString()
-                });
-            ViewBag.CategoryList = categoryList;
-
-            return View();
+            ProductVM productVM = new()
+            {
+                product = new Product(),
+                categoryList = _unitOfWork.Category.GetAll()
+                    .Select(cat => new SelectListItem
+                    {
+                        Text = cat.CatName,
+                        Value = cat.CatId.ToString()
+                    })
+            };
+                        
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Create(Product newPro)
+        public IActionResult Create(ProductVM newPro)
         {
             if (ModelState.IsValid)
             {                
-                this._unitOfWork.Product.Add(newPro);
+                this._unitOfWork.Product.Add(newPro.product);
                 this._unitOfWork.Save();
-                TempData["Success"] = $"Product: {newPro.ProName} created successfully";
+                TempData["Success"] = $"Product: {newPro.product} created successfully";
                 return RedirectToAction("Index");
             }
-            return View();
-            
+            else
+            {
+                newPro.categoryList = _unitOfWork.Category.GetAll()
+                    .Select(cat => new SelectListItem
+                    {
+                        Text = cat.CatName,
+                        Value = cat.CatId.ToString()
+                    });
+                return View(newPro);
+            }
+
         }
 
 

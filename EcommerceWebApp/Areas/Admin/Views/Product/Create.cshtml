@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model ProductVM
 
 <div class="container">
     <div class="row">
@@ -8,33 +8,38 @@
     <form asp-controller="Product" asp-action="Create" method="post">
 
         <div class="form-group">
-            <label asp-for="ProName">Product Name:</label>
-            <input asp-for="ProName" class="form-control" id="productName" required>
-            <span asp-validation-for="ProName" class="text-danger"></span>
+            <label asp-for="product.ProName">Product Name:</label>
+            <input asp-for="product.ProName" class="form-control" id="productName" required>
+            <span asp-validation-for="product.ProName" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Price">Price:</label>
-            <input asp-for="Price" class="form-control" id="price" required>
-            <span asp-validation-for="Price" class="text-danger"></span>
+            <label asp-for="product.Price">Price:</label>
+            <input asp-for="product.Price" class="form-control" id="price" required>
+            <span asp-validation-for="product.Price" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="category">Category:</label>
-            <select asp-for="category" asp-items="ViewBag.CategoryList" class="form-select" id="category" required>
+            <label asp-for="product.catId">Category:</label>
+            <select asp-for="product.catId" asp-items="@Model.categoryList" class="form-select" id="category" required>
                 <option disabled selected>--Select Category--</option>
             </select>
-            <span asp-validation-for="category" class="text-danger"></span>
+            <span asp-validation-for="product.catId" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="OriginCountry">Origin Country:</label>
-            <input asp-for="OriginCountry" class="form-control" id="originCountry">           
+            <label asp-for="product.OriginCountry">Origin Country:</label>
+            <input asp-for="product.OriginCountry" class="form-control" id="originCountry">
         </div>
 
         <div class="form-group">
-            <label asp-for="Description">Description:</label>
-            <textarea asp-for="Description" class="form-control" id="description"></textarea>
+            <label asp-for="product.Description">Description:</label>
+            <textarea asp-for="product.Description" class="form-control" id="description"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="product.ImageUrl">Image Url:</label>
+            <textarea asp-for="product.ImageUrl" class="form-control" id="imageUrl"></textarea>
         </div>
 
         <!-- Add more fields as needed -->

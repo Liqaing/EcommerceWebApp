@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,10 +26,11 @@ namespace EcommerceWebAppProject.Models
 		public decimal Price { get; set; }
 
 		public int catId { get; set; }
-		[ForeignKey("catId")]
-		[Required(ErrorMessage = "Product must be associate with one category")]
+		[ForeignKey("catId")]		
+		[ValidateNever]
         public Category category { get; set; }
 
-		public String ImageUrl { get; set; }
+		[ValidateNever]
+		public string? ImageUrl { get; set; }
 	}
 }
