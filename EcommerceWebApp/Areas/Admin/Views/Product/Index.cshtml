@@ -6,7 +6,7 @@
             <h2>Product List</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
                 Add
             </a>
         </div>
@@ -16,6 +16,7 @@
             <tr>
                 <th colspan="1" scope="col">Product Name</th>
                 <th colspan="1" scope="col">Product Price</th>
+                <th colspan="1" scope="col">Quantity</th>
                 <th colspan="1" scope="col">Product Origin Country</th>
                 <th colspan="1" scope="col">Product Description</th>
                 <th colspan="1" scope="col">Category</th>
@@ -28,13 +29,14 @@
                 <tr>
                     <td>@product.ProName</td>
                     <td>@product.Price</td>
+                    <td>@product.Qauntity</td>
                     <td>@product.OriginCountry</td>
                     <td>@product.Description</td>
                     <td>@product.category</td>
 
                     <td>
                         <div class="text-end">
-                            <a asp-controller="Product" asp-action="Edit" asp-route-proId="@product.ProductId" class="btn btn-info btn-md">Edit</a>
+                            <a asp-controller="Product" asp-action="Upsert" asp-route-proId="@product.ProductId" class="btn btn-info btn-md">Edit</a>
                             <a asp-controller="Product" asp-action="Delete" asp-route-proId="@product.ProductId" class="btn btn-danger btn-md">Delete</a>
                         </div>
                     </td>

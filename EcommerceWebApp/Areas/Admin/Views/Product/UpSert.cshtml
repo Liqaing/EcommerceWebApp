@@ -2,10 +2,11 @@
 
 <div class="container">
     <div class="row">
-        <h2>Add New Product</h2>
+        <h2> @(Model.product.ProductId != 0 ? "Update" : "Add New") Product</h2>
     </div>
 
-    <form asp-controller="Product" asp-action="Create" method="post">
+    <form asp-controller="Product" asp-action="Create" method="post" enctype="multipart/form-data">
+        <input asp-for="product.ProductId" hidden />
 
         <div class="form-group">
             <label asp-for="product.ProName">Product Name:</label>
@@ -17,6 +18,12 @@
             <label asp-for="product.Price">Price:</label>
             <input asp-for="product.Price" class="form-control" id="price" required>
             <span asp-validation-for="product.Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="product.Qauntity">Qauntity:</label>
+            <input asp-for="product.Qauntity" class="form-control" id="qauntity" required>
+            <span asp-validation-for="product.Qauntity" class="text-danger"></span>
         </div>
 
         <div class="form-group">
@@ -39,7 +46,7 @@
 
         <div class="form-group">
             <label asp-for="product.ImageUrl">Image Url:</label>
-            <textarea asp-for="product.ImageUrl" class="form-control" id="imageUrl"></textarea>
+            <input type="file" asp-for="product.ImageUrl" class="form-control" id="imageUrl"></input>
         </div>
 
         <!-- Add more fields as needed -->

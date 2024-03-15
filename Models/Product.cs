@@ -17,12 +17,16 @@ namespace EcommerceWebAppProject.Models
 		[Required(ErrorMessage = "Product name is required")]
 		public string? ProName { get; set; }
 
-		public string? Description { get; set; }
+        [Required(ErrorMessage = "Product quantity is required")]
+        [Range(1, double.MaxValue, ErrorMessage = "Invalid quantity, product quantity need to be greater than 0")]
+        public int? Qauntity { get; set; }
+
+        public string? Description { get; set; }
 		
 		public string? OriginCountry { get; set;}
 
 		[Required(ErrorMessage = "Product price is required")]
-		[Range(1, double.MaxValue, ErrorMessage = "Invalid price, product need to be greater than 0")]
+		[Range(1, double.MaxValue, ErrorMessage = "Invalid price, product price need to be greater than 0")]
 		public decimal Price { get; set; }
 
 		public int catId { get; set; }
