@@ -14,10 +14,12 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             this._unitOfWork = unitOfWork;
+            this._webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -55,24 +57,39 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upsert(ProductVM newPro, IFormFile? productImage)
+        public IActionResult Upsert(ProductVM productVM, IFormFile? productImage)
         {
             if (ModelState.IsValid)
-            {                
-                this._unitOfWork.Product.Add(newPro.product);
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (productImage != null )
+                {
+                    // Get random 128 bit id to identify the file
+                    string imageName = new Guid().ToString() + Path.GetExtension(productImage.FileName);
+                    string imageFolder = Path.Combine(wwwRootPath, @"images/product");
+    
+                    // Save image
+                    using (var fileStream = new FileStream(Path.Combine(imageFolder, imageName), FileMode.Create))
+                    {
+                        productImage.CopyTo(fileStream);
+                    };
+
+                    productVM.product.ImageUrl = $"images/product/{imageName}";
+                }
+                this._unitOfWork.Product.Add(productVM.product);
                 this._unitOfWork.Save();
-                TempData["Success"] = $"Product: {newPro.product} created successfully";
+                TempData["Success"] = $"Product: {productVM.product} created successfully";
                 return RedirectToAction("Index");
             }
             else
             {
-                newPro.categoryList = _unitOfWork.Category.GetAll()
+                productVM.categoryList = _unitOfWork.Category.GetAll()
                     .Select(cat => new SelectListItem
                     {
                         Text = cat.CatName,
                         Value = cat.CatId.ToString()
                     });
-                return View(newPro);
+                return View(productVM);
             }
 
         }

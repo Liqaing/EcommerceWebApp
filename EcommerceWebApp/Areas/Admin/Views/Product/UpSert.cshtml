@@ -5,7 +5,7 @@
         <h2> @(Model.product.ProductId != 0 ? "Update" : "Add New") Product</h2>
     </div>
 
-    <form asp-controller="Product" asp-action="Create" method="post" enctype="multipart/form-data">
+    <form asp-controller="Product" asp-action="Upsert" method="post" enctype="multipart/form-data">
         <input asp-for="product.ProductId" hidden />
 
         <div class="form-group">
@@ -46,7 +46,7 @@
 
         <div class="form-group">
             <label asp-for="product.ImageUrl">Image Url:</label>
-            <input type="file" asp-for="product.ImageUrl" class="form-control" id="imageUrl"></input>
+            <input type="file" name="productImage" asp-for="product.ImageUrl" class="form-control" id="imageUrl"></input>
         </div>
 
         <!-- Add more fields as needed -->
