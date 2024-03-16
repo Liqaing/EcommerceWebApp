@@ -58,7 +58,14 @@
                 <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
             </div>
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-primary form-control">Create Product</button>
+                @if (Model.product.ProductId != 0)
+                {
+                    <button type="submit" class="btn btn-primary form-control">Update Product</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary form-control">Create Product</button>
+                }
             </div>
         </div>
     </form>
@@ -69,4 +76,19 @@
     @{
         <partial name="_ValidationScriptsPartial" />
     }
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons link lists table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode ai mentions tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link table | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap ',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        });
+    </script>
 }
