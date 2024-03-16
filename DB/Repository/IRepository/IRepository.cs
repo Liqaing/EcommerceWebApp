@@ -11,10 +11,16 @@ namespace EcommerceWebAppProject.DB.Repository.IRepository
 	/// <typeparam name="T"></typeparam>
 	public interface IRepository<T> where T : class
 	{
-		// Get all value from db
-		IEnumerable<T> GetAll();
-		T Get(Expression<Func<T, bool>> filter);
+        // Get all value from db
+
+        /// <summary>Gets all.</summary>
+        /// <param name="includeProperties">The include properties. list of string represent related entity to include in query</param>
+        IEnumerable<T> GetAll(string? includeProperties = null);
+
+		T Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
+		
 		void Add(T entity);
+		
 		void Delete(T entity);
 	}
 }

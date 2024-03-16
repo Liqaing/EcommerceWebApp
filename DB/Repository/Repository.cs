@@ -35,17 +35,38 @@ namespace EcommerceWebAppProject.DB.Repository
 			dbSet.Remove(entity);
 		}
 
-		public T Get(Expression<Func<T, bool>> filter)
+		public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
 		{
 			IQueryable<T> query = this.dbSet;
 			query = query.Where(filter);
-			return query.FirstOrDefault();
+            
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (string property in includeProperties.Trim().Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
+
+            return query.FirstOrDefault();
 		}
 
-		public IEnumerable<T> GetAll()
+        /// <summary>Gets all.</summary>
+        /// <param name="includeProperties">The include properties. list of string represent related entity to include in query</param>
+        /// <returns>
+        ///   <br />
+        /// </returns>
+        public IEnumerable<T> GetAll(string? includeProperties = null)
 		{
-
 			IQueryable<T> query = dbSet;
+			
+			if (!string.IsNullOrEmpty(includeProperties))
+			{
+				foreach(string property in includeProperties.Trim().Split(',', StringSplitOptions.RemoveEmptyEntries))
+				{
+					query = query.Include(property);
+				}
+			}
 			return query.ToList();
 		}
 
