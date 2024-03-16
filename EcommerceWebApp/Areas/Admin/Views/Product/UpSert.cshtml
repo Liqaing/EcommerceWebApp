@@ -5,8 +5,13 @@
         <h2> @(Model.product.ProductId != 0 ? "Update" : "Add New") Product</h2>
     </div>
 
+    <div class="text-center border rounded p-2">
+        <img src="@Model.product.ImageUrl" style="max-height: 300px;" class="img-fluid border" />
+    </div>
+
     <form asp-controller="Product" asp-action="Upsert" method="post" enctype="multipart/form-data">
         <input asp-for="product.ProductId" hidden />
+        <input asp-for="product.ImageUrl" hidden />
 
         <div class="form-group">
             <label asp-for="product.ProName">Product Name:</label>
@@ -46,8 +51,9 @@
 
         <div class="form-group">
             <label asp-for="product.ImageUrl">Image Url:</label>
-            <input type="file" name="productImage" asp-for="product.ImageUrl" class="form-control" id="imageUrl"></input>
-        </div>
+            <input type="file" name="productImage" asp-for="product.ImageUrl" class="form-control" id="imageUrl" />
+            <span asp-validation-for="product.ImageUrl" class="text-danger"></span>
+        </div>        
 
         <!-- Add more fields as needed -->
         <!-- Additional Space -->

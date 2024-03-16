@@ -65,20 +65,42 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
                 if (productImage != null )
                 {
                     // Get random 128 bit id to identify the file
-                    string imageName = new Guid().ToString() + Path.GetExtension(productImage.FileName);
-                    string imageFolder = Path.Combine(wwwRootPath, @"images/product");
-    
+                    string imageName = $"{Guid.NewGuid()}{Path.GetExtension(productImage.FileName)}";
+                    string imageFolder = Path.Combine(wwwRootPath, @"images\product");
+                    
+                    if (!string.IsNullOrEmpty(productVM.product.ImageUrl))
+                    {
+                        // delete old image and update new one
+                        string oldImagePath = 
+                            Path.Combine(wwwRootPath, productVM.product.ImageUrl.TrimStart('/'));
+
+                        if (System.IO.File.Exists(oldImagePath)) {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
                     // Save image
-                    using (var fileStream = new FileStream(Path.Combine(imageFolder, imageName), FileMode.Create))
+                    string imagePath = Path.Combine(imageFolder, imageName);
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
                     {
                         productImage.CopyTo(fileStream);
                     };
 
-                    productVM.product.ImageUrl = $"images/product/{imageName}";
+                    productVM.product.ImageUrl = $@"\images\product\{imageName}";
                 }
-                this._unitOfWork.Product.Add(productVM.product);
+
+                if (productVM.product.ProductId == 0)
+                {
+                    this._unitOfWork.Product.Add(productVM.product);
+                    TempData["Success"] = $"Product: {productVM.product.ProName} created successfully";
+                }
+                else
+                {
+                    this._unitOfWork.Product.Update(productVM.product);
+                    TempData["Success"] = $"Product: {productVM.product.ProName} updated successfully";
+                }
+
                 this._unitOfWork.Save();
-                TempData["Success"] = $"Product: {productVM.product} created successfully";
                 return RedirectToAction("Index");
             }
             else

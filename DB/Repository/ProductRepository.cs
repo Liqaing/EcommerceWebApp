@@ -22,7 +22,23 @@ namespace EcommerceWebAppProject.DB.Repository
 
         public void Update(Product pro)
         {
-            _dbContext.Product.Update(pro);
+            Product? product = _dbContext.Product.FirstOrDefault(
+                pro => pro.ProductId == pro.ProductId);
+        
+            if (product != null)
+            {
+                product.ProName = pro.ProName;
+                product.Price = pro.Price;
+                product.Description = pro.Description;
+                pro.Qauntity = pro.Qauntity;
+                pro.OriginCountry = pro.OriginCountry;
+                pro.catId = pro.catId;
+                
+                if (pro.ImageUrl != null)
+                {
+                    pro.ImageUrl = pro.ImageUrl;
+                }
+            }
         }
         
     }
