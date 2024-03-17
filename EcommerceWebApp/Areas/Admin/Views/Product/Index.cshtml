@@ -11,20 +11,25 @@
             </a>
         </div>
     </div>
-    <table id="productTable" class="table table-striped">
-        <thead>
-            <tr>
-                <th colspan="1" scope="col">Product Name</th>
-                <th colspan="1" scope="col">Product Price</th>
-                <th colspan="1" scope="col">Quantity</th>
-                <th colspan="1" scope="col">Category</th>
-                <th colspan="1" scope="col">Origin Country</th>
-                <th colspan="1" scope="col">Description</th>
-            </tr>
-        </thead>
-    </table>       
+    
+    <div class="table-responsive">
+        <table id="proTb" class="table table-striped w-100">
+            <thead>
+                <tr>
+                    <th class="text-center">Product Name</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Category</th>
+                    <th class="text-center">Origin Country</th>
+                    <th class="text-center">Description</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+        </table>
+    </div>    
+
 </div>
 
 @section Scripts {
-    <script src="~/js/product.js"></script>   
+    <script src="~/js/product/product.js"></script>   
 }

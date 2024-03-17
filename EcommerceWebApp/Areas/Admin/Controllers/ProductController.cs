@@ -71,13 +71,8 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
                     
                     if (!string.IsNullOrEmpty(productVM.product.ImageUrl))
                     {
-                        // delete old image and update new one
-                        string oldImagePath = 
-                            Path.Combine(wwwRootPath, productVM.product.ImageUrl.TrimStart('/'));
-
-                        if (System.IO.File.Exists(oldImagePath)) {
-                            System.IO.File.Delete(oldImagePath);
-                        }
+                        // delete old image and update new one                        
+                        deleteImage(wwwRootPath, productVM.product);
                     }
 
                     // Save image
@@ -117,48 +112,58 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
 
         }
 
-        [HttpGet]
-        public IActionResult Delete(int? proId)
-        {
-            if (proId == null || proId == 0)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
-            }
-
-            Product? product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
-            if (product == null)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
-            }
-
-            return View(product);
-        }
-
-        [HttpPost]
-        public IActionResult Delete(Product pro)
-        {
-            if (pro == null)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, "Product not found");
-            
-            }
-            _unitOfWork.Product.Delete(pro);
-            _unitOfWork.Save();
-            TempData["success"] = $"Product: {pro.ProName} deleted successfully";
-            return RedirectToAction("Index");
-        }
-
-
         #region api
 
         [HttpGet]
-        [Route("/Admin/api/product")]
+        [Route("/Admin/api/product/all")]
         public IActionResult GetAll()
         {
             List<Product> products = _unitOfWork.Product.GetAll(
                 includeProperties: "category").ToList();
 
             return Json(new { data = products });
+        }
+
+        [HttpDelete]
+        [Route("/Admin/api/product/delete")]
+        public IActionResult Delete(int? proId)
+        {
+            Product product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
+            if (product == null)
+            {
+                return Json( new { success = false, message = "Product Not Found" } );
+
+            }
+                
+            deleteImage(_webHostEnvironment.WebRootPath, product);
+
+            _unitOfWork.Product.Delete(product);
+            _unitOfWork.Save();
+
+            string successMsg = $"Product: {product.ProName} deleted successfully";
+            return Json( new {success = true, message = successMsg} );
+        }
+
+        #endregion
+
+
+        #region util
+
+        // Delete image in www root folder
+        public void deleteImage(string wwwRootPath, Product product)
+        {  
+            if (string.IsNullOrEmpty(product.ImageUrl))
+            {
+                return;
+            }
+
+            string imagePath =
+                Path.Combine(wwwRootPath, product.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
         }
 
         #endregion

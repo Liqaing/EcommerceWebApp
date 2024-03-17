@@ -26,7 +26,7 @@ namespace EcommerceWebAppProject.Models
 		public string? OriginCountry { get; set;}
 
 		[Required(ErrorMessage = "Product price is required")]
-		[Range(1, double.MaxValue, ErrorMessage = "Invalid price, product price need to be greater than 0")]
+		[Range(0, double.MaxValue, ErrorMessage = "Invalid price, product price need to be greater than 0")]
 		public decimal Price { get; set; }
 
 		public int catId { get; set; }
