@@ -11,38 +11,20 @@
             </a>
         </div>
     </div>
-    <table class="table table-striped">
+    <table id="productTable" class="table table-striped">
         <thead>
             <tr>
                 <th colspan="1" scope="col">Product Name</th>
                 <th colspan="1" scope="col">Product Price</th>
                 <th colspan="1" scope="col">Quantity</th>
-                <th colspan="1" scope="col">Product Origin Country</th>
-                <th colspan="1" scope="col">Product Description</th>
                 <th colspan="1" scope="col">Category</th>
-                <th colspan="2">&nbsp;</th>
+                <th colspan="1" scope="col">Origin Country</th>
+                <th colspan="1" scope="col">Description</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (Product product in Model)
-            {
-                <tr>
-                    <td>@product.ProName</td>
-                    <td>@product.Price</td>
-                    <td>@product.Qauntity</td>
-                    <td>@product.OriginCountry</td>
-                    <td>@product.Description</td>
-                    <td>@product.category.CatName</td>
-
-                    <td>
-                        <div class="text-end">
-                            <a asp-controller="Product" asp-action="Upsert" asp-route-proId="@product.ProductId" class="btn btn-info btn-md">Edit</a>
-                            <a asp-controller="Product" asp-action="Delete" asp-route-proId="@product.ProductId" class="btn btn-danger btn-md">Delete</a>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
     </table>       
 </div>
 
+@section Scripts {
+    <script src="~/js/product.js"></script>   
+}

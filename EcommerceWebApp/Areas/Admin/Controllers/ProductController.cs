@@ -148,5 +148,19 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+
+        #region api
+
+        [HttpGet]
+        [Route("/Admin/api/product")]
+        public IActionResult GetAll()
+        {
+            List<Product> products = _unitOfWork.Product.GetAll(
+                includeProperties: "category").ToList();
+
+            return Json(new { data = products });
+        }
+
+        #endregion
     }
 }
