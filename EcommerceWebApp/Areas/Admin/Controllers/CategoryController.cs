@@ -71,37 +71,32 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             }
             return View();
         }
+        
+
+        #region api
 
         [HttpGet]
-        public IActionResult Delete(int? catId)
+        [Route("/admin/api/category/all")]
+        public IActionResult GetAll()
         {
+            List<Category> categories = _unitOfWork.Category.GetAll().ToList();
+            return Json( new {data = categories} );
+        }
+
+        [HttpDelete]
+        [Route("/admin/api/category/delete")]
+        public IActionResult Delete(int? catId) { 
             if (catId == null || catId == 0)
             {
-                return StatusCode(404, "Category not found");
-            }
-            Category? cat = _unitOfWork.Category.Get(cat => cat.CatId == catId);
-            if (cat == null)
-            {
-                return StatusCode(404, "Category not found");
+                return Json( new { success = false, message = "Category Not Found" });
             }
 
-            return View(cat);
-        }
-
-        // Delete category
-        [HttpPost]
-        public IActionResult Delete(Category cat)
-        {
-
-            if (cat == null)
-            {
-                return StatusCode(404, "Category not found");
-            }
-
+            Category cat = _unitOfWork.Category.Get(cat => cat.CatId== catId);
             _unitOfWork.Category.Delete(cat);
             _unitOfWork.Save();
-            TempData["success"] = $"Category: {cat.CatName} deleted successfully";
-            return RedirectToAction("Index");
+            return Json(new { success = true, message = $"Category: {cat.CatName} deleted successfully"});
         }
+
+        #endregion
     }
 }

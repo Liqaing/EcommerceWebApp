@@ -14,9 +14,9 @@ $(document).ready(function () {
                 data: "productId",
                 render: function (data) {
                     return `
-                        <div class="btn-group text-center" role="group">
-                            <a href="/admin/product/upsert?proId=${data}" class="btn btn-primary mx-2 w-50">Edit</a>
-                            <a onClick=_delete("/admin/api/product/delete?proId=${data}") class="btn btn-danger mx-2 w-50">Delete</a>
+                        <div class="btn-group d-flex" role="group">
+                            <a href="/admin/product/upsert?proId=${data}" class="btn btn-primary mx-1 w-50 rounded">Edit</a>
+                            <a onClick=_delete("/admin/api/product/delete?proId=${data}") class="btn btn-danger mx-1 w-50 rounded">Delete</a>
                         </div>
                     `
                 },

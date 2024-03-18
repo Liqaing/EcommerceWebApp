@@ -13,26 +13,18 @@
         </div>
     </div>
 
-    <table class="table table-striped">
+    <table id="catTb" class="table table-striped">
         <thead>
             <tr>
-                <th colspan="2" scope="col">Category Name</th>
+                <th>Category Name</th>
+                <th></th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (Category category in Model)
-            {
-                <tr>
-                    <td>@category.CatName</td>
-                    <td>
-                        <div class="text-end">
-                            <a asp-controller="Category" asp-action="Edit" asp-route-catId="@category.CatId" class="btn btn-info btn-md">Edit</a>
-                            <a asp-controller="Category" asp-action="Delete" asp-route-catId="@category.CatId" class="btn btn-danger btn-md">Delete</a>
-                        </div>
-                    </td>
-                </tr>
-            }
+        <tbody>                       
         </tbody>
     </table>
 </div>
 
+@section Scripts {
+    <script src="~/js/category/category.js"></script>
+}
