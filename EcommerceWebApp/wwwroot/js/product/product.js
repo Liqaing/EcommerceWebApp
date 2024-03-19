@@ -20,7 +20,8 @@ $(document).ready(function () {
                         </div>
                     `
                 },
-                "width": "15%"
+                "width": "15%",
+                "orderable": false
             }
         ]
     });

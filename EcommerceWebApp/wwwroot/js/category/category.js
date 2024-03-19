@@ -17,7 +17,8 @@ $(document).ready(function () {
                         </div>
                     `
                 },
-                "Width": "15%"
+                "Width": "15%",
+                "orderable": false
             }
         ]
     });
