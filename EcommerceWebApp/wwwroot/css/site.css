@@ -15,4 +15,24 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: sans-serif;
+}
+
+.dt-length {
+    display: flex !important;
+    justify-content: start !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+.dt-search {
+    display: flex !important;
+    justify-content: end !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+#dt-length-0, #dt-search-0 {
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
 }

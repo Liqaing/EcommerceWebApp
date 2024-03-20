@@ -19,8 +19,8 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "category");
-            return View(productList);
+            IEnumerable<Category> categories = _unitOfWork.Category.GetAll(includeProperties: "products");
+            return View(categories);
         }
 
         public IActionResult Privacy()

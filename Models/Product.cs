@@ -31,8 +31,7 @@ namespace EcommerceWebAppProject.Models
 
 		public int catId { get; set; }
 		[ForeignKey("catId")]		
-		[ValidateNever]
-        public Category category { get; set; }
+        public Category? category { get; set; }
 		
 		public string? ImageUrl { get; set; }
 	}

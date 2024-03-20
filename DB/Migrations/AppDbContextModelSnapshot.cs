@@ -36,7 +36,7 @@ namespace EcommerceWebAppProject.DB.Migrations
 
                     b.HasKey("CatId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
 
                     b.HasData(
                         new
@@ -91,7 +91,7 @@ namespace EcommerceWebAppProject.DB.Migrations
 
                     b.HasIndex("catId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
 
                     b.HasData(
                         new

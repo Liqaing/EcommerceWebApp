@@ -1,1 +1,19 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<Category>
+
+@foreach (var cat in Model)
+{
+	<h1>@cat.CatName</h1>
+	if (cat.products != null)
+	{
+		@foreach (var pro in cat.products)
+		{
+			<p>@pro.ProName</p>
+			<p>@pro.Price</p>
+			<p>@pro.OriginCountry</p>
+			<p>@pro.Price</p>
+			<img src="@pro.ImageUrl" style="max-height: 300px;" class="img-fluid border" />
+			<p>@pro.Description</p>
+		}
+	}	
+}
+
