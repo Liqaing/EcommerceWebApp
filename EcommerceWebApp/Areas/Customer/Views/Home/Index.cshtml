@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Category>
 
+<div>
+	<partial name="_LoginPartial" />
+</div>
+
 @foreach (var cat in Model)
 {
 	<h1>@cat.CatName</h1>
