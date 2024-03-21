@@ -1,31 +1,55 @@
 ﻿let dataTable;
 
-$(document).ready(function () {
-    dataTable = $("#proTb").DataTable({
-        "ajax": { url: "/Admin/api/product/all" },
-        "columns": [
-            { data: "proName", "width": "15%", "className": "text-center" },
-            { data: "price", "width": "10%", "className": "text-center" },
-            { data: "qauntity", "width": "10%", "className": "text-center" },
-            { data: "category.catName", "width": "15%", "className": "text-center" },
-            { data: "originCountry", "width": "15%", "className": "text-center" },
-            { data: "description", "width": "20%", "className": "text-center" },
-            {
-                data: "productId",
-                render: function (data) {
-                    return `
+$.ajax({
+    url: "/Admin/api/product/all",
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+        var products = [];
+        data.data.$values.forEach(function (item) {
+            var product = {
+                productId: item.productId,
+                proName: item.proName,
+                quantity: item.qauntity, // Corrected the typo here
+                categoryName: item.category.catName,
+                originCountry: item.originCountry,
+                description: item.description,
+                price: item.price,
+                imageUrl: item.imageUrl
+            };
+            products.push(product);
+        });
+
+        $('#proTb').DataTable({
+            data: products,
+            columns: [
+                { data: 'proName', title: 'Product Name' },
+                { data: 'price', title: 'Price' },
+                { data: 'quantity', title: 'Quantity' },
+                { data: 'categoryName', title: 'Category' },
+                { data: 'originCountry', title: 'Origin Country' },
+                { data: 'description', title: 'Description' },
+                {
+                    data: "productId",
+                    render: function (data) {
+                        return `
                         <div class="btn-group d-flex" role="group">
                             <a href="/admin/product/upsert?proId=${data}" class="btn btn-primary mx-1 w-50 rounded">Edit</a>
                             <a onClick=_delete("/admin/api/product/delete?proId=${data}") class="btn btn-danger mx-1 w-50 rounded">Delete</a>
                         </div>
                     `
-                },
-                "width": "15%",
-                "orderable": false
-            }
-        ]
-    });
+                    },
+                    "width": "15%",
+                    "orderable": false
+                }
+            ]
+        });
+    },
+    error: function (xhr, textStatus, errorThrown) {
+        console.log("Error:", errorThrown);
+    }
 });
+
 /*
 {
     data: "imageUrl",               
