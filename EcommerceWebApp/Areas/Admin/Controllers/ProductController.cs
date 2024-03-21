@@ -121,7 +121,17 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             List<Product> products = _unitOfWork.Product.GetAll(
                 includeProperties: "category").ToList();
 
-            return Json(new { data = products });
+            List<Product> productList = products.Select(pro => new Product
+            {
+				ProductId = pro.ProductId,
+				ProName = pro.ProName,
+                Price = pro.Price,
+                Qauntity = pro.Qauntity,
+
+            }).ToList();
+
+
+			return Json(new { data = products });
         }
 
         [HttpDelete]
