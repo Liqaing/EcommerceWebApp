@@ -1,10 +1,12 @@
 ﻿using EcommerceWebAppProject.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceWebAppProject.DB.Data
 {
-    public class AppDbContext : DbContext
-    {
+    public class AppDbContext : IdentityDbContext<IdentityUser>
+	{
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             
@@ -17,6 +19,8 @@ namespace EcommerceWebAppProject.DB.Data
 		// Seeding data on when model created
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { CatId = 1, CatName = "Book" },
                 new Category { CatId = 2, CatName = "Clothes" },
