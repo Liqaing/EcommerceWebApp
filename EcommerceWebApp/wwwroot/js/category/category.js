@@ -1,29 +1,44 @@
 ﻿let dataTable;
-$(document).ready(function () {
-    dataTable = $("#catTb").dataTable({
-        ajax: {
-            url: "/admin/api/category/all",
-            type: "GET"
-        },
-        columns: [
-            { data: "catName", "width": "85%" },
-            {
-                data: "catId",
-                render: function (data) {
-                    return `
+
+$.ajax({
+    url: "/admin/api/category/all",
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+        let categories = [];
+        data.data.$values.forEach(function (item) {
+            let category = {
+                catId: item.catId,
+                catName: item.catName,                
+            };
+            categories.push(category);
+        });
+
+        console.log(categories)
+        $('#catTb').DataTable({
+            data: categories,
+            columns: [
+                { data: "catName", "width": "85%" },
+                {
+                    data: "catId",
+                    render: function (data) {
+                        return `
                         <div class="btn-group text-center d-flex" role="group">
                             <a href="/admin/category/edit?catId=${data}" class="btn btn-info mx-1 w-50 rounded">Edit</a>
                             <a onClick=_delete("/admin/api/category/delete?catId=${data}") class="btn btn-danger mx-1 w-50 rounded">Delete</a>
                         </div>
                     `
-                },
-                "Width": "15%",
-                "orderable": false
-            }
-        ]
-    });
+                    },
+                    "Width": "15%",
+                    "orderable": false
+                }
+            ]
+        });
+    },
+    error: function (xhr, textStatus, errorThrown) {
+        console.log("Error:", errorThrown);
+    }
 });
-
 
 const _delete = function (url) {
     Swal.fire({
