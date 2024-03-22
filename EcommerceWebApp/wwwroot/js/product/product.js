@@ -6,7 +6,7 @@ $.ajax({
     dataType: "json",
     success: function (data) {
         var products = [];
-        data.forEach(function (item) {
+        data.data.forEach(function (item) {
             var product = {
                 productId: item.productId,
                 proName: item.proName,
