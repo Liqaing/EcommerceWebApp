@@ -6,16 +6,15 @@ $.ajax({
     dataType: "json",
     success: function (data) {
         var products = [];
-        data.data.$values.forEach(function (item) {
+        data.forEach(function (item) {
             var product = {
                 productId: item.productId,
                 proName: item.proName,
-                quantity: item.qauntity, // Corrected the typo here
+                quantity: item.qauntity,
                 categoryName: item.category.catName,
                 originCountry: item.originCountry,
                 description: item.description,
-                price: item.price,
-                imageUrl: item.imageUrl
+                price: item.price
             };
             products.push(product);
         });

@@ -5,6 +5,8 @@ using EcommerceWebAppProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
+using Microsoft.Build.Execution;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +22,18 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddControllers().AddJsonOptions(ops =>
+
+builder.Services.AddControllers().AddNewtonsoftJson(ops =>
 {
-    ops.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    ops.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
+
+/*
+builder.Services.AddControllersWithViews()
+	.AddNewtonsoftJson(options =>
+	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+*/
 
 var app = builder.Build();
 

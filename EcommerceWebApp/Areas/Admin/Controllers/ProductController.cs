@@ -60,43 +60,43 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(ProductVM productVM, IFormFile? productImage)
         {
-            if (ModelState.IsValid)
-            {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (productImage != null )
-                {
-                    // Get random 128 bit id to identify the file
-                    string imageName = $"{Guid.NewGuid()}{Path.GetExtension(productImage.FileName)}";
-                    string imageFolder = Path.Combine(wwwRootPath, @"images\product");
-                    
-                    if (!string.IsNullOrEmpty(productVM.product.ImageUrl))
-                    {
-                        // delete old image and update new one                        
-                        deleteImage(wwwRootPath, productVM.product);
-                    }
+			if (ModelState.IsValid)
+			{
+				string wwwRootPath = _webHostEnvironment.WebRootPath;
+				if (productImage != null)
+				{
+					// Get random 128 bit id to identify the file
+					string imageName = $"{Guid.NewGuid()}{Path.GetExtension(productImage.FileName)}";
+					string imageFolder = Path.Combine(wwwRootPath, @"images\product");
 
-                    // Save image
-                    string imagePath = Path.Combine(imageFolder, imageName);
-                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        productImage.CopyTo(fileStream);
-                    };
+					if (!string.IsNullOrEmpty(productVM.product.ImageUrl))
+					{
+						// delete old image and update new one                        
+						deleteImage(wwwRootPath, productVM.product);
+					}
 
-                    productVM.product.ImageUrl = $@"\images\product\{imageName}";
-                }
+					// Save image
+					string imagePath = Path.Combine(imageFolder, imageName);
+					using (var fileStream = new FileStream(imagePath, FileMode.Create))
+					{
+						productImage.CopyTo(fileStream);
+					};
 
-                if (productVM.product.ProductId == 0)
-                {
-                    this._unitOfWork.Product.Add(productVM.product);
-                    TempData["Success"] = $"Product: {productVM.product.ProName} created successfully";
-                }
-                else
-                {
-                    this._unitOfWork.Product.Update(productVM.product);
-                    TempData["Success"] = $"Product: {productVM.product.ProName} updated successfully";
-                }
+					productVM.product.ImageUrl = $@"\images\product\{imageName}";
+				}
 
-                this._unitOfWork.Save();
+				if (productVM.product.ProductId == 0)
+				{
+					this._unitOfWork.Product.Add(productVM.product);
+					TempData["Success"] = $"Product: {productVM.product.ProName} created successfully";
+				}
+				else
+				{
+					this._unitOfWork.Product.Update(productVM.product);
+					TempData["Success"] = $"Product: {productVM.product.ProName} updated successfully";
+				}
+
+				this._unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             else
@@ -121,6 +121,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             List<Product> products = _unitOfWork.Product.GetAll(
                 includeProperties: "category").ToList();
 
+            /*
             List<Product> productList = products.Select(pro => new Product
             {
 				ProductId = pro.ProductId,
@@ -129,7 +130,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
                 Qauntity = pro.Qauntity,
 
             }).ToList();
-
+            */
 
 			return Json(new { data = products });
         }

@@ -15,6 +15,8 @@ namespace EcommerceWebAppProject.DB.Data
         // Create category table in db
         public DbSet<Category> Category { get; set; }
 		public DbSet<Product> Product { get; set; }
+		public DbSet<AppUser> AppUser { get; set; }
+
 
 		// Seeding data on when model created
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

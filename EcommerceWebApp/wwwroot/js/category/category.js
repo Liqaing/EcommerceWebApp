@@ -6,7 +6,7 @@ $.ajax({
     dataType: "json",
     success: function (data) {
         let categories = [];
-        data.data.$values.forEach(function (item) {
+        data.forEach(function (item) {
             let category = {
                 catId: item.catId,
                 catName: item.catName,                
