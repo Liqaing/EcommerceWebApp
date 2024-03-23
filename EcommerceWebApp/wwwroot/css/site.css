@@ -36,3 +36,7 @@ body {
     border-radius: 0.4rem;
     padding: 0.3rem 0.5rem;
 }
+
+a {
+    text-decoration: none;
+}

@@ -17,13 +17,22 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             IEnumerable<Category> categories = _unitOfWork.Category.GetAll(includeProperties: "products");
             return View(categories);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+		public IActionResult Details(int proId)
+		{
+			Product product = _unitOfWork.Product.Get(pro => pro.ProductId == proId, 
+                includeProperties: "category");
+			return View(product);
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }
