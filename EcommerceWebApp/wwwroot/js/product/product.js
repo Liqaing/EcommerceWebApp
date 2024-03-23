@@ -6,7 +6,6 @@ $.ajax({
     dataType: "json",
     success: function (data) {
         let products = [];
-        console.log(data)
         data.data.forEach(function (item) {
             var product = {
                 productId: item.productId,
@@ -23,12 +22,20 @@ $.ajax({
         $('#proTb').DataTable({
             data: products,
             columns: [
-                { data: 'proName', title: 'Product Name' },
-                { data: 'price', title: 'Price' },
-                { data: 'quantity', title: 'Quantity' },
-                { data: 'categoryName', title: 'Category' },
-                { data: 'originCountry', title: 'Origin Country' },
-                { data: 'description', title: 'Description' },
+                { data: 'proName', title: 'Title', 'width': '10%'},
+                { data: 'price', title: 'Price', 'width': '5%' },
+                { data: 'quantity', title: 'Quantity', 'width': '5%' },
+                { data: 'categoryName', title: 'Category', 'width': '10%' },
+                { data: 'originCountry', title: 'Country', 'width': '10%' },
+                {
+
+                    data: 'description',
+                    title: 'Description',
+                    render: function (data) {
+                        return `<div class="des-cell"> ${data}</div>`
+                    },
+                    'width': '25%'
+                },
                 {
                     data: "productId",
                     render: function (data) {

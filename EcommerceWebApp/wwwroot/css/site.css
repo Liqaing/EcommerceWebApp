@@ -40,3 +40,8 @@ body {
 a {
     text-decoration: none;
 }
+
+.des-cell {
+    max-height: 4rem;
+    overflow-y: auto;
+}
