@@ -30,13 +30,13 @@ namespace EcommerceWebAppProject.DB.Repository
                 product.ProName = pro.ProName;
                 product.Price = pro.Price;
                 product.Description = pro.Description;
-                pro.Qauntity = pro.Qauntity;
-                pro.OriginCountry = pro.OriginCountry;
-                pro.catId = pro.catId;
+                product.Qauntity = pro.Qauntity;
+                product.OriginCountry = pro.OriginCountry;
+                product.catId = pro.catId;
                 
                 if (pro.ImageUrl != null)
                 {
-                    pro.ImageUrl = pro.ImageUrl;
+                    product.ImageUrl = pro.ImageUrl;
                 }
             }
         }
