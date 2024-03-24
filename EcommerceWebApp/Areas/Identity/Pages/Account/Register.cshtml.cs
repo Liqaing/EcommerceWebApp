@@ -110,8 +110,20 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
             public string Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
-        }
 
+            [Required]
+            public string Name { get; set; }
+            [Required]
+            public string PhoneNumber { get; set; }
+            
+
+            public string HomeNumber { get; set; }
+            public string StreetName { get; set; }
+            public string Village { get; set; }
+            public string Commune { get; set; }
+            public string City { get; set; }
+            public string PostalNumber { get; set; }
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -149,6 +161,16 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.Name = Input.Name;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.HomeNumber = Input.HomeNumber;
+                user.StreetName = Input.StreetName;
+                user.City = Input.City;
+                user.Village = Input.Village;
+                user.PostalNumber = Input.PostalNumber;
+                user.Commune = Input.Commune;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -191,6 +213,18 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+            Input = new()
+            {
+                // For redisplay
+                RoleList = _roleManager.Roles
+                    .Select(role => role.Name)
+                        .Select(role => new SelectListItem
+                        {
+                            Text = role,
+                            Value = role
+                        })
+            };
 
             // If we got this far, something failed, redisplay form
             return Page();

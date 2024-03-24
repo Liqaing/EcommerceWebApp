@@ -30,16 +30,19 @@
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Manage
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="dropdown-item text-dark">Category</a>
-                                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="dropdown-item text-dark">Prodcut</a>
-                            </div>
-                        </li>
-                        
+                        @if (User.IsInRole(RoleConstant.Role_Admin))
+                        {
+                                                   
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="dropdown-item text-dark">Category</a>
+                                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="dropdown-item text-dark">Prodcut</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

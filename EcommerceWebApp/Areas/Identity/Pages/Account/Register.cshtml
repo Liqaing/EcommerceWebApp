@@ -1,19 +1,16 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating my-2">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                <input asp-for="Input.Email" class="form-control" placeholder="exam@gmail.com" autocomplete="username" aria-required="true" />
                 <label asp-for="Input.Email"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
@@ -35,11 +32,61 @@
                 <label asp-for="Input.Role"></label>
             </div>
 
+            <div class="form-floating my-2">
+                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+                <label asp-for="Input.Name">Full Name</label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" />
+                <label asp-for="Input.PhoneNumber"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="Input.HomeNumber" class="form-control" />
+                <label asp-for="Input.HomeNumber" class="pr-2"></label>
+                <span asp-validation-for="Input.HomeNumber" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-2">
+                <input asp-for="Input.StreetName" class="form-control" />
+                <label asp-for="Input.StreetName"></label>
+                <span asp-validation-for="Input.StreetName" class="text-danger"></span>
+            </div>
+            
+            
+            <div class="form-floating my-2">
+                <input asp-for="Input.Village" class="form-control" />
+                <label asp-for="Input.Village"></label>
+                <span asp-validation-for="Input.Village" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.Commune" class="form-control" />
+                <label asp-for="Input.Commune"></label>
+                <span asp-validation-for="Input.Commune" class="text-danger"></span>
+            </div>
+
+            
+            <div class="form-floating my-2">
+                <input asp-for="Input.City" class="form-control" />
+                <label asp-for="Input.City"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="Input.PostalNumber" class="form-control" />
+                <label asp-for="Input.PostalNumber"></label>
+                <span asp-validation-for="Input.PostalNumber" class="text-danger"></span>
+            </div>
+            
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
+        </form>        
+        
+        <hr />
+    </div>   
+
+    <div class="col-md-12">
         <section>
+            <p class="divider-text d-flex"> or </p>
             <h3>Use another service to register.</h3>
             <hr />
             @{

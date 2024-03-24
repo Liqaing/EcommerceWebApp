@@ -34,12 +34,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(ops =>
     ops.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
-/*
-builder.Services.AddControllersWithViews()
-	.AddNewtonsoftJson(options =>
-	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
-*/
+// Config route for redirecting
+builder.Services.ConfigureApplicationCookie(opts =>
+{
+    opts.LoginPath = $"/Identity/Account/Login";
+    opts.LogoutPath = $"/Identity/Account/Logout";
+    opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
 
 var app = builder.Build();
 

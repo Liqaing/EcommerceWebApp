@@ -32,7 +32,7 @@ namespace EcommerceWebAppProject.DB.Repository
                 product.Description = pro.Description;
                 product.Qauntity = pro.Qauntity;
                 product.OriginCountry = pro.OriginCountry;
-                product.catId = pro.catId;
+                product.CatId = pro.CatId;
                 
                 if (pro.ImageUrl != null)
                 {

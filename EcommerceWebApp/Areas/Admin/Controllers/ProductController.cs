@@ -1,6 +1,8 @@
 ﻿using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.Models;
 using EcommerceWebAppProject.Models.ViewModel;
+using EcommerceWebAppProject.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace EcommerceWebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = RoleConstant.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
