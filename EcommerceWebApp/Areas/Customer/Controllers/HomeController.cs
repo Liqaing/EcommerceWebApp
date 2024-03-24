@@ -20,7 +20,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Category> categories = _unitOfWork.Category.GetAll(includeProperties: "products");
+            IEnumerable<Category> categories = _unitOfWork.Category.GetAll(includeProperties: "Products");
             return View(categories);
         }
 

@@ -25,7 +25,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> products = _unitOfWork.Product.GetAll(
-                includeProperties: "category").ToList();
+                includeProperties: "Category").ToList();
             return View(products);
         }
 
@@ -35,7 +35,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             ProductVM productVM = new()
             {                
                 // Get list of category dropdown
-                categoryList = _unitOfWork.Category.GetAll()
+                CategoryList = _unitOfWork.Category.GetAll()
                     .Select(cat => new SelectListItem
                     {
                         Text = cat.CatName,
@@ -46,11 +46,11 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             if (proId == null || proId == 0)
             {
                 // Create new product
-                productVM.product = new Product();
+                productVM.Product = new Product();
             }
             else
             {
-                productVM.product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
+                productVM.Product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
             }
             return View(productVM);
 
@@ -69,10 +69,10 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
 					string imageName = $"{Guid.NewGuid()}{Path.GetExtension(productImage.FileName)}";
 					string imageFolder = Path.Combine(wwwRootPath, @"images\product");
 
-					if (!string.IsNullOrEmpty(productVM.product.ImageUrl))
+					if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
 					{
 						// delete old image and update new one                        
-						deleteImage(wwwRootPath, productVM.product);
+						DeleteImage(wwwRootPath, productVM.Product);
 					}
 
 					// Save image
@@ -82,18 +82,18 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
 						productImage.CopyTo(fileStream);
 					};
 
-					productVM.product.ImageUrl = $@"\images\product\{imageName}";
+					productVM.Product.ImageUrl = $@"\images\product\{imageName}";
 				}
 
-				if (productVM.product.ProductId == 0)
+				if (productVM.Product.ProductId == 0)
 				{
-					this._unitOfWork.Product.Add(productVM.product);
-					TempData["Success"] = $"Product: {productVM.product.ProName} created successfully";
+					this._unitOfWork.Product.Add(productVM.Product);
+					TempData["Success"] = $"Product: {productVM.Product.ProName} created successfully";
 				}
 				else
 				{
-					this._unitOfWork.Product.Update(productVM.product);
-					TempData["Success"] = $"Product: {productVM.product.ProName} updated successfully";
+					this._unitOfWork.Product.Update(productVM.Product);
+					TempData["Success"] = $"Product: {productVM.Product.ProName} updated successfully";
 				}
 
 				this._unitOfWork.Save();
@@ -101,7 +101,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             }
             else
             {
-                productVM.categoryList = _unitOfWork.Category.GetAll()
+                productVM.CategoryList = _unitOfWork.Category.GetAll()
                     .Select(cat => new SelectListItem
                     {
                         Text = cat.CatName,
@@ -119,7 +119,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             List<Product> products = _unitOfWork.Product.GetAll(
-                includeProperties: "category").ToList();
+                includeProperties: "Category").ToList();
 
             /*
             List<Product> productList = products.Select(pro => new Product
@@ -146,7 +146,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
 
             }
                 
-            deleteImage(_webHostEnvironment.WebRootPath, product);
+            DeleteImage(_webHostEnvironment.WebRootPath, product);
 
             _unitOfWork.Product.Delete(product);
             _unitOfWork.Save();
@@ -161,7 +161,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         #region util
 
         // Delete image in www root folder
-        public void deleteImage(string wwwRootPath, Product product)
+        public void DeleteImage(string wwwRootPath, Product product)
         {  
             if (string.IsNullOrEmpty(product.ImageUrl))
             {

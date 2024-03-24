@@ -11,13 +11,13 @@ namespace EcommerceWebAppProject.Models
 	public class AppUser: IdentityUser
 	{
 		[Required]
-		public string name { get; set; }
+		public string Name { get; set; }
 
-		public string? homeNumber { get; set; }
-		public string? streetName { get; set; }
-		public string? village { get; set; }
-		public string? commune { get; set; }
-		public string? city { get; set; }
-		public string? postalNumber { get; set; }
+		public string? HomeNumber { get; set; }
+		public string? StreetName { get; set; }
+		public string? Village { get; set; }
+		public string? Commune { get; set; }
+		public string? City { get; set; }
+		public string? PostalNumber { get; set; }
 	}
 }
