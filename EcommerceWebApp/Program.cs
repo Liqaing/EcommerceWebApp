@@ -20,9 +20,15 @@ builder.Services.AddDbContext<AppDbContext>(opts =>
     opts.UseSqlServer(builder.Configuration.GetConnectionString("Defualt")));
 
 // Add authentication
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<AppDbContext>();
+
+/*
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+*/
 
 builder.Services.AddRazorPages();
 
