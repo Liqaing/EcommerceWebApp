@@ -28,7 +28,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 		public IActionResult Details(int proId)
 		{
 			Product product = _unitOfWork.Product.Get(pro => pro.ProductId == proId, 
-                includeProperties: "category");
+                includeProperties: "Category");
 			return View(product);
 		}
 
