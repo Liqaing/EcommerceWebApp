@@ -29,9 +29,9 @@ namespace EcommerceWebAppProject.Models
 		[Range(0, double.MaxValue, ErrorMessage = "Invalid price, product price need to be greater than 0")]
 		public decimal Price { get; set; }
 
-		public int catId { get; set; }
+		public int CatId { get; set; }
 		[ForeignKey("catId")]		
-        public Category? category { get; set; }
+        public Category? Category { get; set; }
 		
 		public string? ImageUrl { get; set; }
 	}

@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.DB.Repository;
+using Microsoft.AspNetCore.Authorization;
+using EcommerceWebAppProject.Utilities;
 
 namespace EcommerceWebApp.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	public class CategoryController : Controller
+    [Authorize(Roles = RoleConstant.Role_Admin)]
+    public class CategoryController : Controller
     {        
         private readonly IUnitOfWork _unitOfWork;
         public CategoryController(IUnitOfWork unitOfWork)
@@ -14,7 +17,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             // Get db context from dependency injection to work with db
             _unitOfWork = unitOfWork;
         }
-
+               
         public IActionResult Index()
         {
             List<Category> categories = _unitOfWork.Category.GetAll().ToList();

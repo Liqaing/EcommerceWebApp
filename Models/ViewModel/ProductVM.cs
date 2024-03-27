@@ -10,8 +10,8 @@ namespace EcommerceWebAppProject.Models.ViewModel
 {
     public class ProductVM
     {
-        public Product product { get; set; }
+        public Product Product { get; set; }
         [ValidateNever]
-        public IEnumerable<SelectListItem> categoryList { get; set; }     
+        public IEnumerable<SelectListItem> CategoryList { get; set; }     
     }
 }

@@ -9,7 +9,7 @@ namespace EcommerceWebAppProject.Models
         [Required(ErrorMessage = "Category name is required")]
         public string? CatName { get; set; }
 
-        public ICollection<Product>? products { get; set; }
+        public ICollection<Product>? Products { get; set; }
 
     }
 }

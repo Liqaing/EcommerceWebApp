@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using EcommerceWebAppProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,12 +15,12 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -55,21 +56,40 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
+
+            [Required]
+            public string Name { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            public string HomeNumber { get; set; }
+            public string StreetName { get; set; }
+            public string Village { get; set; }
+            public string Commune { get; set; }
+            public string City { get; set; }
+            public string PostalNumber { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(AppUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);              
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                Name = user.Name,
+                PhoneNumber = phoneNumber,
+                HomeNumber = user.HomeNumber,
+                StreetName = user.StreetName,
+                Village = user.Village,
+                Commune = user.Commune,
+                City = user.City,
+                PostalNumber = user.PostalNumber,
             };
         }
 
@@ -80,7 +100,7 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
+            
             await LoadAsync(user);
             return Page();
         }
@@ -91,7 +111,7 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account.Manage
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            }            
 
             if (!ModelState.IsValid)
             {
@@ -108,6 +128,41 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            if (user.Name != Input.Name)
+            {
+                user.Name = Input.Name;
+            }
+
+            if (user.HomeNumber != Input.HomeNumber)
+            {
+                user.HomeNumber = Input.HomeNumber;
+            }
+
+            if (user.StreetName != Input.StreetName)
+            {
+                user.StreetName = Input.StreetName;
+            }
+
+            if (user.Village != Input.Village)
+            {
+                user.Village = Input.Village;
+            }
+
+            if (user.Commune != Input.Commune)
+            {
+                user.Commune = Input.Commune;
+            }
+
+            if (user.City != Input.City)
+            {
+                user.City = Input.City;
+            }
+
+            if (user.PostalNumber != Input.PostalNumber)
+            {
+                user.PostalNumber = Input.PostalNumber;
             }
 
             await _signInManager.RefreshSignInAsync(user);
