@@ -20,6 +20,8 @@ $.ajax({
             products.push(product);
         });
 
+
+        console.log(products);
         $('#proTb').DataTable({
             data: products,
             columns: [
