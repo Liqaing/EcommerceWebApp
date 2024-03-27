@@ -12,7 +12,7 @@ namespace EcommerceWebAppProject.DB.Repository.IRepository
 	{
 		ICategoryRepository Category { get; }
 		IProductRepository Product { get; }
-
+		IShoppingCartRepository ShoppingCart { get; }
 		void Save();
 	}
 }

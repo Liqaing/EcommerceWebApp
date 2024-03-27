@@ -13,6 +13,8 @@ namespace EcommerceWebAppProject.DB.Repository
 		private readonly AppDbContext _dbContext;
 		public ICategoryRepository Category { get; private set; }
 		public IProductRepository Product { get; private set; }
+		public IShoppingCartRepository ShoppingCart { get; private set; }
+		public IAppUserRepository AppUser { get; private set; }
 
 		public UnitOfWork(AppDbContext db)
 		{
@@ -20,6 +22,8 @@ namespace EcommerceWebAppProject.DB.Repository
 			_dbContext = db;
 			Category = new CategoryRepository(db);
 			Product = new ProductRepository(db);
+			ShoppingCart = new ShoppingCartRepository(db);
+			AppUser = new AppUserRepository(db);
 		}
 
 		public void Save()
