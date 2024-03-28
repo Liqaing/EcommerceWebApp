@@ -1,5 +1,34 @@
-﻿@model Product
+﻿@model ShoppingCart
 
-<form method="post">
-
-</form>
+<div class="container">
+    <div class="card">
+        <div class="container-fliud">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="@Model.product.ImageUrl" class="img-fluid" alt="Product Image">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.product.ProName</h5>
+                        <p class ="card-text mb-0">Made In: @Model.product.OriginCountry</p>
+                        <p class="card-text">Category: @Model.product.Category.CatName</p>
+                        <p class="card-text">@Model.product.Description</p>
+                        <h5 class="card-text">Current Price: <span>$@Model.product.Price</span></h5>
+                            
+                        <form method="post">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="bi bi-cart"></i></span>
+                                </div>
+                                <input asp-for="@Model.qauntity" type="number" class="form-control" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">Add To Cart</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

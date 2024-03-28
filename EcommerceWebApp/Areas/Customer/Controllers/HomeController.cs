@@ -27,9 +27,16 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         [HttpGet]
 		public IActionResult Details(int proId)
 		{
-			Product product = _unitOfWork.Product.Get(pro => pro.ProductId == proId, 
-                includeProperties: "Category");
-			return View(product);
+            ShoppingCart cart = new()
+            {
+                product = _unitOfWork.Product.Get(pro => pro.ProductId == proId,
+                includeProperties: "Category"),
+
+                productId = proId,
+                qauntity = 1
+            };
+
+			return View(cart);
 		}
 
 		public IActionResult Privacy()
