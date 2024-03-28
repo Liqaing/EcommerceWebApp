@@ -39,7 +39,16 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			return View(cart);
 		}
 
-		public IActionResult Privacy()
+
+        [HttpPost]
+        public IActionResult Details(ShoppingCart cart)
+        {
+            
+
+            return View(cart);
+        }
+
+        public IActionResult Privacy()
         {
             return View();
         }
