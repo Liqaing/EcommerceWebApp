@@ -1,7 +1,10 @@
 ﻿using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.Models;
+using EcommerceWebAppProject.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace EcommerceWebApp.Areas.Customer.Controllers
 {
@@ -41,11 +44,14 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
 
         [HttpPost]
+        //[Authorize(Roles = RoleConstant.Role_Customer)]
+        [Authorize]
         public IActionResult Details(ShoppingCart cart)
         {
-            
+            // Get user id
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return View(cart);
+            return View();
         }
 
         public IActionResult Privacy()

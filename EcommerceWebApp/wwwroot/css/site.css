@@ -59,3 +59,9 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     opacity: 1;
 }
+
+.description-container {
+    margin: 20px 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
