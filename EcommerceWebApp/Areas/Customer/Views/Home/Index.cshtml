@@ -2,15 +2,16 @@
 
 @foreach (var cat in Model)
 {
-	<div class="fs-3 fw-bold d-flex justify-content-start align-items-center gap-3">
-		<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
-			<circle cx="8" cy="8" r="8" />
-		</svg>
-		@cat.CatName
-	</div>
-	<div class="overflow-y-hidden overflow-x-scroll d-flex justify-content-start align-items-center gap-4">
-		@if (cat.Products != null) 
-		{
+	@if (cat.Products.Count() != 0)
+	{
+		<div class="fs-3 fw-bold d-flex justify-content-start align-items-center gap-3">
+			<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
+				<circle cx="8" cy="8" r="8" />
+			</svg>
+			@cat.CatName
+		</div>
+		<div class="overflow-y-hidden overflow-x-scroll d-flex justify-content-start align-items-center gap-4">
+		
 			@foreach (var pro in cat.Products)
 			{
 				<a asp-action="Details" asp-route-proId="@pro.ProductId">
@@ -38,8 +39,9 @@
 				</a>
 				
 			}
-		}
-	</div>
+		
+		</div>
+	}
 	
 }
 

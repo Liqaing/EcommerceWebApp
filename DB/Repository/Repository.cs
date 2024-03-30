@@ -8,6 +8,7 @@ using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.DB.Repository;
 using Microsoft.EntityFrameworkCore;
 using EcommerceWebAppProject.DB.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EcommerceWebAppProject.DB.Repository
 {
@@ -35,20 +36,28 @@ namespace EcommerceWebAppProject.DB.Repository
 			dbSet.Remove(entity);
 		}
 
-		public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+		public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool track = false)
 		{
-			IQueryable<T> query = this.dbSet;
-			query = query.Where(filter);
-            
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (string property in includeProperties.Trim().Split(',', StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(property);
-                }
-            }
+			IQueryable<T> query;
+			if (track)
+			{
+				query = this.dbSet;
+			}
+			else
+			{
+				query = this.dbSet.AsNoTracking();
+			}
 
-            return query.FirstOrDefault();
+			query = query.Where(filter);
+
+			if (!string.IsNullOrEmpty(includeProperties))
+			{
+				foreach (string property in includeProperties.Trim().Split(',', StringSplitOptions.RemoveEmptyEntries))
+				{
+					query = query.Include(property);
+				}
+			}
+			return query.FirstOrDefault();
 		}
 
         /// <summary>Gets all.</summary>

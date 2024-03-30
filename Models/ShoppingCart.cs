@@ -13,8 +13,7 @@ namespace EcommerceWebAppProject.Models
         [Key]
         public int cartId { get; set; }
        
-        public int productId { get; set;}
-        
+        public int productId { get; set;}        
         [Required]
         [ForeignKey("productId")]
         public Product product { get; set; }
@@ -24,7 +23,6 @@ namespace EcommerceWebAppProject.Models
         public int qauntity { get; set; }
 
         public string appUserId { get; set; }
-
         [Required]
         [ForeignKey("appUserId ")]
         public AppUser appUser { get; set; }

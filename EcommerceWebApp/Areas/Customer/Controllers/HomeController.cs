@@ -1,5 +1,6 @@
 ﻿using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.Models;
+using EcommerceWebAppProject.Models.ViewModel;
 using EcommerceWebAppProject.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         }
 
         [HttpGet]
+		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 		public IActionResult Details(int proId)
 		{
             ShoppingCart cart = new()
@@ -38,23 +40,45 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                 productId = proId,
                 qauntity = 1
             };
-
+			
 			return View(cart);
 		}
 
+		[HttpPost]
+		[Authorize]
+		[ValidateAntiForgeryToken]
+		public IActionResult Details(ShoppingCart cart, string productName)
+		{
+			// Get user id
+			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        [HttpPost]
-        //[Authorize(Roles = RoleConstant.Role_Customer)]
-        [Authorize]
-        public IActionResult Details(ShoppingCart cart)
-        {
-            // Get user id
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			cart.appUserId = userId;
 
-            return View();
-        }
+            ShoppingCart cartInDb = _unitOfWork.ShoppingCart.Get(
+                cart => cart.productId == cart.productId &&
+                cart.appUserId == userId);
 
-        public IActionResult Privacy()
+            if (cartInDb == null)
+            {
+				// Shopping cart for that user and product is not exist in the db
+				_unitOfWork.ShoppingCart.Add(cart);
+			}
+            else
+            {
+                // Update qauntity in cart
+				cartInDb.qauntity += cart.qauntity;
+				_unitOfWork.ShoppingCart.Update(cartInDb);
+			}
+
+			_unitOfWork.Save();
+
+			TempData["Success"] = $"You have added {cart.qauntity} {productName} to the shopping cart";
+
+            return RedirectToAction(nameof(Index));
+			//return RedirectToAction(nameof(Details), new { proId=cart.productId, succeedMessage=succeedMessage });
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }
@@ -65,4 +89,8 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
+	#region api
+
+	#endregion
 }
