@@ -9,8 +9,8 @@ using System.Security.Claims;
 
 namespace EcommerceWebApp.Areas.Customer.Controllers
 {
-	[Area("Customer")]
-	public class HomeController : Controller
+    [Area(nameof(Customer))]
+    public class HomeController : Controller
     {
         public IUnitOfWork _unitOfWork;
         private readonly ILogger<HomeController> _logger;
