@@ -15,7 +15,7 @@ namespace EcommerceWebAppProject.DB.Repository.IRepository
 
         /// <summary>Gets all.</summary>
         /// <param name="includeProperties">The include properties. list of string represent related entity to include in query</param>
-        IEnumerable<T> GetAll(string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
 
 		T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool track =  false);
 		

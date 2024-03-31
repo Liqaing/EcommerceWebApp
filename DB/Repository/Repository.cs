@@ -60,16 +60,21 @@ namespace EcommerceWebAppProject.DB.Repository
 			return query.FirstOrDefault();
 		}
 
-        /// <summary>Gets all.</summary>
-        /// <param name="includeProperties">The include properties. list of string represent related entity to include in query</param>
-        /// <returns>
-        ///   <br />
-        /// </returns>
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+		/// <summary>Gets all.</summary>
+		/// <param name="includeProperties">The include properties. list of string represent related entity to include in query</param>
+		/// <returns>
+		///   <br />
+		/// </returns>
+		public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
 		{
 			IQueryable<T> query = dbSet;
-			
-			if (!string.IsNullOrEmpty(includeProperties))
+
+			if (filter != null)
+			{
+                query = query.Where(filter);
+            }
+
+            if (!string.IsNullOrEmpty(includeProperties))
 			{
 				foreach(string property in includeProperties.Trim().Split(',', StringSplitOptions.RemoveEmptyEntries))
 				{

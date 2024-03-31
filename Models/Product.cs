@@ -27,7 +27,7 @@ namespace EcommerceWebAppProject.Models
 
 		[Required(ErrorMessage = "Product price is required")]
 		[Range(0, double.MaxValue, ErrorMessage = "Invalid price, product price need to be greater than 0")]
-		public decimal Price { get; set; }
+		public double Price { get; set; }
 
 		public int CatId { get; set; }
 		[ForeignKey("CatId")]		

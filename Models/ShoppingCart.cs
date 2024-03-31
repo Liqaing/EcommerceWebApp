@@ -26,6 +26,9 @@ namespace EcommerceWebAppProject.Models
         [Required]
         [ForeignKey("appUserId ")]
         public AppUser appUser { get; set; }
-    
+
+
+        [NotMapped]
+        public double totalPrice { get; set; }
     }
 }
