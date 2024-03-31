@@ -37,50 +37,59 @@ namespace EcommerceWebApp.Areas.customer.Controllers
             return View(shoppingCartVM);
 		}
 
-		public IActionResult Minus(int cartId)
-		{
-			ShoppingCart cart = _unitOfWork.ShoppingCart.Get(
-				cart => cart.cartId == cartId);
+        #region api
 
-			if (cart.qauntity <= 1)
-			{
-				_unitOfWork.ShoppingCart.Delete(cart);
-			}
-			else
-			{
-                cart.qauntity -= 1;
-                _unitOfWork.ShoppingCart.Update(cart);
-            }
-            _unitOfWork.Save();
-
-			return RedirectToAction(nameof(Index));
-		}
-
-        public IActionResult Add(int cartId)
+        [HttpPost]
+        public IActionResult Minus(int cartId)
         {
             ShoppingCart cart = _unitOfWork.ShoppingCart.Get(
                 cart => cart.cartId == cartId);
 
+            if (cart.qauntity <= 1)
+            {
+                _unitOfWork.ShoppingCart.Delete(cart);
+            }
+            else
+            {
+                cart.qauntity -= 1;
+                _unitOfWork.ShoppingCart.Update(cart);
+            }
+            _unitOfWork.Save();
+            
+            return Json( new {complete = true});
+        }
+
+        [HttpPost]
+        public IActionResult Add(int cartId)
+        {
+            ShoppingCart cart = _unitOfWork.ShoppingCart.Get(
+                cart => cart.cartId == cartId);
             cart.qauntity += 1;
+
             _unitOfWork.ShoppingCart.Update(cart);
             _unitOfWork.Save();
 
-            return RedirectToAction(nameof(Index));
+            return Json(new { complete = true });
         }
 
+        [HttpPost]
         public IActionResult Remove(int cartId)
         {
             ShoppingCart cart = _unitOfWork.ShoppingCart.Get(
                 cart => cart.cartId == cartId);
 
-            _unitOfWork.ShoppingCart.Delete(cart);            
+            _unitOfWork.ShoppingCart.Delete(cart);
             _unitOfWork.Save();
 
-            return RedirectToAction(nameof(Index));
+            return Json(new { complete = true });
         }
 
+        #endregion
+
+        #region utils
         private double getTotalPrice(ShoppingCart cart) { 
 			return cart.qauntity * cart.product.Price;
 		}
-	}
+        #endregion
+    }
 }

@@ -38,23 +38,30 @@
                                 </div>
 
                                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                    <a asp-action="Minus" asp-route-cartId="@cart.cartId" class="btn btn-link px-2">
+                                    <!--
+                                        <a asp-action="Minus" asp-route-cartId="cart.cartId" class="btn btn-link px-2">
                                         <i class="bi bi-dash"></i>
-                                    </a>
+                                        </a>
+                                    -->
 
-                                    <input asp-for="@cart.qauntity" type="text"
+                                    <button id="minus" class="btn btn-link px-2" data-cart-id="@cart.cartId">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+
+                                    
+                                    <input type="text" value="@cart.qauntity"
                                            class="form-control form-control-sm text-center" disabled/>
 
-                                    <a asp-action="Add" asp-route-cartId="@cart.cartId" class="btn btn-link px-2">
+                                    <button id="add" class="btn btn-link px-2" data-cart-id="@cart.cartId">
                                         <i class="bi bi-plus"></i>
-                                    </a>
+                                    </button>
                                 </div>
 
                                 <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                     <h5 class="mb-0">@cart.totalPrice.ToString("c")</h5>
                                 </div>
                                 <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <a asp-action="Remove" asp-route-cartId="@cart.cartId" class="text-danger">
+                                    <a id="remove" data-cart-id="@cart.cartId" class="text-danger">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
@@ -77,3 +84,7 @@
         </div>
     </div>
 </from>
+
+@section Scripts {
+    <script src="~/js/shoppingCart/shoppingCart.js"></script>
+}

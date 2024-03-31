@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\product\" />
-    <Folder Include="wwwroot\js\shoppingCart\" />
   </ItemGroup>
 
 </Project>
