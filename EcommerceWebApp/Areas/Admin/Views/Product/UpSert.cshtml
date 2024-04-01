@@ -10,8 +10,8 @@
     </div>
 
     <form asp-controller="Product" asp-action="Upsert" method="post" enctype="multipart/form-data">
-        <input asp-for="Product.ProductId" hidden />
-        <input asp-for="Product.ImageUrl" hidden />
+        <input asp-for="@Model.Product.ProductId" hidden />
+        <input asp-for="@Model.Product.ImageUrl" hidden />
 
         <div class="form-group mb-2">
             <label asp-for="Product.ProName">Product Name:</label>
@@ -32,11 +32,11 @@
         </div>
 
         <div class="form-group mb-2">
-            <label asp-for="Product.CatId">Category:</label>
-            <select asp-for="Product.CatId" asp-items="@Model.CategoryList" class="form-select" id="Category" required >
+            <label asp-for="@Model.Product.CatId">Category:</label>
+            <select asp-for="@Model.Product.CatId" asp-items="@Model.CategoryList" class="form-select" id="Category" required >
                 <option disabled selected>Select Category</option>
             </select>
-            <span asp-validation-for="Product.CatId" class="text-danger"></span>
+            <span asp-validation-for="@Model.Product.CatId" class="text-danger"></span>
         </div>
 
         <div class="form-group mb-2">
