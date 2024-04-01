@@ -2,6 +2,15 @@ html {
   font-size: 14px;
 }
 
+.divider-text::before,
+.divider-text::after {
+    color: white;
+    flex: 1;
+    border-bottom: 1px solid #555;
+    margin: auto 0.25rem;
+    box-shadow: 0 -2px;
+}
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -15,4 +24,65 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: sans-serif;
+}
+
+.dt-length {
+    display: flex !important;
+    justify-content: start !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+.dt-search {
+    display: flex !important;
+    justify-content: end !important;
+    align-items: center !important;
+    gap: 1rem !important;
+}
+
+#dt-length-0, #dt-search-0 {
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+.des-cell {
+    max-height: 4rem;
+    overflow-y: auto;
+}
+
+.up-down-arrow::-webkit-inner-spin-button,
+.up-down-arrow::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+.description-container {
+    margin: 20px 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.image-wrapper {
+    height: 10rem !important;
+    width: 100% !important;
+    overflow: hidden;
+}
+
+.img-thumbnail-cus {
+    width: 100% !important;
+}
+
+.truncate {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description-wrapper {
+    height: 75px;
 }

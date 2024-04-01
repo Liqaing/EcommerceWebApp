@@ -1,0 +1,100 @@
+﻿@model ProductVM
+
+<div class="container">
+    <div class="row">
+        <h2> @(Model.Product.ProductId != 0 ? "Update" : "Add New") Product</h2>
+    </div>
+
+    <div class="text-center">
+        <img src="@Model.Product.ImageUrl" style="max-height: 300px;" class="img-fluid border" />
+    </div>
+
+    <form asp-controller="Product" asp-action="Upsert" method="post" enctype="multipart/form-data">
+        <input asp-for="Product.ProductId" hidden />
+        <input asp-for="Product.ImageUrl" hidden />
+
+        <div class="form-group mb-2">
+            <label asp-for="Product.ProName">Product Name:</label>
+            <input asp-for="Product.ProName" class="form-control" id="productName" required>
+            <span asp-validation-for="Product.ProName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Product.Price">Price:</label>
+            <input asp-for="Product.Price" class="form-control" id="price" required>
+            <span asp-validation-for="Product.Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Product.Qauntity">Qauntity:</label>
+            <input asp-for="Product.Qauntity" class="form-control" id="qauntity" required>
+            <span asp-validation-for="Product.Qauntity" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Product.CatId">Category:</label>
+            <select asp-for="Product.CatId" asp-items="@Model.CategoryList" class="form-select" id="Category" required >
+                <option disabled selected>Select Category</option>
+            </select>
+            <span asp-validation-for="Product.CatId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Product.OriginCountry">Origin Country:</label>
+            <input asp-for="Product.OriginCountry" class="form-control" id="originCountry">
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Product.Description">Description:</label>
+            <textarea asp-for="Product.Description" class="form-control" id="description"></textarea>
+        </div>
+
+        <div class="form-group mb-2">
+            <label asp-for="Product.ImageUrl">Image Url:</label>
+            <input type="file" name="productImage" asp-for="Product.ImageUrl" class="form-control" id="imageUrl" />
+            <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+        </div>        
+
+        <!-- Add more fields as needed -->
+        <!-- Additional Space -->
+        <div class="mb-3"></div>
+
+        <div class="row">            
+            <div class="col-4 col-md-2">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+            </div>
+            <div class="col-6 col-md-3">
+                @if (Model.Product.ProductId != 0)
+                {
+                    <button type="submit" class="btn btn-primary form-control">Update Product</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary form-control">Create Product</button>
+                }
+            </div>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons link lists table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode ai mentions tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link table | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap ',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        });
+    </script>
+}
