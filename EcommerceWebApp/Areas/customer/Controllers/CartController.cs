@@ -21,10 +21,10 @@ namespace EcommerceWebApp.Areas.customer.Controllers
 		{
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			ShoppingCartVM shoppingCartVM = new()
-			{
-				shoppingCarts = _unitOfWork.ShoppingCart.GetAll(cart => cart.appUserId == userId,
-				includeProperties: "product.Category")
+            ShoppingCartVM shoppingCartVM = new()
+            {
+                shoppingCarts = _unitOfWork.ShoppingCart.GetAll(cart => cart.appUserId == userId,
+                    includeProperties: "product.Category")
 			};
 
             // Calculate total price of the cart
@@ -36,6 +36,12 @@ namespace EcommerceWebApp.Areas.customer.Controllers
 
             return View(shoppingCartVM);
 		}
+
+        
+        public IActionResult Summary()
+        {
+            throw new NotImplementedException();
+        }
 
         #region api
 
