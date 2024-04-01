@@ -25,13 +25,13 @@
                     <div class="card rounded-3 mb-4">
                         <div class="card-body p-4">
                             <div class="row d-flex justify-content-between align-items-center">
-                                <a asp-controller="Home" asp-action="Details" asp-route-proId="@cart.product.ProductId">
-                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                <a asp-controller="Home" asp-action="Details" asp-route-proId="@cart.product.ProductId" class="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center align-items-center gap-4">
+                                    <div class="w-50">
                                         <img src="@cart.product.ImageUrl"
                                              class="img-fluid rounded-3">
                                     </div>
 
-                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <div class="w-50">
                                         <p class="lead fw-normal mb-2">@cart.product.ProName</p>
                                         <p class="mb-0"><span class="text-muted">Category: </span>@cart.product.Category.CatName</p>
                                         <p><span class="text-muted">Unit price: </span>@cart.product.Price.ToString("c")</p>
@@ -40,14 +40,14 @@
                                 </a>
                                 
 
-                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex gap-2">
                                     <!--
                                         <a asp-action="Minus" asp-route-cartId="cart.cartId" class="btn btn-link px-2">
                                         <i class="bi bi-dash"></i>
                                         </a>
                                     -->
 
-                                    <button id="minus" class="btn btn-link px-2" data-cart-id="@cart.cartId">
+                                    <button id="minus" class="btn btn-link px-2 btn-lg" data-cart-id="@cart.cartId">
                                         <i class="bi bi-dash"></i>
                                     </button>
 
@@ -55,7 +55,7 @@
                                     <input type="text" value="@cart.qauntity"
                                            class="form-control form-control-sm text-center" disabled/>
 
-                                    <button id="add" class="btn btn-link px-2" data-cart-id="@cart.cartId">
+                                    <button id="add" class="btn btn-link btn-lg px-2" data-cart-id="@cart.cartId">
                                         <i class="bi bi-plus"></i>
                                     </button>
                                 </div>
@@ -64,7 +64,7 @@
                                     <h5 class="mb-0">@cart.totalPrice.ToString("c")</h5>
                                 </div>
                                 <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <a id="remove" data-cart-id="@cart.cartId" class="text-danger">
+                                    <a id="remove" data-cart-id="@cart.cartId" class="text-white btn btn-danger">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
