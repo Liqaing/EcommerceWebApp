@@ -40,7 +40,7 @@ namespace EcommerceWebApp.Areas.customer.Controllers
         
         public IActionResult Summary()
         {
-            throw new NotImplementedException();
+            return View();
         }
 
         #region api
