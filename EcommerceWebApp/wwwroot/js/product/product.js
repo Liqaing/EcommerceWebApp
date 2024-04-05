@@ -19,7 +19,7 @@ $.ajax({
             products.push(product);
         });
 
-        $('#proTb').DataTable({
+        dataTable = $('#proTb').DataTable({
             data: products,
             columns: [
                 { data: 'proName', title: 'Title', 'width': '10%'},
