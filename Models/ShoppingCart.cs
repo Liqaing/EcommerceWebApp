@@ -24,7 +24,7 @@ namespace EcommerceWebAppProject.Models
 
         public string appUserId { get; set; }
         [Required]
-        [ForeignKey("appUserId ")]
+        [ForeignKey("appUserId")]
         public AppUser appUser { get; set; }
 
 

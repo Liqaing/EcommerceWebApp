@@ -55,8 +55,8 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			cart.appUserId = userId;
 
             ShoppingCart cartInDb = _unitOfWork.ShoppingCart.Get(
-                cart => cart.productId == cart.productId &&
-                cart.appUserId == userId);
+                c => c.productId == cart.productId &&
+                c.appUserId == userId);
 
             if (cartInDb == null)
             {

@@ -17,9 +17,12 @@ namespace EcommerceWebAppProject.DB.Data
 		public DbSet<Product> Product { get; set; }
 		public DbSet<AppUser> AppUser { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
 
-		// Seeding data on when model created
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        // Seeding data on when model created
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 

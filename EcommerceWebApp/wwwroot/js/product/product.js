@@ -1,4 +1,4 @@
-﻿let dataTable;
+﻿let DataTable;
 
 $.ajax({
     url: "/Admin/api/product/all",
@@ -19,7 +19,7 @@ $.ajax({
             products.push(product);
         });
 
-        dataTable = $('#proTb').DataTable({
+        $('#proTb').DataTable({
             data: products,
             columns: [
                 { data: 'proName', title: 'Title', 'width': '10%'},
@@ -84,7 +84,7 @@ const _delete = (url) => {
                 url: url,
                 type: "DELETE",
                 success: (data) => {
-                    dataTable.ajax.reload();
+                    DataTable.ajax.reload();
                     toastr.success(data.message);
                 }
             })

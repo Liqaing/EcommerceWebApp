@@ -77,7 +77,7 @@
                     <div class="card-body text-center">
                         <div class="w-50 mx-auto d-flex justify-content-between my-4">
                             <h5 class="card-title fw-semibold">Total (USD)</h5>
-                            <h5 class="card-title fw-semibold">@Model.OrderTotal.ToString("c")</h5>
+                            <h5 class="card-title fw-semibold">@Model.orderHeader.OrderTotal.ToString("c")</h5>
                         </div>
                         <a asp-action="Summary" class="btn btn-primary">Proceed to Pay</a>
                     </div>
