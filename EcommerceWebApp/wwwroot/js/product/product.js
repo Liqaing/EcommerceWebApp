@@ -10,7 +10,7 @@ $.ajax({
             var product = {
                 productId: item.productId,
                 proName: item.proName,
-                quantity: item.qauntity,
+                quantity: item.quantity,
                 categoryName: item.category.catName,
                 originCountry: item.originCountry,
                 description: item.description,

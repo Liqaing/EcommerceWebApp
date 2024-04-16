@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function() {
 
-    $("#minus").click(function () {
+    $(".minus").click(function () {
 
         let cartId = $(this).data("cart-id");
 
@@ -14,7 +14,7 @@ $(document).ready(function() {
         })
     });
 
-    $("#add").click(function () {
+    $(".add").click(function () {
 
         let cartId = $(this).data("cart-id");
 
@@ -28,7 +28,7 @@ $(document).ready(function() {
     });
 
 
-    $("#remove").click(function () {
+    $(".remove").click(function () {
 
         let cartId = $(this).data("cart-id");
 

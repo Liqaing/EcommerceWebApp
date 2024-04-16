@@ -14,6 +14,8 @@ namespace EcommerceWebAppProject.DB.Repository.IRepository
 		IProductRepository Product { get; }
 		IShoppingCartRepository ShoppingCart { get; }
 		IAppUserRepository AppUser { get; }
+		IOrderDetailRepository OrderDetail { get; }
+		IOrderHeaderRepository OrderHeader { get; }
 		void Save();
 	}
 }
