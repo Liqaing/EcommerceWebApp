@@ -1,7 +1,6 @@
 ﻿@model ShoppingCartVM
 
-<form method="post">
-
+<form>
 	<div class="container h-100 py-2">
 		<div class="row d-flex justify-content-center align-items-center h-100">
 			<div class="col-12">
@@ -11,10 +10,11 @@
 
 					<div class="d-flex align-items-center">					
 						<a asp-action="Index"
-						   class="btn btn-outline-secondary mr-2">Back To Cart</a>
+							class="btn btn-outline-secondary mr-2">Back To Cart</a>
 					</div>
 				</div>
 			</div>
+			<div>
 				<div class="card border-0">
 					<div class="card-body p-0">
 						<div class="container rounded p-0">
@@ -132,7 +132,7 @@
 								</p>
 							</div>
 							<div class="col-12 col-md-4">
-								<button type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
+								<button id="place-order-btn" value="Place Order" class="btn btn-primary form-control">Place Order</button>
 							</div>
 						</div>
 					</div>
@@ -140,5 +140,8 @@
 			</div>
 		</div>
 	</div>
-
 </form>
+
+@section Scripts {
+	<script src="~/js/shoppingCart/summary.js"></script>
+}

@@ -27,7 +27,6 @@ $(document).ready(function() {
         })    
     });
 
-
     $(".remove").click(function () {
 
         let cartId = $(this).data("cart-id");
@@ -40,4 +39,5 @@ $(document).ready(function() {
             }
         })
     });
+
 });
