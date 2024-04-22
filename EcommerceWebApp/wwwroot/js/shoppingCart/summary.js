@@ -15,7 +15,12 @@
                     title: response.title,
                     text: response.message,
                     icon: "success"
-                });                
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "/";
+                        }
+                    });
             }
         });
     });
