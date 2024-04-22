@@ -165,7 +165,9 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account.Manage
                 user.PostalNumber = Input.PostalNumber;
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+			await _userManager.UpdateAsync(user);
+
+			await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
