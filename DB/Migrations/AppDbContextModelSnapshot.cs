@@ -56,6 +56,110 @@ namespace EcommerceWebAppProject.DB.Migrations
                         });
                 });
 
+            modelBuilder.Entity("EcommerceWebAppProject.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailsId"));
+
+                    b.Property<int>("OrderHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderDetailsId");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetail");
+                });
+
+            modelBuilder.Entity("EcommerceWebAppProject.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("OrderHeaderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderHeaderId"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Carrier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Commune")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HomeNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("OrderTotal")
+                        .HasColumnType("float");
+
+                    b.Property<string>("PaymentDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ShippingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StreetName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrackingNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Village")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderHeaderId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("OrderHeader");
+                });
+
             modelBuilder.Entity("EcommerceWebAppProject.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -83,7 +187,7 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Qauntity")
+                    b.Property<int?>("Quantity")
                         .IsRequired()
                         .HasColumnType("int");
 
@@ -102,7 +206,7 @@ namespace EcommerceWebAppProject.DB.Migrations
                             OriginCountry = "KH",
                             Price = 10.5,
                             ProName = "A",
-                            Qauntity = 1
+                            Quantity = 1
                         },
                         new
                         {
@@ -112,7 +216,7 @@ namespace EcommerceWebAppProject.DB.Migrations
                             OriginCountry = "US",
                             Price = 14.5,
                             ProName = "B",
-                            Qauntity = 2
+                            Quantity = 2
                         },
                         new
                         {
@@ -122,7 +226,7 @@ namespace EcommerceWebAppProject.DB.Migrations
                             OriginCountry = "KH",
                             Price = 5.5,
                             ProName = "C",
-                            Qauntity = 3
+                            Quantity = 3
                         });
                 });
 
@@ -141,8 +245,11 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<int>("productId")
                         .HasColumnType("int");
 
-                    b.Property<int>("qauntity")
+                    b.Property<int>("quantity")
                         .HasColumnType("int");
+
+                    b.Property<double>("totalPrice")
+                        .HasColumnType("float");
 
                     b.HasKey("cartId");
 
@@ -386,6 +493,36 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("AppUser");
+                });
+
+            modelBuilder.Entity("EcommerceWebAppProject.Models.OrderDetail", b =>
+                {
+                    b.HasOne("EcommerceWebAppProject.Models.OrderHeader", "OrderHeader")
+                        .WithMany()
+                        .HasForeignKey("OrderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EcommerceWebAppProject.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderHeader");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("EcommerceWebAppProject.Models.OrderHeader", b =>
+                {
+                    b.HasOne("EcommerceWebAppProject.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("EcommerceWebAppProject.Models.Product", b =>

@@ -6,7 +6,7 @@ $.ajax({
     dataType: "json",
     success: function (data) {
         let categories = [];
-        console.log(data)
+
         data.data.forEach(function (item) {
             let category = {
                 catId: item.catId,
@@ -15,7 +15,6 @@ $.ajax({
             categories.push(category);
         });
 
-        console.log(categories)
         $('#catTb').DataTable({
             data: categories,
             columns: [

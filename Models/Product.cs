@@ -19,7 +19,7 @@ namespace EcommerceWebAppProject.Models
 
         [Required(ErrorMessage = "Product quantity is required")]
         [Range(1, double.MaxValue, ErrorMessage = "Invalid quantity, product quantity need to be greater than 0")]
-        public int? Qauntity { get; set; }
+        public int? Quantity { get; set; }
 
         public string? Description { get; set; }
 		

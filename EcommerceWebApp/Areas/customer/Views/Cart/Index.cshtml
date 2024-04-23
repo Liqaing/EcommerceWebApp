@@ -47,15 +47,15 @@
                                         </a>
                                     -->
 
-                                    <button id="minus" class="btn btn-link px-2 btn-lg" data-cart-id="@cart.cartId">
+                                    <button class="minus btn btn-link px-2 btn-lg" data-cart-id="@cart.cartId">
                                         <i class="bi bi-dash"></i>
                                     </button>
 
                                     
-                                    <input type="text" value="@cart.qauntity"
+                                    <input type="text" value="@cart.quantity"
                                            class="form-control form-control-sm text-center w-5" disabled/>
 
-                                    <button id="add" class="btn btn-link btn-lg px-2" data-cart-id="@cart.cartId">
+                                    <button class="add btn btn-link btn-lg px-2" data-cart-id="@cart.cartId">
                                         <i class="bi bi-plus"></i>
                                     </button>
                                 </div>
@@ -64,7 +64,7 @@
                                     <h5 class="mb-0">@cart.totalPrice.ToString("c")</h5>
                                 </div>
                                 <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <a id="remove" data-cart-id="@cart.cartId" class="text-white btn btn-danger">
+                                    <a data-cart-id="@cart.cartId" class="remove text-white btn btn-danger">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
@@ -77,9 +77,9 @@
                     <div class="card-body text-center">
                         <div class="w-50 mx-auto d-flex justify-content-between my-4">
                             <h5 class="card-title fw-semibold">Total (USD)</h5>
-                            <h5 class="card-title fw-semibold">@Model.OrderTotal.ToString("c")</h5>
+                            <h5 class="card-title fw-semibold">@Model.orderHeader.OrderTotal.ToString("c")</h5>
                         </div>
-                        <button type="button" class="btn btn-primary">Proceed to Pay</button>
+                        <a asp-action="Summary" class="btn btn-primary">Proceed to Pay</a>
                     </div>
                 </div>
 
@@ -90,4 +90,7 @@
 
 @section Scripts {
     <script src="~/js/shoppingCart/shoppingCart.js"></script>
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
 }
