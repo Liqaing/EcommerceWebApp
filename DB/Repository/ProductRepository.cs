@@ -30,7 +30,7 @@ namespace EcommerceWebAppProject.DB.Repository
                 product.ProName = pro.ProName;
                 product.Price = pro.Price;
                 product.Description = pro.Description;
-                product.Qauntity = pro.Qauntity;
+                product.Quantity = pro.Quantity;
                 product.OriginCountry = pro.OriginCountry;
                 product.CatId = pro.CatId;
                 

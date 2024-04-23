@@ -26,9 +26,9 @@
         </div>
 
         <div class="form-group mb-2">
-            <label asp-for="Product.Qauntity">Qauntity:</label>
-            <input asp-for="Product.Qauntity" class="form-control" id="qauntity" required>
-            <span asp-validation-for="Product.Qauntity" class="text-danger"></span>
+            <label asp-for="Product.Quantity">Quantity:</label>
+            <input asp-for="Product.Quantity" class="form-control" id="quantity" required>
+            <span asp-validation-for="Product.Quantity" class="text-danger"></span>
         </div>
 
         <div class="form-group mb-2">
@@ -86,8 +86,8 @@
     <script>
         tinymce.init({
             selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons link lists table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode ai mentions tableofcontents footnotes mergetags autocorrect typography inlinecss',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link table | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap ',
+            plugins: 'anchor autolink charmap codesample emoticons link lists table visualblocks wordcount linkchecker',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap ',
             tinycomments_mode: 'embedded',
             tinycomments_author: 'Author name',
             mergetags_list: [

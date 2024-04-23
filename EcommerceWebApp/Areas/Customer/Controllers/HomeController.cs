@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using EcommerceWebAppProject.Utilities;
 
 namespace EcommerceWebApp.Areas.Customer.Controllers
 {
@@ -38,7 +39,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                 includeProperties: "Category"),
 
                 productId = proId,
-                qauntity = 1
+                quantity = 1
             };
 			
 			return View(cart);
@@ -55,24 +56,28 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			cart.appUserId = userId;
 
             ShoppingCart cartInDb = _unitOfWork.ShoppingCart.Get(
-                cart => cart.productId == cart.productId &&
-                cart.appUserId == userId);
+                c => c.productId == cart.productId &&
+                c.appUserId == userId, 
+                includeProperties: "product");
 
             if (cartInDb == null)
             {
-				// Shopping cart for that user and product is not exist in the db
+                // Shopping cart for that user and product is not exist in the db
+                Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
+                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, product.Price);
 				_unitOfWork.ShoppingCart.Add(cart);
 			}
             else
             {
                 // Update qauntity in cart
-				cartInDb.qauntity += cart.qauntity;
-				_unitOfWork.ShoppingCart.Update(cartInDb);
+				cartInDb.quantity += cart.quantity;
+                cartInDb.totalPrice = new ShoppingCartUtils().GetTotalPrice(cartInDb);
+                _unitOfWork.ShoppingCart.Update(cartInDb);
 			}
 
 			_unitOfWork.Save();
 
-			TempData["Success"] = $"You have added {cart.qauntity} {productName} to the shopping cart";
+			TempData["Success"] = $"You have added {cart.quantity} {productName} to the shopping cart";
 
             return RedirectToAction(nameof(Index));
 			//return RedirectToAction(nameof(Details), new { proId=cart.productId, succeedMessage=succeedMessage });
@@ -88,9 +93,13 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region api
+
+        #endregion
+
+        #region util
+        
+        #endregion
     }
-
-	#region api
-
-	#endregion
 }

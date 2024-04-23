@@ -17,9 +17,12 @@ namespace EcommerceWebAppProject.DB.Data
 		public DbSet<Product> Product { get; set; }
 		public DbSet<AppUser> AppUser { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
 
-		// Seeding data on when model created
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        // Seeding data on when model created
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -30,9 +33,9 @@ namespace EcommerceWebAppProject.DB.Data
             );
 
 			modelBuilder.Entity<Product>().HasData(
-				new Product { ProductId = 1, ProName = "A", Price = 10.5, Qauntity=1, OriginCountry="KH", CatId =1, ImageUrl=""},
-				new Product { ProductId = 2, ProName = "B", Price = 14.5, Qauntity = 2, OriginCountry = "US" , CatId = 1, ImageUrl = ""},
-				new Product { ProductId = 3, ProName = "C", Price = 5.5, Qauntity = 3, OriginCountry = "KH" , CatId = 2, ImageUrl = ""}
+				new Product { ProductId = 1, ProName = "A", Price = 10.5, Quantity=1, OriginCountry="KH", CatId =1, ImageUrl=""},
+				new Product { ProductId = 2, ProName = "B", Price = 14.5, Quantity = 2, OriginCountry = "US" , CatId = 1, ImageUrl = ""},
+				new Product { ProductId = 3, ProName = "C", Price = 5.5, Quantity = 3, OriginCountry = "KH" , CatId = 2, ImageUrl = ""}
 			);
 		}
 

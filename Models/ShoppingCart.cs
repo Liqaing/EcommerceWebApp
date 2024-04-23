@@ -20,15 +20,14 @@ namespace EcommerceWebAppProject.Models
 
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Quantity need to be greater than 0")]
-        public int qauntity { get; set; }
+        public int quantity { get; set; }
 
         public string appUserId { get; set; }
         [Required]
-        [ForeignKey("appUserId ")]
+        [ForeignKey("appUserId")]
         public AppUser appUser { get; set; }
 
 
-        [NotMapped]
         public double totalPrice { get; set; }
     }
 }
