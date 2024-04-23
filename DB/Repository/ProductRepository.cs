@@ -23,7 +23,7 @@ namespace EcommerceWebAppProject.DB.Repository
         public void Update(Product pro)
         {
             Product? product = _dbContext.Product.FirstOrDefault(
-                pro => pro.ProductId == pro.ProductId);
+                p => p.ProductId == pro.ProductId);
         
             if (product != null)
             {
@@ -38,6 +38,8 @@ namespace EcommerceWebAppProject.DB.Repository
                 {
                     product.ImageUrl = pro.ImageUrl;
                 }
+
+                _dbContext.Product.Update(product);
             }
         }
         
