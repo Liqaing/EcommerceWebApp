@@ -17,6 +17,23 @@ namespace EcommerceWebAppProject.DB.Repository
 		{
 			_dbContext.OrderHeader.Update(orderHeader);
 		}
+
+		void UpdateStatus(int id, string PaymentStatus, string? OrderStatus = null)
+		{
+			OrderHeader? orderHeader = _dbContext.OrderHeader.FirstOrDefault(
+					o => o.OrderHeaderId == id);
 		
+			if (orderHeader != null)
+			{
+				orderHeader.PaymentStatus = PaymentStatus;
+				
+				if (OrderStatus != null)
+				{
+					orderHeader.OrderStatus = OrderStatus;
+				}
+
+				_dbContext.OrderHeader.Update(orderHeader);
+			}
+		}
 	}
 }

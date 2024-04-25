@@ -19,6 +19,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(opts => 
     opts.UseSqlServer(builder.Configuration.GetConnectionString("Defualt")));
 
+builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
+
 // Add authentication
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddDefaultTokenProviders()
