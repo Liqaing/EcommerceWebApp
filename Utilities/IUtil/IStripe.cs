@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EcommerceWebAppProject.Utilities
+namespace EcommerceWebAppProject.Utilities.IUtil
 {
-	public class StripeSetting
+	
+	public interface IStripe
 	{
 		public string PublishableKey { get; set; }
-		public string SecretKey { get; set;}
+		public string SecretKey { get; set; }
+
+		public void test();
 	}
+
+	
 }

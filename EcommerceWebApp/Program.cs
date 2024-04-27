@@ -9,6 +9,7 @@ using Microsoft.Build.Execution;
 using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using EcommerceWebAppProject.Utilities;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(opts => 
     opts.UseSqlServer(builder.Configuration.GetConnectionString("Defualt")));
 
-builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
+//builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
+
+//StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 // Add authentication
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
