@@ -64,6 +64,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             {
                 // Shopping cart for that user and product is not exist in the db
                 Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
+                //cart.unitPrice = product.Price;
                 cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, product.Price);
 				_unitOfWork.ShoppingCart.Add(cart);
 			}

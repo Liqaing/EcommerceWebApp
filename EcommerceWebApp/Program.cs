@@ -20,7 +20,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(opts => 
     opts.UseSqlServer(builder.Configuration.GetConnectionString("Defualt")));
 
-//builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
+builder.Services.Configure<StripeService>(builder.Configuration.GetSection("Stripe"));
 
 //StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
@@ -74,5 +74,7 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.Run();

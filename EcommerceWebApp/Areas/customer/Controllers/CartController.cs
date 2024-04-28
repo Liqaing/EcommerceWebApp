@@ -4,6 +4,8 @@ using EcommerceWebAppProject.Models.ViewModel;
 using EcommerceWebAppProject.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 
@@ -14,9 +16,10 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
     public class CartController : Controller
     {
         [BindProperty]
-        public ShoppingCartVM shoppingCartVM { get; set; }
+        public ShoppingCartVM? shoppingCartVM { get; set; }
 
-        private readonly IUnitOfWork _unitOfWork;       
+        private readonly IUnitOfWork _unitOfWork;
+        
         public CartController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -171,7 +174,52 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 				_unitOfWork.Save();
 			}
 
-			return Json( new { title = $"Order Id: {shoppingCartVM.orderHeader.OrderHeaderId}", message = "You have ordered successfully."} );
+
+            // Strip service
+            string DOMAIN = "https://localhost:7137";
+            var options = new SessionCreateOptions
+            {
+                // Upon success will probably redirect to order view
+                SuccessUrl = $"{DOMAIN}/customer/Cart/Summary",
+                CancelUrl = $"{DOMAIN}/Customer/Cart/Index",
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+            };
+
+            foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
+            {
+                var SessionItem = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(cart.totalPrice * 100),
+                        Currency = "usd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = cart.product.ProName
+                        }
+                    },
+                    Quantity = cart.quantity
+                };
+
+                options.LineItems.Add(SessionItem);
+            }
+
+            var service = new SessionService();
+            Session session = service.Create(options);
+
+            _unitOfWork.OrderHeader.UpdateStripePayment(shoppingCartVM.orderHeader.OrderHeaderId, session.Id, session.PaymentIntentId);
+            _unitOfWork.Save();
+            //this.Response.Headers.AccessControlAllowOrigin = DOMAIN;
+            //this.Response.Headers.Add("Location", session.Url);
+
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+            return Redirect(session.Url);            
+
+            //return Json( new { title = $"Order Id: {shoppingCartVM.orderHeader.OrderHeaderId}", message = "You have ordered successfully."} );
 		}
 
 		#endregion
