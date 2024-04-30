@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
+using System.Net;
 using System.Security.Claims;
 
 
@@ -133,7 +134,8 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         }
 
 		[HttpPost]
-		[Route("/Customer/api/cart/order")]
+        //[Route("/Customer/api/cart/order")]
+        [ActionName("Summary")]
 		public IActionResult SummaryPOST()
 		{
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -210,16 +212,11 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             _unitOfWork.OrderHeader.UpdateStripePayment(shoppingCartVM.orderHeader.OrderHeaderId, session.Id, session.PaymentIntentId);
             _unitOfWork.Save();
-            //this.Response.Headers.AccessControlAllowOrigin = DOMAIN;
-            //this.Response.Headers.Add("Location", session.Url);
 
-            HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-            HttpContext.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-            HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            Response.Headers.Add("Location", session.Url);
+			return new StatusCodeResult(303);
 
-            return Redirect(session.Url);            
-
-            //return Json( new { title = $"Order Id: {shoppingCartVM.orderHeader.OrderHeaderId}", message = "You have ordered successfully."} );
+			//return Json( new { title = $"Order Id: {shoppingCartVM.orderHeader.OrderHeaderId}", message = "You have ordered successfully."} );
 		}
 
 		#endregion
