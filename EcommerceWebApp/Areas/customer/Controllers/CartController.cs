@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
 
@@ -41,7 +42,12 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             //calculateCartPrice(shoppingCartVM);
 
             foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
-            {                
+            {
+                if (cart.unitPrice != cart.product.Price)
+                {
+                    cart.unitPrice = cart.product.Price;
+                    cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart);
+                }
                 shoppingCartVM.orderHeader.OrderTotal += cart.totalPrice;
             }
 
@@ -59,6 +65,11 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                     includeProperties: "product.Category"),
                 orderHeader = new OrderHeader()
             };
+
+            if (shoppingCartVM.shoppingCarts.Count() == 0)
+            {
+                return RedirectToAction("Index");
+            }
 
             // Add user to order header
             shoppingCartVM.orderHeader.AppUser = _unitOfWork.AppUser.Get(user => user.Id == userId);
@@ -96,6 +107,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             }
             else
             {
+                cart.unitPrice = cart.product.Price;
                 cart.quantity -= 1;
                 cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart);
 
@@ -111,7 +123,8 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         {
             ShoppingCart cart = _unitOfWork.ShoppingCart.Get(
                 cart => cart.cartId == cartId, includeProperties: "product");
-            
+
+            cart.unitPrice = cart.product.Price;
             cart.quantity += 1;
             cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart);
 
@@ -194,7 +207,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        UnitAmount = (long)(cart.totalPrice * 100),
+                        UnitAmount = (long)(cart.unitPrice * 100),
                         Currency = "usd",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {

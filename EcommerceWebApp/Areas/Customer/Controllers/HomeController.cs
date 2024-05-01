@@ -60,17 +60,18 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                 c.appUserId == userId, 
                 includeProperties: "product");
 
+            Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
             if (cartInDb == null)
             {
-                // Shopping cart for that user and product is not exist in the db
-                Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
-                //cart.unitPrice = product.Price;
-                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, product.Price);
+                // Shopping cart for that user and product is not exist in the db                
+                cart.unitPrice = product.Price;
+                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, cart.unitPrice);
 				_unitOfWork.ShoppingCart.Add(cart);
 			}
             else
             {
                 // Update qauntity in cart
+                cart.unitPrice = product.Price;
 				cartInDb.quantity += cart.quantity;
                 cartInDb.totalPrice = new ShoppingCartUtils().GetTotalPrice(cartInDb);
                 _unitOfWork.ShoppingCart.Update(cartInDb);
