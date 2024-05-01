@@ -33,7 +33,9 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             shoppingCartVM = new()
             {
-                shoppingCarts = _unitOfWork.ShoppingCart.GetAll(cart => cart.appUserId == userId,
+                shoppingCarts = _unitOfWork.ShoppingCart.GetAll(
+                    cart => cart.appUserId == userId &&
+                    cart.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive,
                     includeProperties: "product.Category"),
                 orderHeader = new OrderHeader()
             };
@@ -61,7 +63,9 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             shoppingCartVM = new()
             {
-                shoppingCarts = _unitOfWork.ShoppingCart.GetAll(cart => cart.appUserId == userId,
+                shoppingCarts = _unitOfWork.ShoppingCart.GetAll(
+                    cart => cart.appUserId == userId &&
+                    cart.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive,
                     includeProperties: "product.Category"),
                 orderHeader = new OrderHeader()
             };
@@ -153,7 +157,9 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 		{
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			shoppingCartVM.shoppingCarts = _unitOfWork.ShoppingCart.GetAll(cart => cart.appUserId == userId,
+			shoppingCartVM.shoppingCarts = _unitOfWork.ShoppingCart.GetAll(
+                cart => cart.appUserId == userId &&
+                cart.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive,
 					includeProperties: "product.Category");
 
 			shoppingCartVM.orderHeader.OrderDate = System.DateTime.Now;
@@ -169,26 +175,32 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			// Calculate total price of the cart			          
 			foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
 			{
+                /*
+                cart.shoppingCartStatus = ShoppingCartStatusConstant.StatusOrder;
+                _unitOfWork.ShoppingCart.Update(cart);
+                */
+
+                // Order Heander
 				shoppingCartVM.orderHeader.OrderTotal += cart.totalPrice;
-			}
+            }
+
 			// Save order header
 			_unitOfWork.OrderHeader.Add(shoppingCartVM.orderHeader);
-			_unitOfWork.Save();
-
-			// Order details
-			foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
-			{
-				OrderDetail orderDetail = new()
-				{
-					ProductId = cart.productId,
-					OrderHeaderId = shoppingCartVM.orderHeader.OrderHeaderId,
-					Price = cart.totalPrice,
-					Quantity = cart.quantity
-				};
-				_unitOfWork.OrderDetail.Add(orderDetail);
-				_unitOfWork.Save();
-			}
-
+			_unitOfWork.Save();		
+           
+            foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
+            {
+                // Order Detail
+                OrderDetail orderDetail = new()
+                {
+                    ProductId = cart.productId,
+                    OrderHeaderId = shoppingCartVM.orderHeader.OrderHeaderId,
+                    Price = cart.totalPrice,
+                    Quantity = cart.quantity
+                };
+                _unitOfWork.OrderDetail.Add(orderDetail);
+            }
+            _unitOfWork.Save();
 
             // Strip service
             string DOMAIN = "https://localhost:7137";
@@ -223,7 +235,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             var service = new SessionService();
             Session session = service.Create(options);
 
-            _unitOfWork.OrderHeader.UpdateStripePayment(shoppingCartVM.orderHeader.OrderHeaderId, session.Id, session.PaymentIntentId);
+            _unitOfWork.OrderHeader.UpdateStripePayment(shoppingCartVM.orderHeader.OrderHeaderId, session.Id, session.PaymentIntentId);                    
             _unitOfWork.Save();
 
             Response.Headers.Add("Location", session.Url);

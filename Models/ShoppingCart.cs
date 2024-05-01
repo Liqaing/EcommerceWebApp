@@ -29,5 +29,7 @@ namespace EcommerceWebAppProject.Models
 
         public double unitPrice { get; set; }
         public double totalPrice { get; set; }
+    
+        public string shoppingCartStatus { get; set; }
     }
 }
