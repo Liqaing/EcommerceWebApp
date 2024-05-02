@@ -246,10 +246,10 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
         
         // Order Success
-        public IActionResult OrderConfirm(int orderHeaderId)
+        public IActionResult OrderConfirm(int id)
         {
             OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(
-                order => order.OrderHeaderId == orderHeaderId, includeProperties: "AppUser");
+                order => order.OrderHeaderId == id, includeProperties: "AppUser");
 
             var service = new SessionService();
             Session session = service.Get(orderHeader.SessionId);
