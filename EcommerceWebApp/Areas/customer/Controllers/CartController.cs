@@ -97,7 +97,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			return View(shoppingCartVM);
         }
 
-		#region api
+		
 
 		[HttpPost]
         public IActionResult Minus(int cartId)
@@ -207,7 +207,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             var options = new SessionCreateOptions
             {
                 // Upon success will probably redirect to order view
-                SuccessUrl = $"{DOMAIN}/customer/Cart/Summary",
+                SuccessUrl = $"{DOMAIN}/customer/Cart/OrderConfirm?id={shoppingCartVM.orderHeader.OrderHeaderId}",
                 CancelUrl = $"{DOMAIN}/Customer/Cart/Index",
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
@@ -240,15 +240,45 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             Response.Headers.Add("Location", session.Url);
 			return new StatusCodeResult(303);
-
+            
 			//return Json( new { title = $"Order Id: {shoppingCartVM.orderHeader.OrderHeaderId}", message = "You have ordered successfully."} );
 		}
 
-		#endregion
+        
+        // Order Success
+        public IActionResult OrderConfirm(int orderHeaderId)
+        {
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(
+                order => order.OrderHeaderId == orderHeaderId, includeProperties: "AppUser");
 
-		#region utils
+            var service = new SessionService();
+            Session session = service.Get(orderHeader.SessionId);
+            if (session.PaymentStatus == "paid")
+            {
+                // handle order and payment sucess
+                _unitOfWork.OrderHeader.UpdateStripePayment(
+                    orderHeader.OrderHeaderId,
+                    session.Id,
+                    session.PaymentIntentId);
 
-		/*
+                _unitOfWork.OrderHeader.UpdateStatus(
+                    orderHeader.OrderHeaderId,
+                    OrderAndPaymentStatusConstate.StatusApproved,
+                    OrderAndPaymentStatusConstate.PaymentStatusApproved);
+
+                _unitOfWork.Save();
+            }
+
+            return RedirectToAction(nameof(OrderController), nameof(Index));
+        }
+
+        #region api
+
+        #endregion
+
+        #region utils
+
+        /*
         private void calculateCartPrice(ShoppingCartVM shoppingCartVM)
         {
             foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
@@ -263,6 +293,6 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			return cart.quantity * cart.product.Price;
 		}
         */
-		#endregion
-	}
+        #endregion
+    }
 }

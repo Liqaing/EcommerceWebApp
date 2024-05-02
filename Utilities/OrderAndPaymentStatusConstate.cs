@@ -10,6 +10,7 @@ namespace EcommerceWebAppProject.Utilities
 	{
 		public const string StatusPending = "Pending";
 		public const string StatusApproved = "Approved";
+
 		public const string StatusInProcess = "Processing";
 		public const string StatusDelivered = "Delivered";
 		public const string StatusCancelled = "Cancelled";
