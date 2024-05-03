@@ -24,8 +24,9 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             IEnumerable<OrderHeader> orderHeaderList = _unitOfWork.OrderHeader.GetAll(
                 order => order.AppUserId == appUserId
                 );
+
             
-            return View(orderHeaderList);
+            return View(orderHeaderList.OrderByDescending(order => order.OrderHeaderId));
         }
     }
 }

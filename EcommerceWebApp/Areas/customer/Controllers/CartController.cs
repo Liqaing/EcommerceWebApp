@@ -266,10 +266,23 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                     OrderAndPaymentStatusConstate.StatusApproved,
                     OrderAndPaymentStatusConstate.PaymentStatusApproved);
 
+				
+                // Upon paid success, set all cart to inactive
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                IEnumerable<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(
+                    cart => cart.appUserId == userId &&
+                    cart.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive); 
+                foreach (ShoppingCart cart in carts)
+                {
+                    cart.shoppingCartStatus = ShoppingCartStatusConstant.StatusOrder;
+                }
+
+                TempData["success"] = $"Your order #{orderHeader.OrderHeaderId} is successfully placed";
+
                 _unitOfWork.Save();
             }
 
-            return RedirectToAction(nameof(OrderController), nameof(Index));
+            return RedirectToAction(nameof(Index), "Order", new { area = "Customer"});
         }
 
         #region api

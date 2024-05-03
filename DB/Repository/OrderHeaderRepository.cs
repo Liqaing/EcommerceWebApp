@@ -43,16 +43,18 @@ namespace EcommerceWebAppProject.DB.Repository
 					o => o.OrderHeaderId == id);
 			if (orderHeader != null)
 			{
-				if (!string.IsNullOrEmpty(orderHeader.SessionId))
+				if (!string.IsNullOrEmpty(SessionId))
 				{
 					orderHeader.SessionId = SessionId;
 				}
 
-				if (!string.IsNullOrEmpty(orderHeader.PaymentIntentId))
+				if (!string.IsNullOrEmpty(SessionId))
 				{
 					orderHeader.PaymentIntentId = PaymentIntentId;
 					orderHeader.PaymentDate = DateTime.Now;
 				}
+
+				_dbContext.OrderHeader.Update(orderHeader);
 			}
 			
 		}
