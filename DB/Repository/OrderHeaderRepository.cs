@@ -48,7 +48,7 @@ namespace EcommerceWebAppProject.DB.Repository
 					orderHeader.SessionId = SessionId;
 				}
 
-				if (!string.IsNullOrEmpty(SessionId))
+				if (!string.IsNullOrEmpty(PaymentIntentId))
 				{
 					orderHeader.PaymentIntentId = PaymentIntentId;
 					orderHeader.PaymentDate = DateTime.Now;

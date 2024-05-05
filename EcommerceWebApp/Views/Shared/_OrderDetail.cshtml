@@ -1,0 +1,217 @@
+﻿@model OrderVM
+
+@{
+	// If order is not yet paid, then set input to read only
+	string? readOnly = "readonly";
+	if (Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending)
+	{
+		readOnly = null;
+	}
+
+}
+
+<form method="get">
+	<div class="container h-100 py-2">
+		<div class="row d-flex justify-content-center align-items-center h-100">
+			<div class="col-12">
+
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h3 class="fw-normal mb-0 text-black">Order Detail</h3>
+
+					<div class="d-flex align-items-center">
+						<a asp-action="Index"
+						   class="btn btn-outline-secondary mr-2">Back</a>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="card border-0">
+					<div class="card-body p-0">
+						<div class="container rounded p-0">
+							<div class="row">
+								<div class="col-12 col-lg-6 pb-4">
+									<div class="row">
+										<h4 class="d-flex justify-content-between align-items-center mb-3">
+											<span class="text-dark">Shipping Details:</span>
+										</h4>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Name</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="@Model.orderHeader.Name" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="@Model.orderHeader.Name" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Phone</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.PhoneNumber" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.PhoneNumber" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Email</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.AppUser.Email" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.AppUser.Email" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Home Number</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.HomeNumber" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.HomeNumber" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Street Address</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.StreetName" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.StreetName" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Village</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.Village" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.Village" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Commune</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.Commune" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.Commune" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>City</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.City" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.City" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Postal Code</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.PostalNumber" readonly="@readOnly" class="form-control" />
+											<span asp-validation-for="orderHeader.PostalNumber" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Order Status</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.OrderStatus" readonly class="form-control" />
+											<span asp-validation-for="orderHeader.OrderStatus" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Order Date</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.OrderDate" readonly class="form-control" />
+											<span asp-validation-for="orderHeader.OrderDate" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Payment Status</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.PaymentStatus" readonly class="form-control" />
+											<span asp-validation-for="orderHeader.PaymentStatus" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Payment Date</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.PaymentDate" readonly class="form-control" />
+											<span asp-validation-for="orderHeader.PaymentDate" class="text-danger"></span>
+										</div>
+									</div>
+
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Session Id</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.SessionId" readonly class="form-control" />
+											<span asp-validation-for="orderHeader.SessionId" class="text-danger"></span>
+										</div>
+									</div>
+									<div class="row my-1">
+										<div class="col-3">
+											<label>Payment Intent Id</label>
+										</div>
+										<div class="col-9">
+											<input asp-for="orderHeader.PaymentIntentId" readonly class="form-control" />
+											<span asp-validation-for="orderHeader.PaymentIntentId" class="text-danger"></span>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-12 col-lg-5 offset-lg-1">
+									<h4 class="d-flex justify-content-between align-items-center mb-3">
+										<span class="text-dark">Order Summary:</span>
+									</h4>
+									<ul class="list-group mb-3">
+										@foreach (OrderDetail orderDetail in @Model.orderDetails)
+										{
+											<li class="list-group-item d-flex justify-content-between">
+												<div>
+													<h6 class="my-0">@orderDetail.Product.ProName</h6>
+													<small class="text-muted">Unit Price: @orderDetail.UnitPrice</small>
+													<br>
+													<small class="text-muted">Quantity: @orderDetail.Quantity</small>
+												</div>
+												<span class="text-muted">@orderDetail.Price.ToString("c")</span>
+											</li>
+										}
+
+										<li class="list-group-item d-flex justify-content-between bg-light">
+											<small class="text-primary">Total (USD)</small>
+											<strong class="text-primary	">@Model.orderHeader.OrderTotal.ToString("c")</strong>
+										</li>
+									</ul>
+
+
+									@if(Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending)
+									{
+										<!-- When not pay yet, display paynow and cancel button -->
+										<div class="btn-group d-flex flex-column">
+											<button class="btn btn-primary mb-2 rounded">Pay Now</button>
+											<button class="btn btn-danger rounded">Cancel Order</button>
+										</div>										
+									}									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
