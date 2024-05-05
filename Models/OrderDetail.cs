@@ -27,6 +27,7 @@ namespace EcommerceWebAppProject.Models
         public Product Product { get; set; }
 
         public int Quantity { get; set; }
-        public double Price { get; set; }
+		public double UnitPrice { get; set; }
+		public double Price { get; set; }
     }
 }

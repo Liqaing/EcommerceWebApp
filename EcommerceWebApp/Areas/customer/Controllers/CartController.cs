@@ -186,29 +186,30 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
 			// Save order header
 			_unitOfWork.OrderHeader.Add(shoppingCartVM.orderHeader);
-			_unitOfWork.Save();		
-           
-            foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
+			_unitOfWork.Save();
+
+			// Order Detail
+			foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
             {
-                // Order Detail
                 OrderDetail orderDetail = new()
                 {
                     ProductId = cart.productId,
                     OrderHeaderId = shoppingCartVM.orderHeader.OrderHeaderId,
                     Price = cart.totalPrice,
+                    UnitPrice = cart.unitPrice,
                     Quantity = cart.quantity
                 };
                 _unitOfWork.OrderDetail.Add(orderDetail);
             }
             _unitOfWork.Save();
-
+             
             // Strip service
             string DOMAIN = "https://localhost:7137";
             var options = new SessionCreateOptions
             {
                 // Upon success will probably redirect to order view
                 SuccessUrl = $"{DOMAIN}/customer/Cart/OrderConfirm?id={shoppingCartVM.orderHeader.OrderHeaderId}",
-                CancelUrl = $"{DOMAIN}/Customer/Cart/Index",
+                CancelUrl = $"{DOMAIN}/Customer/Cart/OrderConfirm?id={shoppingCartVM.orderHeader.OrderHeaderId}",
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
             };
@@ -253,36 +254,47 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             var service = new SessionService();
             Session session = service.Get(orderHeader.SessionId);
-            if (session.PaymentStatus == "paid")
-            {
-                // handle order and payment sucess
-                _unitOfWork.OrderHeader.UpdateStripePayment(
-                    orderHeader.OrderHeaderId,
-                    session.Id,
-                    session.PaymentIntentId);
 
+			_unitOfWork.OrderHeader.UpdateStripePayment(
+					orderHeader.OrderHeaderId,
+					session.Id,
+					session.PaymentIntentId);
+
+			// Set all cart to order
+			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			IEnumerable<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(
+				cart => cart.appUserId == userId &&
+				cart.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive);
+
+			foreach (ShoppingCart cart in carts)
+			{
+				cart.shoppingCartStatus = ShoppingCartStatusConstant.StatusOrder;
+			}
+
+			if (session.PaymentStatus == "paid")
+            {
+                // handle order and payment sucess               
                 _unitOfWork.OrderHeader.UpdateStatus(
                     orderHeader.OrderHeaderId,
                     OrderAndPaymentStatusConstate.StatusApproved,
-                    OrderAndPaymentStatusConstate.PaymentStatusApproved);
-
-				
-                // Upon paid success, set all cart to inactive
-                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                IEnumerable<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(
-                    cart => cart.appUserId == userId &&
-                    cart.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive); 
-                foreach (ShoppingCart cart in carts)
-                {
-                    cart.shoppingCartStatus = ShoppingCartStatusConstant.StatusOrder;
-                }
+                    OrderAndPaymentStatusConstate.PaymentStatusApproved);			                
 
                 TempData["success"] = $"Your order #{orderHeader.OrderHeaderId} is successfully placed";
-
-                _unitOfWork.Save();
+                
             }
+            else
+            {
+                // Handle order when payment is pending
+				_unitOfWork.OrderHeader.UpdateStatus(
+					orderHeader.OrderHeaderId,
+					OrderAndPaymentStatusConstate.StatusPending,
+					OrderAndPaymentStatusConstate.PaymentStatusPending);
 
-            return RedirectToAction(nameof(Index), "Order", new { area = "Customer"});
+				TempData["warning"] = $"Your order #{orderHeader.OrderHeaderId} has been placed, please proceed with the payment";
+			}
+
+			_unitOfWork.Save();
+			return RedirectToAction(nameof(Index), "Order", new { area = "Customer"});
         }
 
         #region api
