@@ -62,8 +62,17 @@ a {
 
 .description-container {
     margin: 20px 0;
-    max-height: 200px;
+    max-height: 190px;
     overflow-y: auto;
+}
+
+.description-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.description-container::-webkit-scrollbar {
+    display: none;
 }
 
 .image-wrapper {
@@ -85,4 +94,10 @@ a {
 
 .description-wrapper {
     height: 75px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.description-wrapper::-webkit-scrollbar {
+    display: none;
 }

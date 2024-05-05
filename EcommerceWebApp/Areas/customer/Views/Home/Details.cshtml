@@ -8,25 +8,25 @@
         <div class="card">
             <div class="container-fliud">
                 <div class="row">
-                    <div class="col-md-6">
-                        <img src="@Model.product.ImageUrl" class="img-fluid" alt="Product Image">
+                    <div class="col-md-6 py-3 d-flex justify-content-center">
+                        <img src="@Model.product.ImageUrl" class="img-fluid rounded" style="width: 95%; object-fit: cover;" alt="Product Image">
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
-                            <h5 class="card-title">@Model.product.ProName</h5>
-                            <h5 class="card-text">Current Price: <span>$@Model.product.Price</span></h5>
-                            <p class ="card-text mb-0">Made In: @Model.product.OriginCountry</p>
-                            <p class="card-text">Category: @Model.product.Category.CatName</p>
+                            <div class="card-title fw-bold fs-2">@Model.product.ProName</div>
+                            <h5 class="card-text">Current Price : <span class="text-danger">$@Model.product.Price</span></h5>
+                            <p class ="card-text mb-0">Made In : @Model.product.OriginCountry</p>
+                            <p class="card-text">Category : @Model.product.Category.CatName</p>
 
                             <div class="description-container">
                                 <p class="card-text">@Html.Raw(@Model.product.Description)</p>
                             </div>
                                                     
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-cart"></i></span>
+                                    <input asp-for="@Model.quantity" type="number" value="1" class="form-control rounded-r-2 up-down-arrow" required>
                                 </div>
-                                <input asp-for="@Model.quantity" type="number" value="1" class="form-control up-down-arrow" required>
                                 <div class="input-group-append">
                                     <input class="btn btn-primary" type="submit" value="Add To Cart" />
                                 </div>
