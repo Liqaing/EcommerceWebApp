@@ -1,5 +1,15 @@
 ﻿@model OrderVM
 
+@{
+	// If order is not yet paid, then set input to read only
+	string? readOnly = "readonly";
+	if (Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending)
+	{
+		readOnly = null;
+	}
+
+}
+
 <form method="get">
 	<div class="container h-100 py-2">
 		<div class="row d-flex justify-content-center align-items-center h-100">
@@ -30,7 +40,7 @@
 											<label>Name</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="@Model.orderHeader.Name" readonly class="form-control" />
+											<input asp-for="@Model.orderHeader.Name" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="@Model.orderHeader.Name" class="text-danger"></span>
 										</div>
 									</div>
@@ -39,7 +49,7 @@
 											<label>Phone</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.PhoneNumber" readonly class="form-control" />
+											<input asp-for="orderHeader.PhoneNumber" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.PhoneNumber" class="text-danger"></span>
 										</div>
 									</div>
@@ -48,7 +58,7 @@
 											<label>Email</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.AppUser.Email" readonly class="form-control" />
+											<input asp-for="orderHeader.AppUser.Email" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.AppUser.Email" class="text-danger"></span>
 										</div>
 									</div>
@@ -57,7 +67,7 @@
 											<label>Home Number</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.HomeNumber" readonly class="form-control" />
+											<input asp-for="orderHeader.HomeNumber" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.HomeNumber" class="text-danger"></span>
 										</div>
 									</div>
@@ -66,7 +76,7 @@
 											<label>Street Address</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.StreetName" readonly class="form-control" />
+											<input asp-for="orderHeader.StreetName" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.StreetName" class="text-danger"></span>
 										</div>
 									</div>
@@ -75,7 +85,7 @@
 											<label>Village</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.Village" readonly class="form-control" />
+											<input asp-for="orderHeader.Village" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.Village" class="text-danger"></span>
 										</div>
 									</div>
@@ -84,7 +94,7 @@
 											<label>Commune</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.Commune" readonly class="form-control" />
+											<input asp-for="orderHeader.Commune" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.Commune" class="text-danger"></span>
 										</div>
 									</div>
@@ -93,7 +103,7 @@
 											<label>City</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.City" readonly class="form-control" />
+											<input asp-for="orderHeader.City" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.City" class="text-danger"></span>
 										</div>
 									</div>
@@ -102,7 +112,7 @@
 											<label>Postal Code</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.PostalNumber" readonly class="form-control" />
+											<input asp-for="orderHeader.PostalNumber" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.PostalNumber" class="text-danger"></span>
 										</div>
 									</div>
@@ -186,6 +196,16 @@
 											<strong class="text-primary	">@Model.orderHeader.OrderTotal.ToString("c")</strong>
 										</li>
 									</ul>
+
+
+									@if(Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending)
+									{
+										<!-- When not pay yet, display paynow and cancel button -->
+										<div class="btn-group d-flex flex-column">
+											<button class="btn btn-primary mb-2 rounded">Pay Now</button>
+											<button class="btn btn-danger rounded">Cancel Order</button>
+										</div>										
+									}									
 								</div>
 							</div>
 						</div>
