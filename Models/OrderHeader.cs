@@ -21,17 +21,20 @@ namespace EcommerceWebAppProject.Models
 
         public DateTime OrderDate { get; set; }
         public DateTime ShippingDate { get; set; }
+        public DateTime? PaymentDate { get; set; }
+
         public double OrderTotal { get; set; }
 
-        // Add arrivalDate, ship by employee
+        // Add arrivalDate, ship by employee, deliver status
 
         public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }
-        public string? PaymentDate { get; set; }    
-
+        
         public string? TrackingNumber { get; set; }
         public string? Carrier { get; set;}
 
+        public string? SessionId { get; set; }
+        public string? PaymentIntentId { get; set; }
 
         [Required] public string? Name { get; set; }
         [Required] public string? PhoneNumber { get; set; }
@@ -41,7 +44,5 @@ namespace EcommerceWebAppProject.Models
         [Required] public string? Commune { get; set; }
         [Required] public string? City { get; set; }
         [Required] public string? PostalNumber { get; set; }
-
-
     }
 }

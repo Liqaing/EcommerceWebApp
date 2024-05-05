@@ -1,0 +1,43 @@
+﻿@model IEnumerable<OrderHeader>
+
+<from method="post">
+    <div class="container h-100 py-2">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-normal mb-0 text-black">Your Order</h3>
+
+                    <div class="d-flex align-items-center">
+                        <!--
+                        <p class="mb-0">
+                            <span class="text-muted">Sort by:</span> <a href="#!" class="text-body">
+                                price <i class="fas fa-angle-down mt-1"></i>
+                            </a>
+                        </p>
+                        -->
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index"
+                           class="btn btn-outline-secondary mr-2">Go To Shop</a>
+                    </div>
+                </div>
+
+                @foreach (OrderHeader order in Model)
+                {
+                    <div class="card rounded-3 mb-4">
+                        <div class="card-body p-4">
+                            <div>                                
+                                <p class="lead fw-normal mb-2">Order Id: @order.OrderHeaderId</p>
+                                <p class="mb-0"><span class="text-muted">Payment Status:</span> @order.PaymentStatus</p>
+                                <p class="mb-0"><span class="text-muted">Order Status:</span> @order.OrderStatus</p>
+                                <p class="mb-0"><span class="text-muted">Total Price:</span> @order.OrderTotal.ToString("c")</p>
+                                <a class="btn btn-primary mt-2">
+                                    View Order Detail
+                                </a>   
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</from>

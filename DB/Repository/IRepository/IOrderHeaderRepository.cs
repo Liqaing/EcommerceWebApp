@@ -10,5 +10,7 @@ namespace EcommerceWebAppProject.DB.Repository.IRepository
     public interface IOrderHeaderRepository : IRepository<OrderHeader>
     {
         void Update(OrderHeader orderHeader);
+        void UpdateStatus(int id, string OrderStatus, string? PaymentStatus = null);
+        void UpdateStripePayment(int id, string SessionId, string PaymentIntentId);
     }
 }

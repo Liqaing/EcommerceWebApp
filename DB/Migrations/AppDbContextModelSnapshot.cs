@@ -67,8 +67,8 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<int>("OrderHeaderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -125,7 +125,10 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
 
-                    b.Property<string>("PaymentDate")
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentIntentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentStatus")
@@ -137,6 +140,9 @@ namespace EcommerceWebAppProject.DB.Migrations
 
                     b.Property<string>("PostalNumber")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SessionId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ShippingDate")
@@ -248,7 +254,14 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<int>("quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("shoppingCartStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("totalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("unitPrice")
                         .HasColumnType("float");
 
                     b.HasKey("cartId");

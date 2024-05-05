@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
 
     $("#place-order-btn").click(function (e) {
         e.preventDefault();

@@ -27,7 +27,9 @@ namespace EcommerceWebAppProject.Models
         [ForeignKey("appUserId")]
         public AppUser appUser { get; set; }
 
-
+        public double unitPrice { get; set; }
         public double totalPrice { get; set; }
+    
+        public string shoppingCartStatus { get; set; }
     }
 }

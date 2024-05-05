@@ -57,19 +57,23 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             ShoppingCart cartInDb = _unitOfWork.ShoppingCart.Get(
                 c => c.productId == cart.productId &&
-                c.appUserId == userId, 
-                includeProperties: "product");
+                c.appUserId == userId &&
+                c.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive,
+                includeProperties: "product"); 
 
+            Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
             if (cartInDb == null)
             {
-                // Shopping cart for that user and product is not exist in the db
-                Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
-                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, product.Price);
+                // Shopping cart for that user and product is not exist in the db                
+                cart.unitPrice = product.Price;
+                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, cart.unitPrice);
+                cart.shoppingCartStatus = ShoppingCartStatusConstant.StatusActive;
 				_unitOfWork.ShoppingCart.Add(cart);
 			}
             else
             {
                 // Update qauntity in cart
+                cart.unitPrice = product.Price;
 				cartInDb.quantity += cart.quantity;
                 cartInDb.totalPrice = new ShoppingCartUtils().GetTotalPrice(cartInDb);
                 _unitOfWork.ShoppingCart.Update(cartInDb);

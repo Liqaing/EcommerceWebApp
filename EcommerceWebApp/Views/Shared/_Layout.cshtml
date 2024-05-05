@@ -33,7 +33,7 @@
 
                         @if (User.IsInRole(RoleConstant.Role_Admin))
                         {
-                                                   
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Manage
@@ -41,15 +41,24 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="dropdown-item text-dark">Category</a>
                                     <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="dropdown-item text-dark">Product</a>
+                                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="dropdown-item text-dark">Order</a>
                                 </div>
                             </li>
                         }
+                        @if (User.IsInRole(RoleConstant.Role_Admin) || User.IsInRole(RoleConstant.Role_Customer) || User.IsInRole(RoleConstant.Role_Employee))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                    <i class="bi bi-cart-check"></i> &nbsp; (0)
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart-check"></i> &nbsp; (0)
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Order" asp-action="Index">
+                                    <i class="bi bi-wallet"></i> &nbsp; Order
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

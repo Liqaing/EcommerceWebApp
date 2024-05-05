@@ -11,8 +11,8 @@ namespace EcommerceWebAppProject.Utilities
     public class ShoppingCartUtils
     {
         public double GetTotalPrice(ShoppingCart cart)
-        {
-            return cart.quantity * cart.product.Price;
+        {            
+            return cart.quantity * cart.unitPrice;            
         }
 
         public double GetTotalPrice(int quantity, double price )
