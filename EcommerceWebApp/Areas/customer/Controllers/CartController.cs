@@ -290,7 +290,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 					OrderAndPaymentStatusConstate.StatusPending,
 					OrderAndPaymentStatusConstate.PaymentStatusPending);
 
-				TempData["warning"] = $"Your order #{orderHeader.OrderHeaderId} has been placed, please proceed with the payment";
+				TempData["warning"] = $"Please proceed with the payment for order #{orderHeader.OrderHeaderId}";
 			}
 
 			_unitOfWork.Save();
