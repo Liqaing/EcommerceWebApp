@@ -36,142 +36,134 @@
 										</h4>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Name</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="@Model.orderHeader.Name" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="@Model.orderHeader.Name" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Phone</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.PhoneNumber" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.PhoneNumber" class="text-danger"></span>
 										</div>
 									</div>
+
 									<div class="row my-1">
-										<div class="col-3">
-											<label>Email</label>
-										</div>
-										<div class="col-9">
-											<input asp-for="orderHeader.AppUser.Email" readonly="@readOnly" class="form-control" />
-											<span asp-validation-for="orderHeader.AppUser.Email" class="text-danger"></span>
-										</div>
-									</div>
-									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Home Number</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.HomeNumber" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.HomeNumber" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Street Address</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.StreetName" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.StreetName" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Village</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.Village" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.Village" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Commune</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.Commune" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.Commune" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>City</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.City" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.City" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Postal Code</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.PostalNumber" readonly="@readOnly" class="form-control" />
 											<span asp-validation-for="orderHeader.PostalNumber" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Order Status</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.OrderStatus" readonly class="form-control" />
 											<span asp-validation-for="orderHeader.OrderStatus" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Order Date</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.OrderDate" readonly class="form-control" />
 											<span asp-validation-for="orderHeader.OrderDate" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Payment Status</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.PaymentStatus" readonly class="form-control" />
 											<span asp-validation-for="orderHeader.PaymentStatus" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Payment Date</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.PaymentDate" readonly class="form-control" />
 											<span asp-validation-for="orderHeader.PaymentDate" class="text-danger"></span>
 										</div>
 									</div>
 
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Session Id</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.SessionId" readonly class="form-control" />
 											<span asp-validation-for="orderHeader.SessionId" class="text-danger"></span>
 										</div>
 									</div>
 									<div class="row my-1">
-										<div class="col-3">
+										<div class="col-4">
 											<label>Payment Intent Id</label>
 										</div>
-										<div class="col-9">
+										<div class="col-8">
 											<input asp-for="orderHeader.PaymentIntentId" readonly class="form-control" />
 											<span asp-validation-for="orderHeader.PaymentIntentId" class="text-danger"></span>
 										</div>
 									</div>
-									<button id="update-shipping" class="btn btn-primary">Update Shipping Detail</button>
+									<button id="update-shipping" class="btn btn-primary col-12">Update Shipping Detail</button>
 								</div>
 								<div class="col-12 col-lg-5 offset-lg-1">
 									<h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -215,3 +207,5 @@
 		</div>
 	</div>
 </form>
+<script src="~/js/order/customer/order.js" defer></script>
+	

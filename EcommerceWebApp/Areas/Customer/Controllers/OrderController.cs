@@ -68,18 +68,28 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			OrderHeader orderHeaderFromDb = _unitOfWork.OrderHeader.Get(
 				u => u.OrderHeaderId == order.orderHeader.OrderHeaderId);
 
-			orderHeaderFromDb.Name = order.orderHeader.AppUser.Name;
-			orderHeaderFromDb.PhoneNumber = order.orderHeader.AppUser.PhoneNumber;
-			orderHeaderFromDb.HomeNumber = order.orderHeader.AppUser.HomeNumber;
-			orderHeaderFromDb.StreetName = order.orderHeader.AppUser.StreetName;
-			orderHeaderFromDb.Village = order.orderHeader.AppUser.Village;
-			orderHeaderFromDb.Commune = order.orderHeader.AppUser.Commune;
-			orderHeaderFromDb.City = order.orderHeader.AppUser.City;
-			orderHeaderFromDb.PostalNumber = order.orderHeader.AppUser.PostalNumber;
+			orderHeaderFromDb.Name = order.orderHeader.Name;
+			orderHeaderFromDb.PhoneNumber = order.orderHeader.PhoneNumber;
+			orderHeaderFromDb.HomeNumber = order.orderHeader.HomeNumber;
+			orderHeaderFromDb.StreetName = order.orderHeader.StreetName;
+			orderHeaderFromDb.Village = order.orderHeader.Village;
+			orderHeaderFromDb.Commune = order.orderHeader.Commune;
+			orderHeaderFromDb.City = order.orderHeader.City;
+			orderHeaderFromDb.PostalNumber = order.orderHeader.PostalNumber;
 
 			_unitOfWork.OrderHeader.Update(orderHeaderFromDb);
 
-            return Json(new { "success" = true });
+            return Json( new { 
+                success = true,
+                name = orderHeaderFromDb.Name,
+                phnomeNumber = orderHeaderFromDb.PhoneNumber,
+                homenumber = orderHeaderFromDb.HomeNumber,
+                streetNumber = orderHeaderFromDb.StreetName,
+                village = orderHeaderFromDb.Village,
+				commune = orderHeaderFromDb.Commune,
+                city = orderHeaderFromDb.City,
+                postalNumber = orderHeaderFromDb.PostalNumber
+			});
         }
     }
 }
