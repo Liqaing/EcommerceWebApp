@@ -13,9 +13,6 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        
-        [BindProperty]
-        public OrderVM order { get; set; }
 
 		public OrderController(IUnitOfWork unitOfWork)
         {
@@ -36,7 +33,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         public IActionResult Detail(int orderId)
         {
 
-            order = new()
+            OrderVM order = new()
             {
                 orderHeader = _unitOfWork.OrderHeader.Get(
                     order => order.OrderHeaderId == orderId,
@@ -51,10 +48,10 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        public IActionResult Pay()
+        public IActionResult Pay(OrderHeader orderHeader)
         {	
 			SessionService service = new SessionService();
-            Session session = service.Get(order.orderHeader.SessionId);
+            Session session = service.Get(orderHeader.SessionId);
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
@@ -62,23 +59,23 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
         [HttpPost]
         [Route("/customer/api/order/updateshipping")]
-        public IActionResult UpdateShipping()
+        public IActionResult UpdateShipping(OrderHeader orderHeader)
         {
 			// Update order header, only if he paid
 			OrderHeader orderHeaderFromDb = _unitOfWork.OrderHeader.Get(
-				u => u.OrderHeaderId == order.orderHeader.OrderHeaderId);
+				u => u.OrderHeaderId == orderHeader.OrderHeaderId);
 
-			orderHeaderFromDb.Name = order.orderHeader.Name;
-			orderHeaderFromDb.PhoneNumber = order.orderHeader.PhoneNumber;
-			orderHeaderFromDb.HomeNumber = order.orderHeader.HomeNumber;
-			orderHeaderFromDb.StreetName = order.orderHeader.StreetName;
-			orderHeaderFromDb.Village = order.orderHeader.Village;
-			orderHeaderFromDb.Commune = order.orderHeader.Commune;
-			orderHeaderFromDb.City = order.orderHeader.City;
-			orderHeaderFromDb.PostalNumber = order.orderHeader.PostalNumber;
+			orderHeaderFromDb.Name = orderHeader.Name;
+			orderHeaderFromDb.PhoneNumber = orderHeader.PhoneNumber;
+			orderHeaderFromDb.HomeNumber = orderHeader.HomeNumber;
+			orderHeaderFromDb.StreetName = orderHeader.StreetName;
+			orderHeaderFromDb.Village = orderHeader.Village;
+			orderHeaderFromDb.Commune = orderHeader.Commune;
+			orderHeaderFromDb.City = orderHeader.City;
+			orderHeaderFromDb.PostalNumber = orderHeader.PostalNumber;
 
 			_unitOfWork.OrderHeader.Update(orderHeaderFromDb);
-
+            _unitOfWork.Save();
             return Json( new { 
                 success = true,
                 name = orderHeaderFromDb.Name,
