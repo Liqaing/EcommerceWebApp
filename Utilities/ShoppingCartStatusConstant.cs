@@ -8,7 +8,7 @@ namespace EcommerceWebAppProject.Utilities
 {
     public static class ShoppingCartStatusConstant
     {
-        public const string StatusActive = "active";
+        public const string StatusActive = "Active";
         public const string StatusOrder = "Ordered";
     }
 }

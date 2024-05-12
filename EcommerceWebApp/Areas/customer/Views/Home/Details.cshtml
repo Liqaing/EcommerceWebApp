@@ -1,8 +1,13 @@
 ﻿@model ShoppingCart
 
-<form method="post">
+<form id="form" method="POST">
     <input asp-for="@Model.productId" hidden/>
-    <input name="productName" value="@Model.product.ProName" hidden/>
+    <input asp-for="@Model.MaxQuantity" hidden />
+    <!--
+    <input name="productName" value="Model.product.ProName" hidden />
+
+    -->
+    
 
     <div class="container">
         <div class="card">
@@ -32,7 +37,7 @@
                                         <button id="add-to-card" class="btn btn-primary" type="submit">Add To Cart</button>
                                     </div>
                                 </div>
-                            }                            
+                            }   
                         </div>
                     </div>
                 </div>
@@ -40,3 +45,9 @@
         </div>
     </div>
 </form>
+
+
+@section Scripts {
+       <script src="~/js/home/customer/add-to-cart.js"></script>
+}
+

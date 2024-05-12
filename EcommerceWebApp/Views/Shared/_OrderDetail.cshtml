@@ -165,7 +165,9 @@
 											<span asp-validation-for="orderHeader.PaymentIntentId" class="text-danger"></span>
 										</div>
 									</div>
-									@if (this.User.IsInRole(RoleConstant.Role_Customer) && Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending)
+									@if (this.User.IsInRole(RoleConstant.Role_Customer) && 
+										Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending && 
+										Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusPending)
 									{
 										<button id="update-shipping" class="btn btn-primary col-12">Update Shipping Detail</button>
 									}
@@ -195,12 +197,14 @@
 									</ul>
 
 
-									@if(this.User.IsInRole(RoleConstant.Role_Customer) && Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending)
+									@if(this.User.IsInRole(RoleConstant.Role_Customer) && 
+										Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending &&
+										Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusPending)
 									{
 										<!-- When not pay yet, display paynow and cancel button -->
 										<div class="btn-group d-flex flex-column">
 											<button asp-action="Pay" class="btn btn-primary mb-2 rounded">Pay Now</button>
-											<button class="btn btn-danger rounded">Cancel Order</button>
+											<button asp-action="Cancel" class="btn btn-danger rounded">Cancel Order</button>
 										</div>
 									}									
 								</div>

@@ -32,15 +32,18 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         [HttpGet]	
 		public IActionResult Details(int proId)
 		{
+            Product product = _unitOfWork.Product.Get(u => u.ProductId == proId);
+
             ShoppingCart cart = new()
             {
                 product = _unitOfWork.Product.Get(pro => pro.ProductId == proId,
                 includeProperties: "Category"),
 
                 productId = proId,
-                quantity = 1
+                quantity = 1,
+                MaxQuantity = product.Quantity,
             };
-			
+            
 			return View(cart);
 		}		
 
@@ -58,23 +61,34 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         #region api
 
         [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
+        [Authorize]       
         [Route("/customer/api/cart/add")]
-        public IActionResult Details(ShoppingCart cart)
+        public IActionResult AddCart(int proId, int quantity)
         {
             // Check if product have enough quantity for order
-            Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
+            Product product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
 
-            if (cart.quantity > product.Quantity)
+            if (quantity > product.Quantity)
             {
-                return Json(new { success = false, message = $"Sorry, we could provide quatity: {cart.quantity} at the moment" });
+                /*
+                TempData["warning"] = $"Sorry, we could provide quatity: {cart.quantity} at the moment";
+                return RedirectToAction(nameof(Details), new { proId = product.ProductId });
+                */
+                return Json(new { success = false, message = $"Sorry, we could provide quatity: {quantity} at the moment" });
             }
 
             // Get user id
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            cart.appUserId = userId;
+            ShoppingCart cart = new ShoppingCart
+            {               
+                productId = proId,
+                quantity = quantity,
+                appUserId = userId,
+                unitPrice = product.Price,
+                totalPrice = ShoppingCartUtils.GetTotalPrice(quantity, product.Price),
+                shoppingCartStatus = ShoppingCartStatusConstant.StatusActive
+            };
 
             ShoppingCart cartInDb = _unitOfWork.ShoppingCart.Get(
                 c => c.productId == cart.productId &&
@@ -84,26 +98,22 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             if (cartInDb == null)
             {
-                // Shopping cart for that user and product is not exist in the db                
-                cart.unitPrice = product.Price;
-                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, cart.unitPrice);
-                cart.shoppingCartStatus = ShoppingCartStatusConstant.StatusActive;
+                // Shopping cart for that user and product is not exist in the db                                
                 _unitOfWork.ShoppingCart.Add(cart);
             }
             else
             {
-                // Update qauntity in cart
-                cart.unitPrice = product.Price;
+                // Update qauntity in cart                
                 cartInDb.quantity += cart.quantity;
-                cartInDb.totalPrice = new ShoppingCartUtils().GetTotalPrice(cartInDb);
+                cartInDb.totalPrice = ShoppingCartUtils.GetTotalPrice(cartInDb);
                 _unitOfWork.ShoppingCart.Update(cartInDb);
             }
 
             _unitOfWork.Save();
 
-            //TempData["Success"] = $"You have added {cart.quantity} {productName} to the shopping cart";
+            //TempData["Success"] = $"You have added {cart.quantity} {product.ProName} to the shopping cart";
 
-            return Json(new { success = false, message = $"You have added {cart.quantity} {product.ProName} to the shopping cart" });
+            return Json(new { success = true, message = $"You have added {cart.quantity} {product.ProName} to the shopping cart" });
             //return RedirectToAction(nameof(Index));
         }
 

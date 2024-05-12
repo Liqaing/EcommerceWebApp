@@ -41,14 +41,12 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             };
 
             // Calculate total price of the cart
-            //calculateCartPrice(shoppingCartVM);
-
             foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
             {
                 if (cart.unitPrice != cart.product.Price)
                 {
                     cart.unitPrice = cart.product.Price;
-                    cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart);
+                    cart.totalPrice = ShoppingCartUtils.GetTotalPrice(cart);
                 }
                 shoppingCartVM.orderHeader.OrderTotal += cart.totalPrice;
             }
@@ -56,11 +54,40 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             return View(shoppingCartVM);
         }
 
-        [HttpGet]
-        public IActionResult Summary()
+        [HttpPost]
+        public IActionResult Checkout()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            // Check if product that user have in cart is in stock
+            IEnumerable<ShoppingCart> carts = _unitOfWork.ShoppingCart.GetAll(
+                    cart => cart.appUserId == userId &&
+                    cart.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive,
+                    includeProperties: "product"
+                );
+
+            if (carts.Count() == 0)
+            {                
+                return Json(new { success = false, msg = "Sorry, you don't have any item in your shopping cart" });
+            }
+
+            foreach (ShoppingCart cart in carts)
+            {
+                if (cart.quantity > cart.product.Quantity)
+                {
+                    return Json(new { success = false, msg = $"Sorry, we don't have enough {cart.quantity} quantity to offer for product: {cart.product.ProName}" });
+                }
+            }
+
+            return Json(new { success = true });
+        }
+
+        [HttpGet]
+        //[HttpPost]
+        public IActionResult Summary()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
             shoppingCartVM = new()
             {
                 shoppingCarts = _unitOfWork.ShoppingCart.GetAll(
@@ -69,10 +96,13 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                     includeProperties: "product.Category"),
                 orderHeader = new OrderHeader()
             };
+            
 
             if (shoppingCartVM.shoppingCarts.Count() == 0)
             {
-                return RedirectToAction("Index");
+
+                return RedirectToAction(nameof(Index));
+                //return Json(new { success = false, msg = "Sorry, you don't have any item in your shopping cart" });
             }
 
             // Add user to order header
@@ -87,19 +117,24 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             shoppingCartVM.orderHeader.PostalNumber = shoppingCartVM.orderHeader.AppUser.PostalNumber;
 
 			// Calculate total price of the cart
-			//calculateCartPrice(shoppingCartVM);           
-
+			// Checking if we have enough product
 			foreach (ShoppingCart cart in shoppingCartVM.shoppingCarts)
 			{
+                if (cart.quantity > cart.product.Quantity)
+                {
+                    return RedirectToAction(nameof(Index));
+                    //return Json(new { success = false, msg=$"Sorry, we don't have enough {cart.quantity} quantity to offer for product: {cart.product.ProName}"});
+                }
+
 				shoppingCartVM.orderHeader.OrderTotal += cart.totalPrice;
 			}
 
-			return View(shoppingCartVM);
-        }
+            return View(shoppingCartVM);
+            //return RedirectToAction(nameof(Checkout));
+            //return Json(new { success = true });
+        }       
 
-		
-
-		[HttpPost]
+        [HttpPost]
         public IActionResult Minus(int cartId)
         {
             ShoppingCart cart = _unitOfWork.ShoppingCart.Get(
@@ -113,7 +148,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             {
                 cart.unitPrice = cart.product.Price;
                 cart.quantity -= 1;
-                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart);
+                cart.totalPrice = ShoppingCartUtils.GetTotalPrice(cart);
 
                 _unitOfWork.ShoppingCart.Update(cart);
             }
@@ -130,7 +165,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
             cart.unitPrice = cart.product.Price;
             cart.quantity += 1;
-            cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart);
+            cart.totalPrice = ShoppingCartUtils.GetTotalPrice(cart);
 
             _unitOfWork.ShoppingCart.Update(cart);
             _unitOfWork.Save();
@@ -182,6 +217,13 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
                 // Order Heander
 				shoppingCartVM.orderHeader.OrderTotal += cart.totalPrice;
+
+
+                // Update product quantity
+                EcommerceWebAppProject.Models.Product product = _unitOfWork.Product.Get(
+                    u => u.ProductId == cart.productId);
+                product.Quantity -= cart.quantity;
+                _unitOfWork.Product.Update(product);
             }
 
 			// Save order header

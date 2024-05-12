@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace EcommerceWebAppProject.Models
 {
@@ -31,5 +32,8 @@ namespace EcommerceWebAppProject.Models
         public double totalPrice { get; set; }
     
         public string shoppingCartStatus { get; set; }
+
+        [NotMapped]
+        public int MaxQuantity { get; set; }
     }
 }
