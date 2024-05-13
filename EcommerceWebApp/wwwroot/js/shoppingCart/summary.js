@@ -29,6 +29,7 @@ $(document).ready(function () {
 });
 */
 
+
 $(document).ready(function () {
 
     let isCancel = false;
@@ -57,8 +58,9 @@ $(document).ready(function () {
     });
     */
 
-    const form = document.querySelector("#form");
-    form.addEventListener("submit", (e) => {
+
+    const form = $("#form");
+    form.submit((e) => {
         e.preventDefault();
         Swal.fire({
             title: "Do you want to place an order?",
@@ -70,14 +72,14 @@ $(document).ready(function () {
             cancelButtonColor: "#A8A8A8",
             reverseButtons: true
         })
-        .then(function (result) {
-            if (result.isConfirmed) {
-                form.submit();
-            }
-            else {
-                return false;
-            }
-        });
+            .then(function (result) {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+                else {
+                    return false;
+                }
+            });
     });
 
 });

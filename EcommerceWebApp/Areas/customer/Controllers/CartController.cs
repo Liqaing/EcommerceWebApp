@@ -190,6 +190,12 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         [ActionName("Summary")]
 		public IActionResult SummaryPOST()
 		{
+            if (!ModelState.IsValid)
+            {
+                TempData["warning"] = "Sorry, the information you provided is not valid";
+                return RedirectToAction(nameof(Summary));
+            }
+
 			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 			shoppingCartVM.shoppingCarts = _unitOfWork.ShoppingCart.GetAll(
