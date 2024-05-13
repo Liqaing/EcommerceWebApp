@@ -13,8 +13,9 @@ namespace EcommerceWebAppProject.Models
     {
         [Key]
         public int OrderHeaderId { get; set; }
-
-        public string AppUserId { get; set; }
+		
+        [ValidateNever]
+		public string AppUserId { get; set; }
         [ValidateNever]
         [ForeignKey(nameof(AppUserId))]
         public AppUser AppUser { get; set; }

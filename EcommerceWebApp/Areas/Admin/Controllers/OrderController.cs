@@ -41,8 +41,42 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             return View(order);
         }
 
-        #region api
-        [HttpGet]
+		[HttpPost]
+		public IActionResult Cancel(OrderHeader orderHeader)
+		{
+			// Cancel placed order
+			if (orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusCancelled ||
+				orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusForceCancelled)
+			{
+				TempData["warning"] = $"The order #{orderHeader.OrderHeaderId} is already cancelled";
+				return RedirectToAction(nameof(Index));
+			}
+
+			// Update status
+			_unitOfWork.OrderHeader.UpdateStatus(
+				orderHeader.OrderHeaderId,
+				OrderAndPaymentStatusConstate.StatusForceCancelled);
+
+			// Add quantity back to product
+			IEnumerable<OrderDetail> orderDetails = _unitOfWork.OrderDetail.GetAll(
+				u => u.OrderHeaderId == orderHeader.OrderHeaderId,
+				includeProperties: "Product"
+				);
+
+			foreach (OrderDetail orderDetail in orderDetails)
+			{
+				orderDetail.Product.Quantity += orderDetail.Quantity;
+				_unitOfWork.Product.Update(orderDetail.Product);
+			}
+
+			_unitOfWork.Save();
+
+			TempData["success"] = $"The order #{orderHeader.OrderHeaderId} is successfully cancelled";
+			return RedirectToAction(nameof(Index));
+		}
+
+		#region api
+		[HttpGet]
         [Route("Admin/api/order/all")]
         public IActionResult GetAll()
         {

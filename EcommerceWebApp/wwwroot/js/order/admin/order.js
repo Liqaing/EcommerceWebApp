@@ -37,7 +37,7 @@ $.ajax({
                     render: function (data) {
                         return `
                         <div class="btn-group d-flex" role="group">
-                            <a href="/Admin/Order/Detail?orderId=${data}" class="btn btn-primary mx-1 w-50 rounded">Edit</a>                            
+                            <a href="/Admin/Order/Detail?orderId=${data}" class="btn btn-primary mx-1 w-50 rounded">View</a>                            
                         </div>
                     `
                     },

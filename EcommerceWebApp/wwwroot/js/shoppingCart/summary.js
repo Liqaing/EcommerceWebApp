@@ -32,7 +32,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 
-    let isCancel = false;
+    //let isCancel = false;
 
     // Alert and handle cancel
     /*
@@ -58,10 +58,21 @@ $(document).ready(function () {
     });
     */
 
-
-    const form = $("#form");
-    form.submit((e) => {
+    const form = document.querySelector("#form"); 
+    form.addEventListener("submit", (e) => {   
         e.preventDefault();
+        if (!(
+            $("#orderHeader_Name").val() &&
+            $("#orderHeader_PhoneNumber").val() &&
+            $("#orderHeader_HomeNumber").val() &&
+            $("#orderHeader_StreetName").val() &&
+            $("#orderHeader_Village").val() &&
+            $("#orderHeader_Commune").val() &&
+            $("#orderHeader_PostalNumber").val()
+        )) {
+            return false;
+        }
+
         Swal.fire({
             title: "Do you want to place an order?",
             text: "You will be taken to payment page!",
@@ -72,14 +83,13 @@ $(document).ready(function () {
             cancelButtonColor: "#A8A8A8",
             reverseButtons: true
         })
-            .then(function (result) {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-                else {
-                    return false;
-                }
-            });
-    });
-
+        .then(function (result) {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+            else {
+                return false;
+            }
+        });
+    })
 });

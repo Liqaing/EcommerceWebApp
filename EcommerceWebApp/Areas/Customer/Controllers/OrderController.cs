@@ -97,7 +97,8 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             // Check what place order do and revert that
 
 
-            if (orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusCancelled)
+            if (orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusCancelled ||
+				orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusForceCancelled)
             {
                 TempData["warning"] = $"Your order #{orderHeader.OrderHeaderId} is already cancelled";
                 return RedirectToAction(nameof(Index));

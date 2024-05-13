@@ -15,7 +15,8 @@ namespace EcommerceWebAppProject.Utilities
 		public const string StatusDelivered = "Delivered";
 
 		public const string StatusCancelled = "Cancelled";
-		
+		public const string StatusForceCancelled = "Administration cancelled";
+
 		public const string StatusRefunded = "Refunded";
 
 		// public const string StatusDelivering = "Delivering";
