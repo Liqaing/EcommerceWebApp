@@ -1,0 +1,114 @@
+﻿@model UserVM
+
+<div class="container">
+    <div class="row">
+        <h2> "Update Account" </h2>
+    </div>
+
+    <div class="row">
+        <form  method="post">
+
+            <input asp-for="@Model.appUser.Id" hidden />
+
+            <div class="form-group mb-2">
+                <input asp-for="@Model.appUser.Name" class="form-control" placeholder="exam@gmail.com" autocomplete="username" aria-required="true" />
+                <label asp-for="@Model.appUser.Name"></label>
+                <span asp-validation-for="@Model.appUser.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <input asp-for="@Model.appUser.Email" class="form-control" placeholder="exam@gmail.com" autocomplete="username" aria-required="true" />
+                <label asp-for="@Model.appUser.Email"></label>
+                <span asp-validation-for="@Model.appUser.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="@Model.appUser.roleId">Category:</label>
+                <select asp-for="@Model.appUser.roleId" asp-items="@Model.RoleList" class="form-select" id="Role" required>
+                    <option disabled selected>--Select Role--</option>
+                </select>
+                <span asp-validation-for="@Model.appUser.roleId" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating my-2">
+                <input asp-for="@Model.appUser.PhoneNumber" class="form-control" placeholder="Phone Number" aria-required="true" />
+                <label asp-for="@Model.appUser.PhoneNumber">Phone Number</label>
+                <span asp-validation-for="@Model.appUser.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="@Model.appUser.HomeNumber" class="form-control" placeholder="Home Number" />
+                <label asp-for="@Model.appUser.HomeNumber" class="pr-2">Home Number</label>
+                <span asp-validation-for="@Model.appUser.HomeNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="@Model.appUser.StreetName" class="form-control" placeholder="Street Name" />
+                <label asp-for="@Model.appUser.StreetName">Street Name</label>
+                <span asp-validation-for="@Model.appUser.StreetName" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-floating my-2">
+                <input asp-for="@Model.appUser.Village" class="form-control" placeholder="Village" />
+                <label asp-for="@Model.appUser.Village"></label>
+                <span asp-validation-for="@Model.appUser.Village" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="@Model.appUser.Commune" class="form-control" placeholder="Commune" />
+                <label asp-for="@Model.appUser.Commune"></label>
+                <span asp-validation-for="@Model.appUser.Commune" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating my-2">
+                <input asp-for="@Model.appUser.City" class="form-control" placeholder="City" />
+                <label asp-for="@Model.appUser.City"></label>
+                <span asp-validation-for="@Model.appUser.City" class="text-danger"></span>
+            </div>
+            <div class="form-floating my-2">
+                <input asp-for="@Model.appUser.PostalNumber" class="form-control" placeholder="Postal Number" />
+                <label asp-for="@Model.appUser.PostalNumber">Postal Number</label>
+                <span asp-validation-for="@Model.appUser.PostalNumber" class="text-danger"></span>
+            </div>
+
+            <!-- Add more fields as needed -->
+            <!-- Additional Space -->
+            <div class="mb-3"></div>
+
+            <div class="row">
+                <div class="col-4 col-md-2">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+                </div>
+                <div class="col-4 col-md-3">                    
+                    <button type="submit" class="btn btn-primary form-control">Update Account</button>                    
+                </div>
+                <div class="col-4 col-md-3">
+                    @if (Model.appUser.LockoutEnd > DateTime.Now)
+                    {
+                        <button type="submit" asp-action="LockUnlock" class="btn btn-primary form-control">Uplocked Account</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary form-control">Uplocked Account</button>
+                    }
+                </div>
+                <div class="col-4 col-md-3">
+                    <button type="submit" class="btn btn-danger form-control">Delete Account</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    
+
+</div>
+
+@section Scripts {
+ 
+    <script></script>
+    
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+}

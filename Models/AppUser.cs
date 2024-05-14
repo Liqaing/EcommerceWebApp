@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,5 +20,11 @@ namespace EcommerceWebAppProject.Models
 		public string? Commune { get; set; }
 		public string? City { get; set; }
 		public string? PostalNumber { get; set; }
-	}
+
+		[NotMapped]
+		public string role { get; set; }
+        [NotMapped]
+        public string roleId { get; set; }
+
+    }
 }

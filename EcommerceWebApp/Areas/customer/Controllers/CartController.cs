@@ -337,8 +337,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
                     OrderAndPaymentStatusConstate.StatusApproved,
                     OrderAndPaymentStatusConstate.PaymentStatusApproved);			                
 
-                TempData["success"] = $"Your order #{orderHeader.OrderHeaderId} is successfully placed";
-                
+                TempData["success"] = $"Your order #{orderHeader.OrderHeaderId} is successfully placed";                
             }
             else
             {
@@ -350,9 +349,10 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
 				TempData["warning"] = $"Please proceed with the payment for order #{orderHeader.OrderHeaderId}";
 			}
-
-			_unitOfWork.Save();
-			return RedirectToAction(nameof(Index), "Order", new { area = "Customer"});
+            
+            _unitOfWork.Save();
+            HttpContext.Session.Clear();
+            return RedirectToAction(nameof(Index), "Order", new { area = "Customer"});
         }
 
         #region api

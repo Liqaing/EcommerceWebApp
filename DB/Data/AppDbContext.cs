@@ -16,6 +16,7 @@ namespace EcommerceWebAppProject.DB.Data
         public DbSet<Category> Category { get; set; }
 		public DbSet<Product> Product { get; set; }
 		public DbSet<AppUser> AppUser { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
         public DbSet<OrderHeader> OrderHeader { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }

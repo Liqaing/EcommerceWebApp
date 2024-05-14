@@ -42,7 +42,7 @@
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">About</a>
                         </li>
 
-                        @if (User.IsInRole(RoleConstant.Role_Admin))
+                        @if (User.IsInRole(RoleConstant.Role_Admin) || User.IsInRole(RoleConstant.Role_Sale_Employee) || User.IsInRole(RoleConstant.Role_Delivery_Employee))
                         {
 
                             <li class="nav-item dropdown">
@@ -53,6 +53,13 @@
                                     <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="dropdown-item text-dark">Category</a>
                                     <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="dropdown-item text-dark">Product</a>
                                     <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="dropdown-item text-dark">Order</a>
+                                    <a asp-area="Admin" asp-controller="Account" asp-action="Index" class="dropdown-item text-dark">Accounts</a>
+
+                                    @if (User.IsInRole(RoleConstant.Role_Admin))
+                                    {
+                                        <a asp-area="Identity" asp-page="/Account/Register" class="dropdown-item text-dark">Create Accounts</a>
+
+                                    }
                                 </div>
                             </li>
                         }

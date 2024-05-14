@@ -31,7 +31,7 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<UserRole> _roleManager;
         private readonly IUserStore<AppUser> _userStore;
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -39,7 +39,7 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
 
         public RegisterModel(
             UserManager<AppUser> userManager,
-			RoleManager<IdentityRole> roleManager,
+			RoleManager<UserRole> roleManager,
 			IUserStore<AppUser> userStore,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -131,9 +131,10 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
             // If role admin not exist, then create all other role
             if (await _roleManager.RoleExistsAsync(RoleConstant.Role_Admin) == false)
             {
-                await _roleManager.CreateAsync(new IdentityRole(RoleConstant.Role_Admin));
-                await _roleManager.CreateAsync(new IdentityRole(RoleConstant.Role_Employee));
-				await _roleManager.CreateAsync(new IdentityRole(RoleConstant.Role_Customer));                
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Admin));
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Sale_Employee));
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Delivery_Employee));
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Customer));                
 			}
 
             Input = new()
@@ -184,7 +185,15 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, RoleConstant.Role_Customer);
+                        // Check if there is any user in db, if not create admin account as first
+                        if (!_userManager.Users.Any())
+                        {
+                            await _userManager.AddToRoleAsync(user, RoleConstant.Role_Customer);
+                        }
+                        else
+                        {
+                            await _userManager.AddToRoleAsync(user, RoleConstant.Role_Admin);
+                        }
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -205,7 +214,14 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(RoleConstant.Role_Admin))
+                        {
+                            TempData["success"] = "New Account have created successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }
