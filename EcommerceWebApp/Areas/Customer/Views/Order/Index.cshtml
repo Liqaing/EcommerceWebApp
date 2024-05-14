@@ -20,22 +20,41 @@
                 </div>
             </div>
 
-            @foreach (OrderHeader order in Model)
+            <!-- 
+            foreach (OrderHeader order in Model)
             {
-                <div class="card rounded-3 mb-4">
-                    <div class="card-body p-4">
-                        <div>                                
-                            <p class="lead fw-normal mb-2">Order Id: @order.OrderHeaderId</p>
-                            <p class="mb-0"><span class="text-muted">Payment Status:</span> @order.PaymentStatus</p>
-                            <p class="mb-0"><span class="text-muted">Order Status:</span> @order.OrderStatus</p>
-                            <p class="mb-0"><span class="text-muted">Total Price:</span> @order.OrderTotal.ToString("c")</p>
-                            <a asp-action="Detail" asp-route-orderId="@order.OrderHeaderId" class="btn btn-primary mt-2">
-                                View Order Detail
-                            </a>   
+                    <div class="card rounded-3 mb-4">
+                        <div class="card-body p-4">
+                            <div>
+                                <p class="lead fw-normal mb-2">Order Id: order.OrderHeaderId</p>
+                                <p class="mb-0"><span class="text-muted">Payment Status:</span> order.PaymentStatus</p>
+                                <p class="mb-0"><span class="text-muted">Order Status:</span> order.OrderStatus</p>
+                                <p class="mb-0"><span class="text-muted">Total Price:</span> order.OrderTotal.ToString("c")</p>
+                                <a asp-action="Detail" asp-route-orderId="order.OrderHeaderId" class="btn btn-primary mt-2">
+                                    View Order Detail
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
             }
+            -->
+            <div class="table-responsive">
+                <table id="orderTb" class="table table-striped w-100">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Id</th>
+                            <th class="text-center">Payment Status</th>
+                            <th class="text-center">Order Status</th>
+                            <th class="text-center">Order Total</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/order/customer/Index.js"></script>
+}

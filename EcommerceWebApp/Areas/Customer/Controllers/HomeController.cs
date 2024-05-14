@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using EcommerceWebAppProject.Utilities;
+using Microsoft.AspNetCore.Http;
 
 namespace EcommerceWebApp.Areas.Customer.Controllers
 {
@@ -25,6 +26,16 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(userId != null)
+            {
+                HttpContext.Session.SetInt32(OrderAndPaymentStatusConstate.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.appUserId == userId &&
+                    u.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive).Count());
+            }
+
             IEnumerable<Category> categories = _unitOfWork.Category.GetAll(includeProperties: "Products");
             return View(categories);
         }
@@ -100,6 +111,11 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             {
                 // Shopping cart for that user and product is not exist in the db                                
                 _unitOfWork.ShoppingCart.Add(cart);
+
+                // Add product count to session
+                HttpContext.Session.SetInt32(OrderAndPaymentStatusConstate.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.appUserId == userId &&
+                    u.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive).Count());
             }
             else
             {

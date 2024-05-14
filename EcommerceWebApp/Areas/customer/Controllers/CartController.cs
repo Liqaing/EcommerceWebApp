@@ -154,6 +154,11 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             }
             _unitOfWork.Save();
 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            HttpContext.Session.SetInt32(OrderAndPaymentStatusConstate.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.appUserId == userId &&
+                    u.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive).Count());
+
             return Json(new { complete = true });
         }
 
@@ -182,6 +187,11 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
             _unitOfWork.ShoppingCart.Delete(cart);
             _unitOfWork.Save();
 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            HttpContext.Session.SetInt32(OrderAndPaymentStatusConstate.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.appUserId == userId &&
+                    u.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive).Count());
+            
             return Json(new { complete = true });
         }
 

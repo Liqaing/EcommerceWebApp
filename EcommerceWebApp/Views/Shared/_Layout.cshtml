@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 @{
     ViewData["Title"] = "Taobao 2.0";
@@ -57,10 +60,9 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                    <i class="bi bi-cart-check"></i> Cart (0)
+                                    @await Component.InvokeAsync("ShoppingCartCount")
                                 </a>
-                            </li>
-
+                            </li>                                                       
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Customer" asp-controller="Order" asp-action="Index">
                                     <i class="bi bi-wallet"></i> Order

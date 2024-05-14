@@ -22,12 +22,20 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        [Route("/api/customer/order")]
+        public IActionResult GetAll()
+        {
             string appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             IEnumerable<OrderHeader> orderHeaderList = _unitOfWork.OrderHeader.GetAll(
                 order => order.AppUserId == appUserId);
-            
-            return View(orderHeaderList.OrderByDescending(order => order.OrderHeaderId));
+
+            orderHeaderList.OrderByDescending(order => order.OrderHeaderId);
+
+            return Json(new { data = orderHeaderList });
         }
 
         [HttpGet]
