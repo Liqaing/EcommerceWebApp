@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using EcommerceWebAppProject.Utilities;
 using Stripe;
+using EcommerceWebAppProject.DB.Dbinitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddIdentity<AppUser, UserRole>(options => options.SignIn.Requir
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 */
+
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(opt =>
@@ -79,6 +82,7 @@ app.UseRouting();
 app.UseAuthentication();;
 app.UseAuthorization();
 app.UseSession();
+SeedDb();
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
@@ -87,3 +91,14 @@ app.MapControllerRoute(
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.Run();
+
+
+// Get implementation of dbinitializer from service provider and initialize
+void SeedDb()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}

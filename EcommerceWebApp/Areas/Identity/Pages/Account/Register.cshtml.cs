@@ -128,14 +128,7 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            // If role admin not exist, then create all other role
-            if (await _roleManager.RoleExistsAsync(RoleConstant.Role_Admin) == false)
-            {
-                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Admin));
-                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Sale_Employee));
-                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Delivery_Employee));
-                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Customer));                
-			}
+            
 
             Input = new()
             {
@@ -185,15 +178,7 @@ namespace EcommerceWebApp.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        // Check if there is any user in db, if not create admin account as first
-                        if (!_userManager.Users.Any())
-                        {
-                            await _userManager.AddToRoleAsync(user, RoleConstant.Role_Customer);
-                        }
-                        else
-                        {
-                            await _userManager.AddToRoleAsync(user, RoleConstant.Role_Admin);
-                        }
+                        await _userManager.AddToRoleAsync(user, RoleConstant.Role_Customer);
                     }
 
                     var userId = await _userManager.GetUserIdAsync(user);
