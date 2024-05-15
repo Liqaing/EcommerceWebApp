@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing.Printing;
 
 namespace EcommerceWebApp.Areas.Admin.Controllers
 {
@@ -122,6 +123,12 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             };
 
             return View(userVM);
+        }
+
+        [HttpPost]
+        public IActionResult Update(AppUser appUser)
+        {
+
         }
 
         [HttpPost]
