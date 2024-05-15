@@ -22,9 +22,9 @@ namespace EcommerceWebAppProject.Models
 		public string? PostalNumber { get; set; }
 
 		[NotMapped]
-		public string role { get; set; }
+		public string? role { get; set; }
         [NotMapped]
-        public string roleId { get; set; }
+        public string? roleId { get; set; }
 
     }
 }

@@ -129,9 +129,17 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         public IActionResult Update(AppUser appUser)
         {
             AppUser userFromDb = _unitOfWork.AppUser.Get(u => u.Id == appUser.Id);
+            userFromDb.roleId = _appDbContext.UserRoles.Where(u => u.UserId == userFromDb.Id).FirstOrDefault().RoleId;
+            userFromDb.role = _unitOfWork.Role.Get(u => u.Id == userFromDb.roleId).Name;
 
             if (userFromDb == null) {
                 TempData["warning"] = "Error while updating user";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (userFromDb.role == RoleConstant.Role_Customer)
+            {
+                TempData["warning"] = "You cannot edit the details of customer";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -140,11 +148,18 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
                 userFromDb.Name = appUser.Name;
             }
 
-            if (appUser.roleId != null)
+            if (appUser.roleId != null && appUser.roleId != userFromDb.roleId)
             {
-                var userRole = _appDbContext.UserRoles.Where(u => u.UserId == userFromDb.Id).FirstOrDefault();
-                userRole.RoleId = appUser.roleId;
-                _appDbContext.UserRoles.Update(userRole);
+                var userRole = _appDbContext.UserRoles.Where(u => u.UserId == userFromDb.Id).FirstOrDefault();                
+                _appDbContext.UserRoles.Remove(userRole);
+
+                IdentityUserRole<string> identityUserRole = new()
+                {
+                    UserId = appUser.Id,
+                    RoleId = appUser.roleId
+                };
+                _appDbContext.UserRoles.Add(identityUserRole);
+
                 _appDbContext.SaveChanges();
             }
 
@@ -181,6 +196,23 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             _unitOfWork.Save();
             //return Json(new {succes=true, msg = $"User {state} successfully"});
             TempData["success"] = $"User {state} successfully";
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Delete(AppUser appUser)
+        {
+            AppUser userFromDb = _unitOfWork.AppUser.Get(u => u.Id == appUser.Id);
+            if (userFromDb == null)
+            {
+                TempData["warning"] = "Error while deleting user";
+                return RedirectToAction(nameof(Index));
+            }
+
+            _unitOfWork.AppUser.Delete(userFromDb);
+            _unitOfWork.Save();
+
+            TempData["success"] = $"User {userFromDb.Name} deleted successfully";
             return RedirectToAction(nameof(Index));
         }
         #endregion

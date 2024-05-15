@@ -1,5 +1,15 @@
 ﻿@model UserVM
 
+@{
+    // If order is not yet paid, then set input to read only
+    string? readOnly = null;
+    if (Model.appUser.role == RoleConstant.Role_Customer)
+    {        
+        readOnly = "readonly" ;
+    }
+
+}
+
 <div class="container">
     <div class="row">
         <h2> "Update Account" </h2>
@@ -11,62 +21,62 @@
             <input asp-for="@Model.appUser.Id" hidden />
 
             <div class="form-floating mb-2">
-                <input asp-for="@Model.appUser.Name" class="form-control" placeholder="Your Name" autocomplete="username" aria-required="true" />
+                <input asp-for="@Model.appUser.Name" class="form-control" placeholder="Your Name" autocomplete="username" aria-required="true" readonly="@readOnly"/>
                 <label asp-for="@Model.appUser.Name" class="pr-2"></label>
                 <span asp-validation-for="@Model.appUser.Name" class="text-danger"></span>            
             </div>
 
             <div class="form-floating mb-2">
-                <input asp-for="@Model.appUser.Email" class="form-control" placeholder="exam@gmail.com" autocomplete="username" aria-required="true" disabled/>
+                <input asp-for="@Model.appUser.Email" class="form-control" placeholder="exam@gmail.com" autocomplete="username" aria-required="true" disabled readonly="@readOnly" />
                 <label asp-for="@Model.appUser.Email" class="pr-2"></label>
                 <span asp-validation-for="@Model.appUser.Email" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-2">
                 <label asp-for="@Model.appUser.roleId">Role:</label>
-                <select asp-for="@Model.appUser.roleId" asp-items="@Model.RoleList" class="form-select" id="Role" required>
+                <select asp-for="@Model.appUser.roleId" asp-items="@Model.RoleList" class="form-select" id="Role" required readonly="@readOnly">
                     <option disabled selected>--Select Role--</option>
                 </select>
                 <span asp-validation-for="@Model.appUser.roleId" class="text-danger"></span>
             </div>
 
             <div class="form-floating my-2">
-                <input asp-for="@Model.appUser.PhoneNumber" class="form-control" placeholder="Phone Number" aria-required="true" disabled />
+                <input asp-for="@Model.appUser.PhoneNumber" class="form-control" placeholder="Phone Number" aria-required="true" disabled readonly="@readOnly" />
                 <label asp-for="@Model.appUser.PhoneNumber">Phone Number</label>
                 <span asp-validation-for="@Model.appUser.PhoneNumber" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-2">
-                <input asp-for="@Model.appUser.HomeNumber" class="form-control" placeholder="Home Number" />
+                <input asp-for="@Model.appUser.HomeNumber" class="form-control" placeholder="Home Number" readonly="@readOnly"/>
                 <label asp-for="@Model.appUser.HomeNumber" class="pr-2">Home Number</label>
                 <span asp-validation-for="@Model.appUser.HomeNumber" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-2">
-                <input asp-for="@Model.appUser.StreetName" class="form-control" placeholder="Street Name" />
+                <input asp-for="@Model.appUser.StreetName" class="form-control" placeholder="Street Name" readonly="@readOnly" />
                 <label asp-for="@Model.appUser.StreetName">Street Name</label>
                 <span asp-validation-for="@Model.appUser.StreetName" class="text-danger"></span>
             </div>
 
 
             <div class="form-floating my-2">
-                <input asp-for="@Model.appUser.Village" class="form-control" placeholder="Village" />
+                <input asp-for="@Model.appUser.Village" class="form-control" placeholder="Village" readonly="@readOnly" />
                 <label asp-for="@Model.appUser.Village"></label>
                 <span asp-validation-for="@Model.appUser.Village" class="text-danger"></span>
             </div>
             <div class="form-floating my-2">
-                <input asp-for="@Model.appUser.Commune" class="form-control" placeholder="Commune" />
+                <input asp-for="@Model.appUser.Commune" class="form-control" placeholder="Commune" readonly="@readOnly" />
                 <label asp-for="@Model.appUser.Commune"></label>
                 <span asp-validation-for="@Model.appUser.Commune" class="text-danger"></span>
             </div>
 
             <div class="form-floating my-2">
-                <input asp-for="@Model.appUser.City" class="form-control" placeholder="City" />
+                <input asp-for="@Model.appUser.City" class="form-control" placeholder="City" readonly="@readOnly" />
                 <label asp-for="@Model.appUser.City"></label>
                 <span asp-validation-for="@Model.appUser.City" class="text-danger"></span>
             </div>
             <div class="form-floating my-2">
-                <input asp-for="@Model.appUser.PostalNumber" class="form-control" placeholder="Postal Number" />
+                <input asp-for="@Model.appUser.PostalNumber" class="form-control" placeholder="Postal Number" readonly="@readOnly" />
                 <label asp-for="@Model.appUser.PostalNumber">Postal Number</label>
                 <span asp-validation-for="@Model.appUser.PostalNumber" class="text-danger"></span>
             </div>
@@ -77,7 +87,7 @@
 
             <div class="row">
                 <div class="col-4 col-md-2">
-                    <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+                    <a asp-controller="Account" asp-action="Index" class="btn btn-secondary form-control">Back</a>
                 </div>
                 <div class="col-4 col-md-3">                    
                     <button type="submit" asp-action="Update" class="btn btn-primary form-control">Update Account</button>                    
@@ -93,7 +103,7 @@
                     }
                 </div>
                 <div class="col-4 col-md-3">
-                    <button type="submit" class="btn btn-danger form-control">Delete Account</button>
+                    <button type="submit" asp-action="Delete" class="btn btn-danger form-control">Delete Account</button>
 
                 </div>
             </div>
