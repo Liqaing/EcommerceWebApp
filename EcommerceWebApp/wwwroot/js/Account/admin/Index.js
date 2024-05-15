@@ -15,7 +15,7 @@ $.ajax({
                 email: item.email,
                 role: item.role,
                 roleId: item.roleId,
-                lockoutEnd: item.LockoutEnd
+                lockoutEnd: item.lockoutEnd
             };
             users.push(user);
         }); 
@@ -30,8 +30,8 @@ $.ajax({
                 {
                     data: "lockoutEnd",
                     render: (data) => {
-                        let today = new Date().getTime();
-                        let lockout = new Date(data).getTime();
+                        let today = new Date();
+                        let lockout = new Date(data);
                         if (lockout > today) {
                             return "Locked";
                         }

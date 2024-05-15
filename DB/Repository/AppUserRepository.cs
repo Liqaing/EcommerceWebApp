@@ -12,5 +12,10 @@ namespace EcommerceWebAppProject.DB.Repository
 			// Get db context from dependency injection to work with db
 			_dbContext = db;
 		}
+
+		public void Update(AppUser user)
+		{
+            _dbContext.AppUser.Update(user);
+        }
 	}
 }

@@ -9,5 +9,6 @@ namespace EcommerceWebAppProject.DB.Repository.IRepository
 {
     public interface IUserRoleRepository : IRepository<UserRole>
     {        
+        
     }
 }

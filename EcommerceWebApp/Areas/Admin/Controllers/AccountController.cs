@@ -127,8 +127,10 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult LockUnlock(AppUser appUser)
         {
-            //AppUser appUser = _unitOfWork.AppUser.Get(u => u.Id == id);
-            if (appUser == null)
+
+            AppUser userFromDb = _unitOfWork.AppUser.Get(u => u.Id == appUser.Id);
+            
+            if (userFromDb == null)
             {
                 //return Json(new { sucess = false, msg = "Error while locking/unlocking user" });
                 TempData["warning"] = "Error while locking/unlocking user";
@@ -136,21 +138,21 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             }
 
             string state = "";
-            if (appUser.LockoutEnd != null && appUser.LockoutEnd > DateTime.Now)
+            if (userFromDb.LockoutEnd != null && userFromDb.LockoutEnd > DateTime.Now)
             {
                 // user is currently lock, so unlock them
-                appUser.LockoutEnd = DateTime.Now;
+                userFromDb.LockoutEnd = DateTime.Now;
                 state = "unlocked";
             }
             else
             {
-                appUser.LockoutEnd = DateTime.Now.AddYears(100);
+                userFromDb.LockoutEnd = DateTime.Now.AddYears(100);
                 state = "locked";
             }
-            _unitOfWork.AppUser.Upd
+            _unitOfWork.AppUser.Update(userFromDb);
             _unitOfWork.Save();
             //return Json(new {succes=true, msg = $"User {state} successfully"});
-            TempData["suceess"] = $"User {state} successfully";
+            TempData["success"] = $"User {state} successfully";
             return RedirectToAction(nameof(Index));
         }
         #endregion
