@@ -10,15 +10,15 @@
 
             <input asp-for="@Model.appUser.Id" hidden />
 
-            <div class="form-group mb-2">
-                <label asp-for="@Model.appUser.Name"></label>
-                <input asp-for="@Model.appUser.Name" class="form-control" autocomplete="username" aria-required="true" />
-                <span asp-validation-for="@Model.appUser.Name" class="text-danger"></span>
+            <div class="form-floating mb-2">
+                <input asp-for="@Model.appUser.Name" class="form-control" placeholder="Your Name" autocomplete="username" aria-required="true" />
+                <label asp-for="@Model.appUser.Name" class="pr-2"></label>
+                <span asp-validation-for="@Model.appUser.Name" class="text-danger"></span>            
             </div>
 
-            <div class="form-group mb-2">
-                <label asp-for="@Model.appUser.Email"></label>
-                <input asp-for="@Model.appUser.Email" class="form-control" placeholder="exam@gmail.com" autocomplete="username" aria-required="true" />
+            <div class="form-floating mb-2">
+                <input asp-for="@Model.appUser.Email" class="form-control" placeholder="exam@gmail.com" autocomplete="username" aria-required="true" disabled/>
+                <label asp-for="@Model.appUser.Email" class="pr-2"></label>
                 <span asp-validation-for="@Model.appUser.Email" class="text-danger"></span>
             </div>
 
@@ -31,7 +31,7 @@
             </div>
 
             <div class="form-floating my-2">
-                <input asp-for="@Model.appUser.PhoneNumber" class="form-control" placeholder="Phone Number" aria-required="true" />
+                <input asp-for="@Model.appUser.PhoneNumber" class="form-control" placeholder="Phone Number" aria-required="true" disabled />
                 <label asp-for="@Model.appUser.PhoneNumber">Phone Number</label>
                 <span asp-validation-for="@Model.appUser.PhoneNumber" class="text-danger"></span>
             </div>
@@ -80,7 +80,7 @@
                     <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
                 </div>
                 <div class="col-4 col-md-3">                    
-                    <button type="submit" class="btn btn-primary form-control">Update Account</button>                    
+                    <button type="submit" asp-action="Update" class="btn btn-primary form-control">Update Account</button>                    
                 </div>
                 <div class="col-4 col-md-3">
                     @if (Model.appUser.LockoutEnd > DateTime.Now)

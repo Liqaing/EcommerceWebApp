@@ -128,7 +128,28 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Update(AppUser appUser)
         {
+            AppUser userFromDb = _unitOfWork.AppUser.Get(u => u.Id == appUser.Id);
 
+            if (userFromDb == null) {
+                TempData["warning"] = "Error while updating user";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (userFromDb.Name != appUser.Name)
+            {
+                userFromDb.Name = appUser.Name;
+            }
+
+            if (appUser.roleId != null)
+            {
+                var userRole = _appDbContext.UserRoles.Where(u => u.UserId == userFromDb.Id).FirstOrDefault();
+                userRole.RoleId = appUser.roleId;
+                _appDbContext.UserRoles.Update(userRole);
+                _appDbContext.SaveChanges();
+            }
+
+            TempData["success"] = $"User updated successfully";
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
