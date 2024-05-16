@@ -28,7 +28,7 @@ namespace EcommerceWebAppProject.DB.Dbinitializer
             _appDbContext = appDbContext;
         }
 
-        public void Initialize()
+        public async void Initialize()
         {
             // apply pending migration
             try
@@ -44,27 +44,31 @@ namespace EcommerceWebAppProject.DB.Dbinitializer
 
             // create roles
             // If role admin not exist, then create all other role
-            if (_roleManager.RoleExistsAsync(RoleConstant.Role_Admin).Result == false)
+            if (!await _roleManager.RoleExistsAsync(RoleConstant.Role_Admin))
             {
-                 _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Admin));
-                 _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Sale_Employee));
-                 _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Delivery_Employee));
-                 _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Customer));
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Admin));
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Sale_Employee));
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Delivery_Employee));
+                await _roleManager.CreateAsync(new UserRole(RoleConstant.Role_Customer));
+                
+                var createdUser = await _userManager.CreateAsync(
+                    new AppUser
+                    {
+                        UserName = "admin@gmail.com",
+                        Email = "admin@gmail.com",
+                        Name = "Admin",
+                        PhoneNumber = "1234567890",
+                        EmailConfirmed = true
+                    }, "Admin@123");
 
-                // creat admin user                 
-                _userManager.CreateAsync(new AppUser
-                {
-                    UserName = "admin@gmail.com",
-                    Email = "admin@gmail.com",
-                    Name = "Admin",
-                    PhoneNumber = "1234567890"
-                }, "admin@123").GetAwaiter().GetResult();
-                AppUser? user = _userManager.Users.FirstOrDefault(u => u.Email == "admin@gmail.com");
-                if (user != null)
-                {
-                    _userManager.AddToRoleAsync(user, RoleConstant.Role_Admin).GetAwaiter().GetResult();
+                if( createdUser.Succeeded) {
+                    var user = await _userManager.FindByEmailAsync("admin@gmail.com");
+                    if (user != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, RoleConstant.Role_Admin);
+                    }
                 }
-
+                _appDbContext.SaveChanges();
                 return;
             }
         }

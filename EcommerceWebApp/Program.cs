@@ -26,7 +26,8 @@ builder.Services.Configure<StripeService>(builder.Configuration.GetSection("Stri
 //StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 // Add authentication
-builder.Services.AddIdentity<AppUser, UserRole>(options => options.SignIn.RequireConfirmedAccount = true)
+//builder.Services.AddIdentity<AppUser, UserRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<AppUser, UserRole>()
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<AppDbContext>();
 
@@ -82,7 +83,10 @@ app.UseRouting();
 app.UseAuthentication();;
 app.UseAuthorization();
 app.UseSession();
-SeedDb();
+//SeedDb();
+
+app.Services.CreateScope().ServiceProvider.GetRequiredService<IDbInitializer>().Initialize();
+
 app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
@@ -94,6 +98,7 @@ app.Run();
 
 
 // Get implementation of dbinitializer from service provider and initialize
+/*
 void SeedDb()
 {
     using (var scope = app.Services.CreateScope())
@@ -101,4 +106,4 @@ void SeedDb()
         var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
         dbInitializer.Initialize();
     }
-}
+}*/
