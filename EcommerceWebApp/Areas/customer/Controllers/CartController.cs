@@ -327,6 +327,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			foreach (ShoppingCart cart in carts)
 			{
 				cart.shoppingCartStatus = ShoppingCartStatusConstant.StatusOrder;
+                _unitOfWork.ShoppingCart.Update(cart);
 			}
 
 			if (session.PaymentStatus == "paid")

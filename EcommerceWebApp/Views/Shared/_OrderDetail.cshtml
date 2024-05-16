@@ -1,4 +1,6 @@
-﻿@model OrderVM
+﻿@using Microsoft.AspNetCore.Identity;
+@inject UserManager<AppUser> UserManager
+@model OrderVM
 
 @{
 	// If order is not yet paid, then set input to read only
@@ -7,6 +9,9 @@
 	{
 		readOnly = null;
 	}
+
+	var userId = UserManager.GetUserId(User);
+
 
 }
 
@@ -22,7 +27,7 @@
 
 					<div class="d-flex align-items-center">
 						<a asp-action="Index"
-						   class="btn btn-outline-secondary mr-2">Back</a>
+						class="btn btn-outline-secondary mr-2">Back</a>
 					</div>
 				</div>
 			</div>
@@ -165,8 +170,37 @@
 											<span asp-validation-for="orderHeader.PaymentIntentId" class="text-danger"></span>
 										</div>
 									</div>
-									@if (this.User.IsInRole(RoleConstant.Role_Customer) && 
-										Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending && 
+
+									<div class="row my-1">
+										<div class="col-4">
+											<label>Deliver By</label>
+										</div>
+										<div class="col-8">
+											<input asp-for="orderHeader.deliveryEmpName" readonly class="form-control" />
+										</div>
+									</div>
+
+									<div class="row my-1">
+										<div class="col-4">
+											<label>Shipping Date</label>
+										</div>
+										<div class="col-8">
+											<input asp-for="orderHeader.ShippingDate" readonly class="form-control" />
+										</div>
+									</div>
+
+									<div class="row my-1">
+										<div class="col-4">
+											<label>Arrival Date</label>
+										</div>
+										<div class="col-8">
+											<input asp-for="orderHeader.ArrivalDate" readonly class="form-control" />
+										</div>
+									</div>
+
+
+									@if (this.User.IsInRole(RoleConstant.Role_Customer) &&
+										Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending &&
 										Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusPending)
 									{
 										<button id="update-shipping" class="btn btn-primary col-12">Update Shipping Detail</button>
@@ -198,9 +232,9 @@
 									</ul>
 
 
-									@if(this.User.IsInRole(RoleConstant.Role_Customer) && 
-										Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending &&
-										Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusPending)
+									@if (this.User.IsInRole(RoleConstant.Role_Customer) &&
+											Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending &&
+											Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusPending)
 									{
 										<!-- When not pay yet, display paynow and cancel button -->
 										<div class="btn-group d-flex flex-column">
@@ -208,8 +242,8 @@
 											<button asp-action="Cancel" class="btn btn-danger rounded">Cancel Order</button>
 										</div>
 									}
-									
-									@if (this.User.IsInRole(RoleConstant.Role_Admin) &&
+
+									@if ((this.User.IsInRole(RoleConstant.Role_Admin) || this.User.IsInRole(RoleConstant.Role_Sale_Employee)) &&
 											Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending &&
 											Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusPending)
 									{
@@ -218,6 +252,27 @@
 											<button asp-area="Admin" asp-action="Cancel" class="btn btn-danger rounded">Cancel Order</button>
 										</div>
 									}
+
+
+									@if (this.User.IsInRole(RoleConstant.Role_Delivery_Employee) &&
+											Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusApproved &&
+											Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusApproved)
+									{
+										<!-- When not pay yet, display paynow and cancel button -->
+										<div class="btn-group d-flex flex-column">
+											<button asp-area="Admin" asp-action="Pick" class="btn btn-primary rounded">Pick Order for Delivery</button>
+										</div>
+									}
+
+									@if (userId == Model.orderHeader.DeliveryEmpId &&
+											Model.orderHeader.OrderStatus == OrderAndPaymentStatusConstate.StatusInDelivering)
+									{
+										<!-- When not pay yet, display paynow and cancel button -->
+										<div class="btn-group d-flex flex-column">
+											<button asp-area="Admin" asp-action="Drop" class="btn btn-primary rounded">Drop Order for Customer</button>
+										</div>
+									}
+
 								</div>
 							</div>
 						</div>

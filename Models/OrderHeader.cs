@@ -26,9 +26,28 @@ namespace EcommerceWebAppProject.Models
 
         public double OrderTotal { get; set; }
 
-        // Add arrivalDate, ship by employee, deliver status
+        
+        public DateTime? ArrivalDate { get; set; }
 
-        public string? OrderStatus { get; set; }
+		[ValidateNever]
+		public string? DeliveryEmpId { get; set; }
+		[ValidateNever]
+		[ForeignKey(nameof(DeliveryEmpId))]
+		public AppUser? DeliveryEmp { get; set; }
+		[ValidateNever]
+		public string? deliveryEmpName { get; set; }
+
+		[ValidateNever]
+		public string? CancelledEmpId { get; set; }
+		[ValidateNever]
+		[ForeignKey(nameof(CancelledEmpId))]
+		public AppUser? CancelEmp { get; set; }
+		[ValidateNever]
+		public string? cancelBy { get; set; }
+
+		// Add arrivalDate, ship by employee, deliver status
+
+		public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }
         
         public string? TrackingNumber { get; set; }
