@@ -1,0 +1,134 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container">
+    <h1 class="mb-4">Taobao 2.0 eCommerce Web Project untfor .NET Programming Course</h1>
+
+    <h2>Lecturer</h2>
+    <p>
+        This project was guided and supervised by <strong>Teacher Sam An Heng</strong>
+    </p>
+
+    <h3>Group 1 Members: </h3>
+    <ul>
+        <li>Huot Rithy</li>
+        <li>Hoy Kimhouy</li>
+        <li>Oem Yong Sinh</li>
+        <li>Vorn Navatra</li>
+        <li>Vorn Navatra</li>
+        <li>Chan Sarun</li>
+        <li>Heng Keahak</li>
+        <li>Heng Keahak</li>
+        <li>Sum Sokron</li>
+        <li>Sokneak</li>
+        <li>Leng srey loch</li>
+        <li>Um Sethey</li>
+        <li>Ol Eevin</li>
+    </ul>
+
+    <h3>Project Overview</h3>
+    <p>
+        The eCommerce web project is build as a coursework project for an .NET Programming course, demonstrating the application of web development skills using the .NET framework. The project simulates basic functionality of online store where users can browse products, add items to their cart, and proceed to checkout. The application is built with ASP.NET Core, utilizing its robust features for handling authentication, authorization, and data management.
+    </p>
+
+    <h3>Key Features</h3>
+    <h4>User Authentication and Authorization</h4>
+    <ul>
+        <li><strong>Registration and Login:</strong> Users can create an account, log in, and log out. The authentication system is built using ASP.NET Identity.</li>
+        <li><strong>Roles and Permissions:</strong> The application supports multiple roles, including Admin, Sales Employee, Delivery Employee, and Customer, each with specific permissions and access levels.</li>
+    </ul>
+
+    <h4>Product Management</h4>
+    <ul>
+        <li><strong>Product Catalog:</strong> A comprehensive catalog of products is displayed to users, including product images, descriptions, prices, and stock availability.</li>
+        <li><strong>Admin Features:</strong> Admin users can add, edit, and delete products. They can also manage product categories and inventory levels.</li>
+    </ul>
+
+    <h4>Shopping Cart and Checkout</h4>
+    <ul>
+        <li><strong>Shopping Cart:</strong> Users can add products to their shopping cart, update quantities, and remove items.</li>
+        <li><strong>Checkout Process:</strong> The application supports a secure checkout process where users can enter shipping details and payment information to place an order.</li>
+    </ul>
+
+    <h4>Order Management</h4>
+    <ul>
+        <li><strong>Order Tracking:</strong> Customers can view their order history and track the status of their orders.</li>
+        <li><strong>Admin Order Management:</strong> Admin users can view all orders, update order statuses, and manage deliveries.</li>
+    </ul>
+
+    <h4>Role-Specific Dashboards</h4>
+    <ul>
+        <li><strong>Admin Dashboard:</strong> Provides an overview of sales, orders, and user activity. Admins can access management tools for users and products.</li>
+        <li><strong>Sales Employee Dashboard:</strong> Allows sales employees to view and manage customer orders and assist with sales-related inquiries.</li>
+        <li><strong>Delivery Employee Dashboard:</strong> Enables delivery employees to view assigned deliveries and update the status of deliveries.</li>
+    </ul>
+
+    <h3>Technologies Used</h3>
+    <ul>
+        <li><strong>ASP.NET Core:</strong> The main framework for building the web application.</li>
+        <li><strong>Entity Framework Core:</strong> For database access and management.</li>
+        <li><strong>SQL Server:</strong> The relational database management system used to store application data.</li>
+        <li><strong>Identity Framework:</strong> For managing user authentication and authorization.</li>
+        <li><strong>Razor Pages:</strong> For building dynamic web pages with server-side rendering.</li>
+        <li><strong>Bootstrap:</strong> For responsive design and layout.</li>
+        <li><strong>Javascript & Ajax:</strong> For sending and handling request to backend and build interactive UI .</li>
+    </ul>
+
+    <h3>Project Structure</h3>
+    <ul>
+        <li><strong>Controllers:</strong> Handle incoming HTTP requests, process them, and return appropriate responses.</li>
+        <li><strong>Models:</strong> Represent the data structure of the application, including entities for users, products, orders, etc.</li>
+        <li><strong>Views:</strong> Provide the user interface for the application, built using Razor syntax.</li>
+        <li><strong>Services:</strong> Contain business logic and data access code.</li>
+        <li><strong>Data:</strong> Includes the DbContext class for interacting with the database and migration files for schema changes.</li>
+    </ul>
+
+    <h3>Member Roles and Responsibilities</h3>
+    <ul>
+        <li>
+            <strong>Admin:</strong>
+            <ul>
+                <li>Manage users and assign roles.</li>
+                <li>Oversee product catalog and inventory.</li>
+                <li>View sales reports and analytics.</li>
+                <li>Handle order processing and status updates.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Sales Employee:</strong>
+            <ul>
+                <li>Assist customers with inquiries and order placement.</li>
+                <li>Manage and update customer orders.</li>
+                <li>Access sales reports relevant to their role.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Delivery Employee:</strong>
+            <ul>
+                <li>View and manage delivery assignments.</li>
+                <li>Update delivery status and confirm order fulfillment.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Customer:</strong>
+            <ul>
+                <li>Browse products and view detailed information.</li>
+                <li>Add products to the shopping cart and proceed to checkout.</li>
+                <li>Track order status and view order history.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Implementation Highlights</h3>
+    <ul>
+        <li><strong>Role-Based Access Control:</strong> Implemented using ASP.NET Identity, ensuring that users have appropriate access based on their role.</li>
+        <li><strong>Database Seeding:</strong> Initial roles and admin user are created automatically if they do not exist, ensuring the application is ready to use after deployment.</li>
+        <li><strong>Error Handling:</strong> Comprehensive error handling to provide a smooth user experience and to facilitate debugging.</li>
+    </ul>
+
+    <h3>Conclusion</h3>
+    <p>
+        This eCommerce web project demonstrates a practical application of ASP.NET Core for building a robust and scalable online store. The project covers essential aspects of web development, including user management, product catalog, order processing, and role-based access control, providing a solid foundation for further development and customization.
+    </p>
+</div>

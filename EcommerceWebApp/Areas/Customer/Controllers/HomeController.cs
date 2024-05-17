@@ -58,7 +58,7 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 			return View(cart);
 		}		
 
-		public IActionResult Privacy()
+		public IActionResult About()
         {
             return View();
         }

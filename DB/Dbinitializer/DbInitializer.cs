@@ -59,7 +59,7 @@ namespace EcommerceWebAppProject.DB.Dbinitializer
                         Name = "Admin",
                         PhoneNumber = "1234567890",
                         EmailConfirmed = true
-                    }, "Admin@123");
+                    }, "Admin@1234");
 
                 if( createdUser.Succeeded) {
                     var user = await _userManager.FindByEmailAsync("admin@gmail.com");
@@ -68,6 +68,66 @@ namespace EcommerceWebAppProject.DB.Dbinitializer
                         await _userManager.AddToRoleAsync(user, RoleConstant.Role_Admin);
                     }
                 }
+
+                var customerUser = await _userManager.CreateAsync(
+                    new AppUser
+                    {
+                        UserName = "customer@gmail.com",
+                        Email = "customer@gmail.com",
+                        Name = "Customer",
+                        PhoneNumber = "123212890",
+                        EmailConfirmed = true
+                    }, "Customer@1234");
+
+                if (customerUser.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync("customer@gmail.com");
+                    if (user != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, RoleConstant.Role_Customer);
+                    }
+                }
+
+
+                var saleUser = await _userManager.CreateAsync(
+                    new AppUser
+                    {
+                        UserName = "sale@gmail.com",
+                        Email = "sale@gmail.com",
+                        Name = "Sale",
+                        PhoneNumber = "01212890",
+                        EmailConfirmed = true
+                    }, "Sale@1234");
+
+                if (saleUser.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync("sale@gmail.com");
+                    if (user != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, RoleConstant.Role_Sale_Employee);
+                    }
+                }
+
+
+                var deliveryUser = await _userManager.CreateAsync(
+                    new AppUser
+                    {
+                        UserName = "delivery@gmail.com",
+                        Email = "delivery@gmail.com",
+                        Name = "Delivery",
+                        PhoneNumber = "01212890",
+                        EmailConfirmed = true
+                    }, "Delivery@1234");
+
+                if (deliveryUser.Succeeded)
+                {
+                    var user = await _userManager.FindByEmailAsync("delivery@gmail.com");
+                    if (user != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, RoleConstant.Role_Delivery_Employee);
+                    }
+                }
+
                 _appDbContext.SaveChanges();
                 return;
             }
