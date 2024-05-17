@@ -67,14 +67,17 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<int>("OrderHeaderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("float");
 
                     b.HasKey("OrderDetailsId");
 
@@ -97,6 +100,12 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime?>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CancelledEmpId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Carrier")
                         .HasColumnType("nvarchar(max)");
 
@@ -107,6 +116,9 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<string>("Commune")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeliveryEmpId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("HomeNumber")
                         .IsRequired()
@@ -125,7 +137,10 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
 
-                    b.Property<string>("PaymentDate")
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentIntentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentStatus")
@@ -137,6 +152,9 @@ namespace EcommerceWebAppProject.DB.Migrations
 
                     b.Property<string>("PostalNumber")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SessionId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ShippingDate")
@@ -153,9 +171,19 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("cancelBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("deliveryEmpName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("OrderHeaderId");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("CancelledEmpId");
+
+                    b.HasIndex("DeliveryEmpId");
 
                     b.ToTable("OrderHeader");
                 });
@@ -187,8 +215,7 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Quantity")
-                        .IsRequired()
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
@@ -248,7 +275,14 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.Property<int>("quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("shoppingCartStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("totalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("unitPrice")
                         .HasColumnType("float");
 
                     b.HasKey("cartId");
@@ -269,6 +303,10 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -285,6 +323,10 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -466,6 +508,13 @@ namespace EcommerceWebAppProject.DB.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EcommerceWebAppProject.Models.UserRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.HasDiscriminator().HasValue("UserRole");
+                });
+
             modelBuilder.Entity("EcommerceWebAppProject.Models.AppUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -522,7 +571,19 @@ namespace EcommerceWebAppProject.DB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EcommerceWebAppProject.Models.AppUser", "CancelEmp")
+                        .WithMany()
+                        .HasForeignKey("CancelledEmpId");
+
+                    b.HasOne("EcommerceWebAppProject.Models.AppUser", "DeliveryEmp")
+                        .WithMany()
+                        .HasForeignKey("DeliveryEmpId");
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("CancelEmp");
+
+                    b.Navigation("DeliveryEmp");
                 });
 
             modelBuilder.Entity("EcommerceWebAppProject.Models.Product", b =>

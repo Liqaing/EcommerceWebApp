@@ -8,7 +8,7 @@ using EcommerceWebAppProject.Utilities;
 namespace EcommerceWebApp.Areas.Admin.Controllers
 {
 	[Area(nameof(Admin))]
-    [Authorize(Roles = RoleConstant.Role_Admin)]
+    [Authorize(Roles = $"{RoleConstant.Role_Admin},{RoleConstant.Role_Sale_Employee}")]
     public class CategoryController : Controller
     {        
         private readonly IUnitOfWork _unitOfWork;

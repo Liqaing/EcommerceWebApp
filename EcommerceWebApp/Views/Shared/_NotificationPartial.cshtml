@@ -1,9 +1,19 @@
-﻿@if (TempData["success"] != null)
-{
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+﻿<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+@if (TempData["success"] != null)
+{	
 	<script>
 		toastr.success('@TempData["success"]', {
+			"closeButton": true,
+			"progressBar": true,
+		})		
+	</script>
+}
+
+@if (TempData["warning"] != null) {
+	<script>
+		toastr.warning('@TempData["warning"]', {
 			"closeButton": true,
 			"progressBar": true,
 		})

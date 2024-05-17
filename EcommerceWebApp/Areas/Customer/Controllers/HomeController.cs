@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using EcommerceWebAppProject.Utilities;
+using Microsoft.AspNetCore.Http;
 
 namespace EcommerceWebApp.Areas.Customer.Controllers
 {
@@ -25,65 +26,39 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if(userId != null)
+            {
+                HttpContext.Session.SetInt32(OrderAndPaymentStatusConstate.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.appUserId == userId &&
+                    u.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive).Count());
+            }
+
             IEnumerable<Category> categories = _unitOfWork.Category.GetAll(includeProperties: "Products");
             return View(categories);
         }
 
-        [HttpGet]
-		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        [HttpGet]	
 		public IActionResult Details(int proId)
 		{
+            Product product = _unitOfWork.Product.Get(u => u.ProductId == proId);
+
             ShoppingCart cart = new()
             {
                 product = _unitOfWork.Product.Get(pro => pro.ProductId == proId,
                 includeProperties: "Category"),
 
                 productId = proId,
-                quantity = 1
+                quantity = 1,
+                MaxQuantity = product.Quantity,
             };
-			
+            
 			return View(cart);
-		}
+		}		
 
-		[HttpPost]
-		[Authorize]
-		[ValidateAntiForgeryToken]
-		public IActionResult Details(ShoppingCart cart, string productName)
-		{
-			// Get user id
-			string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-			cart.appUserId = userId;
-
-            ShoppingCart cartInDb = _unitOfWork.ShoppingCart.Get(
-                c => c.productId == cart.productId &&
-                c.appUserId == userId, 
-                includeProperties: "product");
-
-            if (cartInDb == null)
-            {
-                // Shopping cart for that user and product is not exist in the db
-                Product product = _unitOfWork.Product.Get(pro => pro.ProductId == cart.productId);
-                cart.totalPrice = new ShoppingCartUtils().GetTotalPrice(cart.quantity, product.Price);
-				_unitOfWork.ShoppingCart.Add(cart);
-			}
-            else
-            {
-                // Update qauntity in cart
-				cartInDb.quantity += cart.quantity;
-                cartInDb.totalPrice = new ShoppingCartUtils().GetTotalPrice(cartInDb);
-                _unitOfWork.ShoppingCart.Update(cartInDb);
-			}
-
-			_unitOfWork.Save();
-
-			TempData["Success"] = $"You have added {cart.quantity} {productName} to the shopping cart";
-
-            return RedirectToAction(nameof(Index));
-			//return RedirectToAction(nameof(Details), new { proId=cart.productId, succeedMessage=succeedMessage });
-		}
-
-		public IActionResult Privacy()
+		public IActionResult About()
         {
             return View();
         }
@@ -96,10 +71,72 @@ namespace EcommerceWebApp.Areas.Customer.Controllers
 
         #region api
 
+        [HttpPost]
+        [Authorize]       
+        [Route("/customer/api/cart/add")]
+        public IActionResult AddCart(int proId, int quantity)
+        {
+            // Check if product have enough quantity for order
+            Product product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
+
+            if (quantity > product.Quantity)
+            {
+                /*
+                TempData["warning"] = $"Sorry, we could provide quatity: {cart.quantity} at the moment";
+                return RedirectToAction(nameof(Details), new { proId = product.ProductId });
+                */
+                return Json(new { success = false, message = $"Sorry, we could provide quatity: {quantity} at the moment" });
+            }
+
+            // Get user id
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            ShoppingCart cart = new ShoppingCart
+            {               
+                productId = proId,
+                quantity = quantity,
+                appUserId = userId,
+                unitPrice = product.Price,
+                totalPrice = ShoppingCartUtils.GetTotalPrice(quantity, product.Price),
+                shoppingCartStatus = ShoppingCartStatusConstant.StatusActive
+            };
+
+            ShoppingCart cartInDb = _unitOfWork.ShoppingCart.Get(
+                c => c.productId == cart.productId &&
+                c.appUserId == userId &&
+                c.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive,
+                includeProperties: "product");
+
+            if (cartInDb == null)
+            {
+                // Shopping cart for that user and product is not exist in the db                                
+                _unitOfWork.ShoppingCart.Add(cart);
+
+                // Add product count to session
+                HttpContext.Session.SetInt32(OrderAndPaymentStatusConstate.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.appUserId == userId &&
+                    u.shoppingCartStatus == ShoppingCartStatusConstant.StatusActive).Count());
+            }
+            else
+            {
+                // Update qauntity in cart                
+                cartInDb.quantity += cart.quantity;
+                cartInDb.totalPrice = ShoppingCartUtils.GetTotalPrice(cartInDb);
+                _unitOfWork.ShoppingCart.Update(cartInDb);
+            }
+
+            _unitOfWork.Save();
+
+            //TempData["Success"] = $"You have added {cart.quantity} {product.ProName} to the shopping cart";
+
+            return Json(new { success = true, message = $"You have added {cart.quantity} {product.ProName} to the shopping cart" });
+            //return RedirectToAction(nameof(Index));
+        }
+
         #endregion
 
         #region util
-        
+
         #endregion
     }
 }

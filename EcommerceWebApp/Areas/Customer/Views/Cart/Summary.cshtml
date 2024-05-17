@@ -1,6 +1,6 @@
 ﻿@model ShoppingCartVM
 
-<form>
+<form id="form" asp-action="Summary" method="POST">
 	<div class="container h-100 py-2">
 		<div class="row d-flex justify-content-center align-items-center h-100">
 			<div class="col-12">
@@ -30,7 +30,7 @@
 											<label>Name</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="@Model.orderHeader.Name" class="form-control" />
+											<input asp-for="@Model.orderHeader.Name" class="form-control" required/>
 											<span asp-validation-for="@Model.orderHeader.Name" class="text-danger"></span>
 										</div>
 									</div>
@@ -39,7 +39,7 @@
 											<label>Phone</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.PhoneNumber" class="form-control" />
+											<input asp-for="orderHeader.PhoneNumber" class="form-control" required />
 											<span asp-validation-for="orderHeader.PhoneNumber" class="text-danger"></span>
 										</div>
 									</div>
@@ -48,7 +48,7 @@
 											<label>Home Number</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.HomeNumber" class="form-control" />
+											<input asp-for="orderHeader.HomeNumber" class="form-control" required />
 											<span asp-validation-for="orderHeader.HomeNumber" class="text-danger"></span>
 										</div>
 									</div>
@@ -57,7 +57,7 @@
 											<label>Street Address</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.StreetName" class="form-control" />
+											<input asp-for="orderHeader.StreetName" class="form-control" required />
 											<span asp-validation-for="orderHeader.StreetName" class="text-danger"></span>
 										</div>
 									</div>
@@ -66,7 +66,7 @@
 											<label>Village</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.Village" class="form-control" />
+											<input asp-for="orderHeader.Village" class="form-control" required />
 											<span asp-validation-for="orderHeader.Village" class="text-danger"></span>
 										</div>
 									</div>
@@ -75,7 +75,7 @@
 											<label>Commune</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.Commune" class="form-control" />
+											<input asp-for="orderHeader.Commune" class="form-control" required />
 											<span asp-validation-for="orderHeader.Commune" class="text-danger"></span>
 										</div>
 									</div>
@@ -84,7 +84,7 @@
 											<label>City</label>
 										</div>
 										<div class="col-9">											
-											<input asp-for="orderHeader.City" class="form-control" />
+											<input asp-for="orderHeader.City" class="form-control" required />
 											<span asp-validation-for="orderHeader.City" class="text-danger"></span>
 										</div>
 									</div>									
@@ -93,7 +93,7 @@
 											<label>Postal Code</label>
 										</div>
 										<div class="col-9">
-											<input asp-for="orderHeader.PostalNumber" class="form-control" />
+											<input asp-for="orderHeader.PostalNumber" class="form-control" required />
 											<span asp-validation-for="orderHeader.PostalNumber" class="text-danger"></span>
 										</div>
 									</div>
@@ -132,7 +132,7 @@
 								</p>
 							</div>
 							<div class="col-12 col-md-4">
-								<button id="place-order-btn" value="Place Order" class="btn btn-primary form-control">Place Order</button>
+								<button id="place-order-btn" type="submit" class="btn btn-primary form-control">Place Order</button>
 							</div>
 						</div>
 					</div>
@@ -142,6 +142,14 @@
 	</div>
 </form>
 
+@{
+	<partial name="_ValidationScriptsPartial"/>
+}
+
+
+
 @section Scripts {
+
 	<script src="~/js/shoppingCart/summary.js"></script>
+	
 }

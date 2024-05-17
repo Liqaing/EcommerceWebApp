@@ -9,5 +9,6 @@ namespace EcommerceWebAppProject.DB.Repository.IRepository
 {
 	public interface IAppUserRepository : IRepository<AppUser>
 	{
+		void Update(AppUser appUser);
 	}
 }

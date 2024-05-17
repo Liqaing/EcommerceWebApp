@@ -13,7 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace EcommerceWebApp.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
-    [Authorize(Roles = RoleConstant.Role_Admin)]
+    [Authorize(Roles = $"{RoleConstant.Role_Admin},{RoleConstant.Role_Sale_Employee}")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

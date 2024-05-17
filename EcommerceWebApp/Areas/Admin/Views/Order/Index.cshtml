@@ -1,0 +1,30 @@
+﻿@model IEnumerable<OrderHeader>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-6">
+            <h2>Order List</h2>
+        </div>        
+    </div>
+
+    <div class="table-responsive">
+        <table id="orderTb" class="table table-striped w-100">
+            <thead>
+                <tr>
+                    <th class="text-center">Id</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Phone Number</th>                    
+                    <th class="text-center">Order Status</th>
+                    <th class="text-center">Payment Status</th>
+                    <th class="text-center">Order Total</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/order/admin/order.js"></script>
+}

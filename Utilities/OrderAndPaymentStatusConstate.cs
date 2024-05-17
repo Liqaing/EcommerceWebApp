@@ -10,9 +10,13 @@ namespace EcommerceWebAppProject.Utilities
 	{
 		public const string StatusPending = "Pending";
 		public const string StatusApproved = "Approved";
-		public const string StatusInProcess = "Processing";
+
+		public const string StatusInDelivering = "Delivering";
 		public const string StatusDelivered = "Delivered";
+
 		public const string StatusCancelled = "Cancelled";
+		public const string StatusForceCancelled = "Administration cancelled";
+
 		public const string StatusRefunded = "Refunded";
 
 		// public const string StatusDelivering = "Delivering";
@@ -22,5 +26,7 @@ namespace EcommerceWebAppProject.Utilities
 		public const string PaymentStatusApproved = "Approved";
 		public const string PaymentStatusRejected = "Rejected";
 
+
+		public const string SessionCart = "SessionShoppingCart";
 	}
 }

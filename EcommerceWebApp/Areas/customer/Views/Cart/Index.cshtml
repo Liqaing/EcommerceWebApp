@@ -1,6 +1,6 @@
 ﻿@model ShoppingCartVM
 
-<from method="post">
+<from id="form" method="POST">
     <div class="container h-100 py-2">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-10">
@@ -22,51 +22,46 @@
                 </div>
 
                 @foreach (ShoppingCart cart in Model.shoppingCarts) {
-                    <div class="card rounded-3 mb-4">
+                    <div id="@cart.cartId" class="card rounded-3 mb-4">
                         <div class="card-body p-4">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <a asp-controller="Home" asp-action="Details" asp-route-proId="@cart.product.ProductId" class="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center align-items-center gap-4">
-                                    <div class="w-50">
+                            <div class="d-flex justify-content-between align-items-center px-1 flex-lg-row flex-column gap-2">
+                                <a asp-controller="Home" asp-action="Details" asp-route-proId="@cart.product.ProductId" class="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center align-items-center gap-4 flex-shrink-1">
                                         <img src="@cart.product.ImageUrl"
                                              class="img-fluid rounded-3">
-                                    </div>
-
-                                    <div class="w-50">
-                                        <p class="lead fw-normal mb-2">@cart.product.ProName</p>
-                                        <p class="mb-0"><span class="text-muted">Category: </span>@cart.product.Category.CatName</p>
-                                        <p><span class="text-muted">Unit price: </span>@cart.product.Price.ToString("c")</p>
-
-                                    </div>
                                 </a>
-                                
-
-                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex gap-2">
-                                    <!--
-                                        <a asp-action="Minus" asp-route-cartId="cart.cartId" class="btn btn-link px-2">
-                                        <i class="bi bi-dash"></i>
-                                        </a>
-                                    -->
-
-                                    <button class="minus btn btn-link px-2 btn-lg" data-cart-id="@cart.cartId">
-                                        <i class="bi bi-dash"></i>
-                                    </button>
-
-                                    
-                                    <input type="text" value="@cart.quantity"
-                                           class="form-control form-control-sm text-center w-5" disabled/>
-
-                                    <button class="add btn btn-link btn-lg px-2" data-cart-id="@cart.cartId">
-                                        <i class="bi bi-plus"></i>
-                                    </button>
-                                </div>
-
-                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                    <h5 class="mb-0">@cart.totalPrice.ToString("c")</h5>
-                                </div>
-                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <a data-cart-id="@cart.cartId" class="remove text-white btn btn-danger">
-                                        <i class="bi bi-trash"></i>
+                                <div class="d-flex justify-content-center align-items-center w-100 gap-4 flex-wrap">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-proId="@cart.product.ProductId" class="col-md-5 col-lg-5 col-xl-5 d-flex justify-content-center align-items-center gap-4">
+                                        <div class="border p-2 rounded shadow-sm" style="width: 100% !important">
+                                            <p class="lead fw-normal mb-2">@cart.product.ProName</p>
+                                            <p class="mb-0"><span class="text-muted">Category: </span>@cart.product.Category.CatName</p>
+                                            <p><span class="text-muted">Unit price: </span>@cart.product.Price.ToString("c")</p>
+                                        </div>
                                     </a>
+                                    <div class="d-flex justify-content-evenly align-items-center gap-2 flex-md-grow-1">
+                                        <div class="d-flex gap-2">
+
+                                            <button class="minus btn btn-link btn-lg p-0" data-cart-id="@cart.cartId">
+                                                <i class="bi bi-dash"></i>
+                                            </button>
+
+                                            <input id="quantity-@cart.cartId" type="text" value="@cart.quantity"
+                                                   class="form-control form-control-sm text-center" style="width: 2rem !important" disabled />
+
+                                            <button class="add btn btn-link btn-lg p-0" data-cart-id="@cart.cartId">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="w-5">
+                                            <h5 class="m-auto text-center">@cart.totalPrice.ToString("c")</h5>
+                                        </div>
+                                        <div class="text-end">
+                                            <a data-cart-id="@cart.cartId" class="remove text-white btn btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -79,7 +74,11 @@
                             <h5 class="card-title fw-semibold">Total (USD)</h5>
                             <h5 class="card-title fw-semibold">@Model.orderHeader.OrderTotal.ToString("c")</h5>
                         </div>
-                        <a asp-action="Summary" class="btn btn-primary">Proceed to Pay</a>
+                        <!--
+                            
+                            <a asp-action="Summary" class="btn btn-primary">Proceed to Pay</a>
+                        -->
+                        <button type="submit" id="proceed-to-pay" class="btn btn-primary">Proceed to Pay</button>
                     </div>
                 </div>
 

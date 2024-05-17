@@ -15,6 +15,7 @@ namespace EcommerceWebAppProject.DB.Repository
 		public IProductRepository Product { get; private set; }
 		public IShoppingCartRepository ShoppingCart { get; private set; }
 		public IAppUserRepository AppUser { get; private set; }
+		public IUserRoleRepository Role { get; private set; }
 		public IOrderHeaderRepository OrderHeader { get; private set; }
 		public IOrderDetailRepository OrderDetail { get; private set; }
 
@@ -28,6 +29,7 @@ namespace EcommerceWebAppProject.DB.Repository
 			AppUser = new AppUserRepository(db);
 			OrderHeader = new OrderHeaderRepository(db);
 			OrderDetail = new OrderDetailRepository(db);
+			Role = new UserRoleRepository(db);
 		}
 
 		public void Save()

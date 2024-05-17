@@ -25,12 +25,15 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
-            <div class="form-floating my-2">
-                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
-                    <option disabled selected>--Select Role--</option>
-                </select>
-                <label asp-for="Input.Role"></label>
-            </div>
+            @if (User.IsInRole(RoleConstant.Role_Admin))
+            {
+                <div class="form-floating my-2">
+                    <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                        <option disabled selected>--Select Role--</option>
+                    </select>
+                    <label asp-for="Input.Role"></label>
+                </div>
+            }            
 
             <div class="form-floating my-2">
                 <input asp-for="Input.Name" class="form-control" placeholder="Full Name" aria-required="true" />
@@ -84,37 +87,41 @@
         <hr />
     </div>   
 
-    <div class="col-md-12">
-        <section>
-            <p class="divider-text d-flex"> or </p>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+    @if (!User.IsInRole(RoleConstant.Role_Admin)) {
+        <div class="col-md-12">
+            <section>
+                <p class="divider-text d-flex"> or </p>
+                <h3>Use another service to register.</h3>
+                <hr />
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
                         <div>
                             <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
+                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                    article
+                                    about setting up this ASP.NET application to support logging in via external services
+                                </a>.
                             </p>
                         </div>
-                    </form>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
                 }
-            }
-        </section>
-    </div>
+            </section>
+        </div>
+    }
 </div>
 
 @section Scripts {

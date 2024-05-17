@@ -8,14 +8,14 @@ using EcommerceWebAppProject.Models;
 
 namespace EcommerceWebAppProject.Utilities
 {
-    public class ShoppingCartUtils
+    public static class ShoppingCartUtils
     {
-        public double GetTotalPrice(ShoppingCart cart)
-        {
-            return cart.quantity * cart.product.Price;
+        public static double GetTotalPrice(ShoppingCart cart)
+        {            
+            return cart.quantity * cart.unitPrice;            
         }
 
-        public double GetTotalPrice(int quantity, double price )
+        public static double GetTotalPrice(int quantity, double price )
         {
             return quantity * price;
         }

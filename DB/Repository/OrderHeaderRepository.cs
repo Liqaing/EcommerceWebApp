@@ -1,6 +1,7 @@
 ﻿using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.Models;
 using EcommerceWebAppProject.DB.Data;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EcommerceWebAppProject.DB.Repository
 {
@@ -17,6 +18,45 @@ namespace EcommerceWebAppProject.DB.Repository
 		{
 			_dbContext.OrderHeader.Update(orderHeader);
 		}
+
+		public void UpdateStatus(int id, string OrderStatus, string? PaymentStatus = null)
+		{
+			OrderHeader? orderHeader = _dbContext.OrderHeader.FirstOrDefault(
+					o => o.OrderHeaderId == id);
 		
+			if (orderHeader != null)
+			{
+				orderHeader.OrderStatus = OrderStatus;
+				
+				if (PaymentStatus != null)
+				{
+					orderHeader.PaymentStatus = PaymentStatus;
+				}
+
+				_dbContext.OrderHeader.Update(orderHeader);
+			}
+		}
+
+		public void UpdateStripePayment(int id, string? SessionId, string? PaymentIntentId)
+		{
+			OrderHeader? orderHeader = _dbContext.OrderHeader.FirstOrDefault(
+					o => o.OrderHeaderId == id);
+			if (orderHeader != null)
+			{
+				if (!string.IsNullOrEmpty(SessionId))
+				{
+					orderHeader.SessionId = SessionId;
+				}
+
+				if (!string.IsNullOrEmpty(PaymentIntentId))
+				{
+					orderHeader.PaymentIntentId = PaymentIntentId;
+					orderHeader.PaymentDate = DateTime.Now;
+				}
+
+				_dbContext.OrderHeader.Update(orderHeader);
+			}
+			
+		}
 	}
 }
