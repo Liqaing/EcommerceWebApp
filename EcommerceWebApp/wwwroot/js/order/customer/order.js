@@ -1,4 +1,6 @@
-﻿$(document).ready(() => {
+﻿
+
+$(document).ready(() => {
     $("#update-shipping").click((e) => {
         e.preventDefault();
 
@@ -27,4 +29,5 @@
         });
 
     });
+
 });

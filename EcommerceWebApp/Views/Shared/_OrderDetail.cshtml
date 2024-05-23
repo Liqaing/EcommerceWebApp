@@ -12,7 +12,6 @@
 
 	var userId = UserManager.GetUserId(User);
 
-
 }
 
 <form method="post">
@@ -231,6 +230,7 @@
 										</li>
 									</ul>
 
+									<button id="print" type="button" class="btn btn-success mb-2 rounded">Print</button>
 
 									@if (this.User.IsInRole(RoleConstant.Role_Customer) &&
 											Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending &&
@@ -282,5 +282,85 @@
 		</div>
 	</div>
 </form>
+
+<script>
+	document.querySelector("#print").addEventListener("click", () => {
+
+		let model = @Html.Raw(Json.Serialize(Model));
+
+		const { jsPDF } = window.jspdf;
+		const doc = new jsPDF({
+			orientation: 'p',
+			unit: 'mm',
+			format: 'a4',
+			putOnlyUsedFonts: true
+		});
+
+		doc.setFontSize(16);
+		doc.setFont("helvetica", "bold");
+		doc.text("Order Receipt", 105, 10, { align: "center" });
+
+		// Order Details
+		doc.setFontSize(12);
+		doc.setFont("helvetica", "normal");
+		doc.text("Order Detail", 10, 20);
+
+		doc.setFont("helvetica", "bold");
+		doc.text("Shipping Details:", 10, 30);
+		doc.setFont("helvetica", "normal");
+		doc.text("Name: Customer", 10, 40);
+		doc.text("Phone: 123212890", 10, 50);
+		doc.text("Home Number: qa", 10, 60);
+		doc.text("Street Address: a", 10, 70);
+		doc.text("Village: a", 10, 80);
+		doc.text("Commune: s", 10, 90);
+		doc.text("City: a", 10, 100);
+		doc.text("Postal Code: a", 10, 110);
+
+		doc.setFont("helvetica", "bold");
+		doc.text("Order Status:", 10, 120);
+		doc.setFont("helvetica", "normal");
+		doc.text("Approved", 40, 120);
+		doc.text("Order Date: 05/23/2024 06:49:29.493 PM", 10, 130);
+
+		doc.setFont("helvetica", "bold");
+		doc.text("Payment Status:", 10, 140);
+		doc.setFont("helvetica", "normal");
+		doc.text("Approved", 40, 140);
+		doc.text("Payment Date: 05/23/2024 06:50:03.217 PM", 10, 150);
+		doc.text("Session Id: cs_test_b1s1rtR7LPKOBBfb0htK6PkV0oH4JX60VVZimRD22Ij2y6bFab8q6c0TZh", 10, 160, { maxWidth: 190 });
+		doc.text("Payment Intent Id: pi_3PJa9z00XvJWDqep0ckhRMzN", 10, 170);
+
+		doc.setFont("helvetica", "bold");
+		doc.text("Delivery Details:", 10, 180);
+		doc.setFont("helvetica", "normal");
+		doc.text("Deliver By: ", 10, 190);
+		doc.text("Shipping Date: 01/01/0001 12:00 AM", 10, 200);
+		doc.text("Arrival Date: mm/dd/yyyy --:-- --", 10, 210);
+
+		// Order Summary
+		doc.setFont("helvetica", "bold");
+		doc.text("Order Summary:", 10, 220);
+		doc.setFont("helvetica", "normal");
+		doc.text("A", 10, 230);
+		doc.text("Unit Price: $10.50", 20, 240);
+		doc.text("Quantity: 1", 20, 250);
+		doc.text("$10.50", 160, 250, { align: "right" });
+
+		doc.text("B", 10, 260);
+		doc.text("Unit Price: $14.50", 20, 270);
+		doc.text("Quantity: 1", 20, 280);
+		doc.text("$14.50", 160, 280, { align: "right" });
+
+		// Total
+		doc.setFont("helvetica", "bold");
+		doc.text("Total (USD): $25.00", 160, 290, { align: "right" });
+
+		// Save the PDF
+		doc.save('order-receipt.pdf');
+	})
+</script>
+
 <script src="~/js/order/customer/order.js" defer></script>
+
 	
