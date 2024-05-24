@@ -283,97 +283,93 @@
 	</div>
 </form>
 
-<script>
-	document.querySelector("#print").addEventListener("click", () => {
-
-		let model = @Html.Raw(Json.Serialize(Model));
-		console.log(model)
-		const { jsPDF } = window.jspdf;
-		const doc = new jsPDF({
-			orientation: 'p',
-			unit: 'mm',
-			format: 'a4',
-			putOnlyUsedFonts: true
-		});
-
-		// Company details
-		doc.setFontSize(16);
-		doc.setFont("helvetica", "bold");
-		doc.text("Taobao 2.0 Co., Ltd", 10, 10);
-		
-		//doc.setFontSize(12);
-		//doc.text("1912 Harvest Lane", 10, 20);
-		//doc.text("New York, NY 12210", 10, 30);
-
-		// Billing and Shipping Information
-		doc.text("Customer", 10, 35);
-		
-		doc.setFont("helvetica", "Normal");	
-		doc.text("Name: ", 10, 60)
-		doc.text(model.orderHeader.Name, 30, 60);
-		
-		
-		doc.text("Phone Number: ", 10, 70);
-		doc.text(model.PhoneNumber, 30, 70);
-		//doc.text("New York, NY 12210", 10, 80);
-
-		doc.text("Ship To", 80, 50);
-		doc.text("John Smith", 80, 60);
-		doc.text("3787 Pineview Drive", 80, 70);
-		doc.text("Cambridge, MA 12210", 80, 80);
-
-		doc.text("Receipt #", 150, 50);
-		doc.text("US-001", 180, 50);
-		doc.text("Receipt Date", 150, 60);
-		doc.text("11/02/2019", 180, 60);
-		doc.text("P.O.#", 150, 70);
-		doc.text("2312/2019", 180, 70);
-		doc.text("Due Date", 150, 80);
-		doc.text("26/02/2019", 180, 80);
-
-		// Table Headers
-		doc.setFontSize(10);
-		doc.setFont("helvetica", "bold");
-		doc.text("QTY", 10, 100);
-		doc.text("DESCRIPTION", 30, 100);
-		doc.text("UNIT PRICE", 120, 100);
-		doc.text("AMOUNT", 180, 100);
-
-		// Products loop
-		const products = [
-			{ qty: 1, description: "Front and rear brake cables", unitPrice: 100.00, amount: 100.00 },
-			{ qty: 2, description: "New set of pedal arms", unitPrice: 15.00, amount: 30.00 },
-			{ qty: 3, description: "Labor 3hrs", unitPrice: 5.00, amount: 15.00 }
-		];
-
-		let yPosition = 110;
-		products.forEach(product => {
-			doc.setFont("helvetica", "normal");
-			doc.text(product.qty.toString(), 10, yPosition);
-			doc.text(product.description, 30, yPosition);
-			doc.text(product.unitPrice.toFixed(2).toString(), 120, yPosition, { align: "right" });
-			doc.text(product.amount.toFixed(2).toString(), 180, yPosition, { align: "right" });
-			yPosition += 10;
-		});
-
-		// Subtotal, Tax, and Total
-		doc.text("Subtotal", 120, yPosition + 10);
-		doc.text("145.00", 180, yPosition + 10, { align: "right" });
-		doc.text("Sales Tax 6.25%", 120, yPosition + 20);
-		doc.text("9.06", 180, yPosition + 20, { align: "right" });
-		doc.setFont("helvetica", "bold");
-		doc.text("TOTAL", 120, yPosition + 30);
-		doc.text("154.06", 180, yPosition + 30, { align: "right" });
-
-		// Footer with Signature
-		doc.text("John Smith", 150, yPosition + 50);
-
-
-		// Save the PDF
-		doc.save('order-receipt.pdf');
-	})
-</script>
-
 <script src="~/js/order/customer/order.js" defer></script>
 
-	
+	<script>
+		document.querySelector("#print").addEventListener("click", () => {
+
+			let model = @Html.Raw(Json.Serialize(Model));
+			console.log(model)
+			const { jsPDF } = window.jspdf;
+			const doc = new jsPDF({
+				orientation: 'p',
+				unit: 'mm',
+				format: 'a4',
+				putOnlyUsedFonts: true
+			});
+
+			// Company details
+			doc.setFontSize(16);
+			doc.setFont("helvetica", "bold");
+			doc.text("Taobao 2.0 Co., Ltd", 10, 10);
+
+
+			// Billing and Shipping Information
+			doc.text("Customer", 10, 35);
+
+			doc.setFontSize(13);
+			doc.setFont("helvetica", "Normal");
+			doc.text("Name: ", 10, 45)
+			doc.text(String(model.orderHeader.name), 30, 45);
+
+			doc.text(`Phone Number: ${model.orderHeader.phoneNumber}`, 10, 55);			
+
+			doc.text("Address: ", 10, 65);
+			doc.text(`${model.orderHeader.homeNumber}, ${model.orderHeader.streetName}, ${model.orderHeader.village} Village`, 30, 65);
+			doc.text(`${model.orderHeader.commune} Commune, ${model.orderHeader.city} City, ${model.orderHeader.postalNumber}`, 30, 75);
+
+
+			doc.text(`Order Number #${model.orderHeader.orderHeaderId}`, 135, 35);
+			doc.text(`Order Date: ${new Date(model.orderHeader.orderDate).toLocaleString()}`, 135, 45);
+			
+			// Table Headers
+			doc.setFontSize(10);
+			doc.setFont("helvetica", "bold");
+			doc.text("PRODUCT NAME", 18, 100);
+			doc.text("CATEGORY", 63, 100);
+			doc.text("QUANTITY", 98, 100);
+			doc.text("UNIT PRICE", 133, 100);
+			doc.text("AMOUNT", 168, 100);
+
+			// Draw header border
+			doc.rect(15, 95, 45, 10); // Product Name
+			doc.rect(60, 95, 35, 10); // Category
+			doc.rect(95, 95, 35, 10); // Quantity
+			doc.rect(130, 95, 35, 10); // Unit Price
+			doc.rect(165, 95, 25, 10); // Amount
+
+			let total = 0;
+			let yPosition = 110;
+			model.orderDetails.forEach(detail => {
+				total += detail.price;
+				doc.setFont("helvetica", "normal");
+
+				// Draw borders around each cell
+				doc.rect(15, yPosition - 5, 45, 10); // Product Name
+				doc.rect(60, yPosition - 5, 35, 10); // Category
+				doc.rect(95, yPosition - 5, 35, 10); // Quantity
+				doc.rect(130, yPosition - 5, 35, 10); // Unit Price
+				doc.rect(165, yPosition - 5, 25, 10); // Amount
+
+				doc.text(detail.product.proName, 18, yPosition);
+				doc.text(String(detail.product.category), 63, yPosition);
+				doc.text(detail.quantity.toString(), 98, yPosition);
+				doc.text(`$${detail.unitPrice.toFixed(2).toString()}`, 133, yPosition, { align: "left" });
+				doc.text(`$${detail.price.toFixed(2).toString()}`, 168, yPosition, { align: "left" });
+
+				// Draw row border
+				doc.rect(15, yPosition - 5, 175, 10); // Adjusted width to match header width
+
+				yPosition += 10;
+			});
+
+			// Subtotal, Tax, and Total
+			doc.setFont("helvetica", "bold");
+			doc.text("TOTAL", 133, yPosition + 10);
+			doc.text(`$${total.toString()}`, 168, yPosition + 10, { align: "right" });
+
+
+			// Save the PDF
+			doc.save('order-receipt.pdf');
+		})
+	</script>
