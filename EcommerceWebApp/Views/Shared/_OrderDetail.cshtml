@@ -287,7 +287,7 @@
 	document.querySelector("#print").addEventListener("click", () => {
 
 		let model = @Html.Raw(Json.Serialize(Model));
-
+		console.log(model)
 		const { jsPDF } = window.jspdf;
 		const doc = new jsPDF({
 			orientation: 'p',
@@ -299,16 +299,23 @@
 		// Company details
 		doc.setFontSize(16);
 		doc.setFont("helvetica", "bold");
-		doc.text("East Repair Inc.", 10, 10);
-		doc.setFontSize(12);
-		doc.text("1912 Harvest Lane", 10, 20);
-		doc.text("New York, NY 12210", 10, 30);
+		doc.text("Taobao 2.0 Co., Ltd", 10, 10);
+		
+		//doc.setFontSize(12);
+		//doc.text("1912 Harvest Lane", 10, 20);
+		//doc.text("New York, NY 12210", 10, 30);
 
 		// Billing and Shipping Information
-		doc.text("Bill To", 10, 50);
-		doc.text("John Smith", 10, 60);
-		doc.text("2 Court Square", 10, 70);
-		doc.text("New York, NY 12210", 10, 80);
+		doc.text("Customer", 10, 35);
+		
+		doc.setFont("helvetica", "Normal");	
+		doc.text("Name: ", 10, 60)
+		doc.text(model.orderHeader.Name, 30, 60);
+		
+		
+		doc.text("Phone Number: ", 10, 70);
+		doc.text(model.PhoneNumber, 30, 70);
+		//doc.text("New York, NY 12210", 10, 80);
 
 		doc.text("Ship To", 80, 50);
 		doc.text("John Smith", 80, 60);
