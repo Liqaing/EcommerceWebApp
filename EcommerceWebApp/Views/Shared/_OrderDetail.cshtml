@@ -24,7 +24,9 @@
 				<div class="d-flex justify-content-between align-items-center mb-4">
 					<h3 class="fw-normal mb-0 text-black">Order Detail</h3>
 
-					<div class="d-flex align-items-center">
+					<div class="d-flex align-items-center gap-2">
+						<button id="print" type="button" class="btn btn-success mr-2 rounded">Print</button>
+
 						<a asp-action="Index"
 						class="btn btn-outline-secondary mr-2">Back</a>
 					</div>
@@ -228,9 +230,7 @@
 											<small class="text-primary">Total (USD)</small>
 											<strong class="text-primary	">@Model.orderHeader.OrderTotal.ToString("c")</strong>
 										</li>
-									</ul>
-
-									<button id="print" type="button" class="btn btn-success mb-2 rounded">Print</button>
+									</ul>									
 
 									@if (this.User.IsInRole(RoleConstant.Role_Customer) &&
 											Model.orderHeader.PaymentStatus == OrderAndPaymentStatusConstate.PaymentStatusPending &&
@@ -366,7 +366,7 @@
 			// Subtotal, Tax, and Total
 			doc.setFont("helvetica", "bold");
 			doc.text("TOTAL", 133, yPosition + 10);
-			doc.text(`$${total.toString()}`, 168, yPosition + 10, { align: "right" });
+			doc.text(`$${total.toString()}`, 180, yPosition + 10, { align: "right" });
 
 
 			// Save the PDF
