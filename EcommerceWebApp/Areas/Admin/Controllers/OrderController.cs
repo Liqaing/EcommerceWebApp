@@ -283,6 +283,126 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
                 return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Order-Detail.xlsx");
             }
         }
+
+        public IActionResult DownlaodSummaryDevlivery()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            IEnumerable<OrderHeader> orderHeaders = _unitOfWork.OrderHeader.GetAll(
+                u => u.DeliveryEmpId == userId,
+                includeProperties: "AppUser"
+                ).OrderByDescending(order => order.OrderHeaderId);
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Order-Summary");
+                DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("Order ID", typeof(string));
+                dataTable.Columns.Add("Order Total", typeof(double));
+                dataTable.Columns.Add("Order Status", typeof(string));
+                dataTable.Columns.Add("Payment Status", typeof(string));
+                dataTable.Columns.Add("Order Date", typeof(string));
+                dataTable.Columns.Add("Payment Date", typeof(string));
+                dataTable.Columns.Add("Shipping Date", typeof(string));
+                dataTable.Columns.Add("Arrival Date", typeof(string));
+                dataTable.Columns.Add("Name", typeof(string));
+                dataTable.Columns.Add("Phone Number", typeof(string));
+                dataTable.Columns.Add("Home Number", typeof(string));
+                dataTable.Columns.Add("Street Name", typeof(string));
+                dataTable.Columns.Add("Village", typeof(string));
+                dataTable.Columns.Add("Commune", typeof(string));
+                dataTable.Columns.Add("City", typeof(string));
+                dataTable.Columns.Add("Postal Number", typeof(string));
+                dataTable.Columns.Add("Delivery Employee", typeof(string));
+                dataTable.Columns.Add("Cancel By", typeof(string));
+
+                foreach (var orderHeader in orderHeaders)
+                {
+                    dataTable.Rows.Add(
+                        orderHeader.OrderHeaderId,
+                        orderHeader.OrderTotal,
+                        orderHeader.OrderStatus,
+                        orderHeader.PaymentStatus,
+                        orderHeader.OrderDate,
+                        orderHeader.PaymentDate,
+                        orderHeader.ShippingDate,
+                        orderHeader.ArrivalDate,
+                        orderHeader.Name,
+                        orderHeader.PhoneNumber,
+                        orderHeader.HomeNumber,
+                        orderHeader.StreetName,
+                        orderHeader.Village,
+                        orderHeader.Commune,
+                        orderHeader.City,
+                        orderHeader.PostalNumber,
+                        orderHeader.deliveryEmpName,
+                        orderHeader.cancelBy
+                    );
+                }
+
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Order-Summary.xlsx");
+            }
+        }
+
+        public IActionResult DownlaodDetailDevlivery()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            IEnumerable<OrderDetail> orderDetails = _unitOfWork.OrderDetail.GetAll(
+                order => order.OrderHeader.AppUserId == userId,
+                includeProperties: "Product,OrderHeader,Product.Category"
+                ).OrderByDescending(order => order.OrderDetailsId);
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Order-Detail");
+                DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("Order Detail ID", typeof(string));
+                dataTable.Columns.Add("Order Total", typeof(double));
+                dataTable.Columns.Add("Order Quantity", typeof(int));
+                dataTable.Columns.Add("Payment Unit Price", typeof(double));
+                dataTable.Columns.Add("Total Price", typeof(double));
+                dataTable.Columns.Add("Product Name", typeof(string));
+                dataTable.Columns.Add("Product Origin Country", typeof(string));
+                dataTable.Columns.Add("Category", typeof(string));
+                dataTable.Columns.Add("Order Date", typeof(string));
+                dataTable.Columns.Add("Order Status", typeof(string));
+                dataTable.Columns.Add("Order Payment Status", typeof(string));
+                dataTable.Columns.Add("Customer Name", typeof(string));
+                dataTable.Columns.Add("Customer Phone Number", typeof(string));
+
+                foreach (var orderDetail in orderDetails)
+                {
+                    dataTable.Rows.Add(
+                        orderDetail.OrderDetailsId,
+                        orderDetail.OrderHeaderId,
+                        orderDetail.Quantity,
+                        orderDetail.UnitPrice,
+                        orderDetail.Price,
+                        orderDetail.Product.ProName,
+                        orderDetail.Product.OriginCountry,
+                        orderDetail.Product.Category.CatName,
+                        orderDetail.OrderHeader.OrderDate,
+                        orderDetail.OrderHeader.OrderStatus,
+                        orderDetail.OrderHeader.PaymentStatus,
+                        orderDetail.OrderHeader.Name,
+                        orderDetail.OrderHeader.PhoneNumber
+                    );
+                }
+
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Order-Detail.xlsx");
+            }
+        }
         #endregion
 
     }

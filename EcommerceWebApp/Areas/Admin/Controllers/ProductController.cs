@@ -152,7 +152,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         
         public IActionResult Download()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(
+             List<Product> products = _unitOfWork.Product.GetAll(
                includeProperties: "Category").ToList();
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
