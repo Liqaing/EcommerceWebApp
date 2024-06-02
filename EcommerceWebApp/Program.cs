@@ -58,6 +58,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(ops =>
     ops.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
+
+
 // Config route for redirecting
 builder.Services.ConfigureApplicationCookie(opts =>
 {

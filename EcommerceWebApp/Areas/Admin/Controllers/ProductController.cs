@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml;
 using System.Collections.Generic;
+using System.Data;
 using System.Text.RegularExpressions;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -36,7 +38,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         public IActionResult Upsert(int? proId)
         {
             ProductVM productVM = new()
-            {                
+            {
                 // Get list of category dropdown
                 CategoryList = _unitOfWork.Category.GetAll()
                     .Select(cat => new SelectListItem
@@ -63,43 +65,43 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(ProductVM productVM, IFormFile? productImage)
         {
-			if (ModelState.IsValid)
-			{
-				string wwwRootPath = _webHostEnvironment.WebRootPath;
-				if (productImage != null)
-				{
-					// Get random 128 bit id to identify the file
-					string imageName = $"{Guid.NewGuid()}{Path.GetExtension(productImage.FileName)}";
-					string imageFolder = Path.Combine(wwwRootPath, @"images\product");
+            if (ModelState.IsValid)
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (productImage != null)
+                {
+                    // Get random 128 bit id to identify the file
+                    string imageName = $"{Guid.NewGuid()}{Path.GetExtension(productImage.FileName)}";
+                    string imageFolder = Path.Combine(wwwRootPath, @"images\product");
 
-					if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
-					{
-						// delete old image and update new one                        
-						DeleteImage(wwwRootPath, productVM.Product);
-					}
+                    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                    {
+                        // delete old image and update new one                        
+                        DeleteImage(wwwRootPath, productVM.Product);
+                    }
 
-					// Save image
-					string imagePath = Path.Combine(imageFolder, imageName);
-					using (var fileStream = new FileStream(imagePath, FileMode.Create))
-					{
-						productImage.CopyTo(fileStream);
-					};
+                    // Save image
+                    string imagePath = Path.Combine(imageFolder, imageName);
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        productImage.CopyTo(fileStream);
+                    };
 
-					productVM.Product.ImageUrl = $@"\images\product\{imageName}";
-				}
+                    productVM.Product.ImageUrl = $@"\images\product\{imageName}";
+                }
 
-				if (productVM.Product.ProductId == 0)
-				{
-					this._unitOfWork.Product.Add(productVM.Product);
-					TempData["Success"] = $"Product: {productVM.Product.ProName} created successfully";
-				}
-				else
-				{
-					this._unitOfWork.Product.Update(productVM.Product);
-					TempData["Success"] = $"Product: {productVM.Product.ProName} updated successfully";
-				}
+                if (productVM.Product.ProductId == 0)
+                {
+                    this._unitOfWork.Product.Add(productVM.Product);
+                    TempData["Success"] = $"Product: {productVM.Product.ProName} created successfully";
+                }
+                else
+                {
+                    this._unitOfWork.Product.Update(productVM.Product);
+                    TempData["Success"] = $"Product: {productVM.Product.ProName} updated successfully";
+                }
 
-				this._unitOfWork.Save();
+                this._unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             else
@@ -122,20 +124,9 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             List<Product> products = _unitOfWork.Product.GetAll(
-                includeProperties: "Category").ToList();
+                includeProperties: "Category").ToList();          
 
-            /*
-            List<Product> productList = products.Select(pro => new Product
-            {
-				ProductId = pro.ProductId,
-				ProName = pro.ProName,
-                Price = pro.Price,
-                Qauntity = pro.Qauntity,
-
-            }).ToList();
-            */
-
-			return Json(new { data = products });
+            return Json(new { data = products });
         }
 
         [HttpDelete]
@@ -145,18 +136,59 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             Product product = _unitOfWork.Product.Get(pro => pro.ProductId == proId);
             if (product == null)
             {
-                return Json( new { success = false, message = "Product Not Found" } );
+                return Json(new { success = false, message = "Product Not Found" });
 
             }
-                
+
             DeleteImage(_webHostEnvironment.WebRootPath, product);
 
             _unitOfWork.Product.Delete(product);
             _unitOfWork.Save();
 
             string successMsg = $"Product: {product.ProName} deleted successfully";
-            return Json( new {success = true, message = successMsg} );
+            return Json(new { success = true, message = successMsg });
         }
+
+        
+        public IActionResult Download()
+        {
+            List<Product> products = _unitOfWork.Product.GetAll(
+               includeProperties: "Category").ToList();
+            
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Products");
+                DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("ProductId", typeof(int));
+                dataTable.Columns.Add("ProName", typeof(string));
+                dataTable.Columns.Add("Quantity", typeof(int));
+                dataTable.Columns.Add("Description", typeof(string));
+                dataTable.Columns.Add("OriginCountry", typeof(string));
+                dataTable.Columns.Add("Price", typeof(double));
+                dataTable.Columns.Add("CatId", typeof(int));
+                dataTable.Columns.Add("CatName", typeof(string));
+
+                foreach (var product in products)
+                {
+                    dataTable.Rows.Add(
+                        product.ProductId,
+                        product.ProName,
+                        product.Quantity,
+                        product.Description,
+                        product.OriginCountry,
+                        product.Price,
+                        product.CatId,
+                        product.Category?.CatName
+                    );
+                }
+
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+
+                return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Products.xlsx");
+            }
+        }
+
 
         #endregion
 
