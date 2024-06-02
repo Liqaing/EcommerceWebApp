@@ -4,6 +4,8 @@ using EcommerceWebAppProject.DB.Repository.IRepository;
 using EcommerceWebAppProject.DB.Repository;
 using Microsoft.AspNetCore.Authorization;
 using EcommerceWebAppProject.Utilities;
+using OfficeOpenXml;
+using System.Data;
 
 namespace EcommerceWebApp.Areas.Admin.Controllers
 {
@@ -73,6 +75,35 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        
+        public IActionResult Download()
+        {
+            List<Category> categories = _unitOfWork.Category.GetAll().ToList();
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Category");
+                DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("Category ID", typeof(int));
+                dataTable.Columns.Add("Category Name", typeof(string));                
+
+                foreach (var category in categories)
+                {
+                    dataTable.Rows.Add(
+                        category.CatId,
+                        category.CatName
+                    );
+                }
+
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Category.xlsx");
+            }
         }
         
 

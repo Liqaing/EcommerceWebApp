@@ -154,20 +154,21 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
         {
             List<Product> products = _unitOfWork.Product.GetAll(
                includeProperties: "Category").ToList();
-            
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (ExcelPackage package = new ExcelPackage())
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Products");
                 DataTable dataTable = new DataTable();
 
-                dataTable.Columns.Add("ProductId", typeof(int));
-                dataTable.Columns.Add("ProName", typeof(string));
+                dataTable.Columns.Add("Product Id", typeof(int));
+                dataTable.Columns.Add("Product Name", typeof(string));
                 dataTable.Columns.Add("Quantity", typeof(int));
                 dataTable.Columns.Add("Description", typeof(string));
-                dataTable.Columns.Add("OriginCountry", typeof(string));
+                dataTable.Columns.Add("Origin Country", typeof(string));
                 dataTable.Columns.Add("Price", typeof(double));
-                dataTable.Columns.Add("CatId", typeof(int));
-                dataTable.Columns.Add("CatName", typeof(string));
+                dataTable.Columns.Add("Category Id", typeof(int));
+                dataTable.Columns.Add("Category Name", typeof(string));
 
                 foreach (var product in products)
                 {
@@ -184,6 +185,7 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
                 }
 
                 worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
                 return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Products.xlsx");
             }

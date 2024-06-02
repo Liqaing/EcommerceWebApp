@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml;
+using System.Data;
 using System.Drawing.Printing;
 
 namespace EcommerceWebApp.Areas.Admin.Controllers
@@ -70,17 +72,20 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
 
             // Get data from AspUserRole tb
             var userRole = _appDbContext.UserRoles.ToList();
-
-            foreach (AppUser user in users)
+            if (userRole != null)
             {
-                // Look through db to find role for the user
-                string roleId = userRole.FirstOrDefault(
-                    u => u.UserId == user.Id).RoleId;
+                foreach (AppUser user in users)
+                {
+                    // Look through db to find role for the user
+                    string? roleId = userRole?.FirstOrDefault(
+                        u => u.UserId == user.Id)?.RoleId;
 
-                user.roleId = roleId;
-                user.role = roles.FirstOrDefault(u => u.Id == roleId).Name;
+                    user.roleId = roleId;
+                    user.role = roles.FirstOrDefault(u => u.Id == roleId).Name;
 
+                }
             }
+            
 
             return Json(new { data = users });
         }
@@ -215,6 +220,73 @@ namespace EcommerceWebApp.Areas.Admin.Controllers
             TempData["success"] = $"User {userFromDb.Name} deleted successfully";
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult Download()
+        {
+            List<AppUser> users = _unitOfWork.AppUser.GetAll().ToList();
+            List<UserRole> roles = _unitOfWork.Role.GetAll().ToList();
+
+            // Get data from AspUserRole tb
+            var userRole = _appDbContext.UserRoles.ToList();
+            if (userRole != null)
+            {
+                foreach (AppUser user in users)
+                {
+                    // Look through db to find role for the user
+                    string? roleId = userRole?.FirstOrDefault(
+                        u => u.UserId == user.Id)?.RoleId;
+
+                    user.roleId = roleId;
+                    user.role = roles.FirstOrDefault(u => u.Id == roleId).Name;
+                }
+            }
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Accounts");
+                DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("Account ID", typeof(string));
+                dataTable.Columns.Add("Name", typeof(string));
+                dataTable.Columns.Add("Email", typeof(string));
+                dataTable.Columns.Add("Role", typeof(string));
+                dataTable.Columns.Add("Phone Number", typeof(string));
+                dataTable.Columns.Add("Home Number", typeof(string));
+                dataTable.Columns.Add("Street Number", typeof(string));
+                dataTable.Columns.Add("Village", typeof(string));
+                dataTable.Columns.Add("Commune", typeof(string));
+                dataTable.Columns.Add("City", typeof(string));
+                dataTable.Columns.Add("Postal Number", typeof(string));
+                dataTable.Columns.Add("Lockout End", typeof(string));
+
+                foreach (var account in users)
+                {
+                    dataTable.Rows.Add(
+                        account.Id,
+                        account.Name,
+                        account.Email,
+                        account.role,
+                        account.PhoneNumber,
+                        account.HomeNumber,
+                        account.StreetName,
+                        account.Village,
+                        account.Commune,
+                        account.City,
+                        account.PostalNumber,
+                        account.LockoutEnd
+                    );
+                }
+
+                worksheet.Cells["A1"].LoadFromDataTable(dataTable, true);
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Accounts.xlsx");
+            }
+
+        }
+
         #endregion
 
     }
